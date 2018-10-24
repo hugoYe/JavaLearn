@@ -1,5 +1,7 @@
 Java后端学习
 ----------------
+java技术栈：[](https://www.cnblogs.com/thingk/p/6813045.html)
+
 一. 环境搭建    
     a. IDE：IntelliJ IDEA
     > 进入官网下载安装，[下载地址](http://www.jetbrains.com/idea/)   
