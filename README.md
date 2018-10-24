@@ -1,7 +1,8 @@
 Java后端学习
 ----------------
 java技术栈：[技术栈](https://www.cnblogs.com/thingk/p/6813045.html)   
-[思维导图](https://www.cnblogs.com/JAYIT/p/8656846.html)
+[思维导图](https://www.cnblogs.com/JAYIT/p/8656846.html)   
+[详细学习文章](https://my.oschina.net/javaroad/blog/1793570)
 
 一. 环境搭建    
     a. IDE：IntelliJ IDEA
