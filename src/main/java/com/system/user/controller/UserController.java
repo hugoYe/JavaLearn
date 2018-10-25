@@ -1,7 +1,7 @@
-package com.system.controller;
+package com.system.user.controller;
 
-import com.system.entity.User;
-import com.system.service.UserService;
+import com.system.user.entity.User;
+import com.system.user.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
-package com.system.dao;
+package com.system.user.dao;
 
-import com.system.entity.User;
+import com.system.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

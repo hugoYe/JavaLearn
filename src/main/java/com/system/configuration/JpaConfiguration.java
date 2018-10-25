@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableJpaRepositories(basePackages = "com.system.dao")
-@EntityScan(basePackages = "com.system.entity")
+@EnableJpaRepositories(basePackages = "com.system.user.dao")
+@EntityScan(basePackages = "com.system.user.entity")
 public class JpaConfiguration {
     @Bean
     PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {

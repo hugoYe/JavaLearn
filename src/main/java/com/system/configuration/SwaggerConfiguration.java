@@ -21,7 +21,7 @@ public class SwaggerConfiguration implements ApplicationListener<EmbeddedServlet
                 .apiInfo(apiInfo())
                 .select()
                 //选择controller包
-                .apis(RequestHandlerSelectors.basePackage("com.system.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.system.user.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
