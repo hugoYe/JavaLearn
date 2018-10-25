@@ -1,7 +1,7 @@
-package com.yezhennan.service;
+package com.system.service;
 
-import com.yezhennan.entity.User;
-import com.yezhennan.dao.UserRepositoty;
+import com.system.entity.User;
+import com.system.dao.UserRepositoty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

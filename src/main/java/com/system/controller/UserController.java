@@ -1,7 +1,7 @@
-package com.yezhennan.controller;
+package com.system.controller;
 
-import com.yezhennan.entity.User;
-import com.yezhennan.service.UserService;
+import com.system.entity.User;
+import com.system.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

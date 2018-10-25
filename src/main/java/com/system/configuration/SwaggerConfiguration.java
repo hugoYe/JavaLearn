@@ -1,4 +1,4 @@
-package com.yezhennan.configuration;
+package com.system.configuration;
 
 import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
 import org.springframework.context.ApplicationListener;
@@ -21,7 +21,7 @@ public class SwaggerConfiguration implements ApplicationListener<EmbeddedServlet
                 .apiInfo(apiInfo())
                 .select()
                 //选择controller包
-                .apis(RequestHandlerSelectors.basePackage("com.yezhennan.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.system.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

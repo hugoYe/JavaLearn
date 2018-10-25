@@ -1,4 +1,4 @@
-package com.yezhennan.entity;
+package com.system.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

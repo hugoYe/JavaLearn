@@ -29,7 +29,7 @@ java技术栈：[技术栈](https://www.cnblogs.com/thingk/p/6813045.html)
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.yezhennan</groupId>
+    <groupId>com.system</groupId>
     <artifactId>JavaLearn</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -244,8 +244,8 @@ public interface UserRepositoty extends JpaRepository<User, Long> {
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableJpaRepositories(basePackages = "com.yezhennan.dao")
-@EntityScan(basePackages = "com.yezhennan.entity")
+@EnableJpaRepositories(basePackages = "com.system.dao")
+@EntityScan(basePackages = "com.system.entity")
 public class JpaConfiguration {
     @Bean
     PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
