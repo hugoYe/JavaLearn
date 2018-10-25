@@ -2,7 +2,6 @@ package com.system.file.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +17,17 @@ public class FileController {
     @ApiOperation("下载文件")
     @GetMapping("/download")
     public String downloadFile(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
-        String fileName = "haofangtuo_spring.apk";// 文件名
+        String fileName = "spring_test.apk";// 文件名
         if (fileName != null) {
             //设置文件路径
-            File file = new File("/Users/yezhennan220/Documents/temp/haofangtuo_spring.apk");
+            File file = new File("/Users/yezhennan220/Documents/temp/" + fileName);
             //File file = new File(realPath , fileName);
             if (file.exists()) {
                 // 配置文件下载
-                response.setHeader("content-type", "application/octet-stream");
+                // TODO: 18/10/25 response返回头部信息设置原理
                 response.setContentType("application/octet-stream");
+                response.addHeader("Content-Length", "" + file.length());
+
                 // 下载文件能正常显示中文
                 response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 
