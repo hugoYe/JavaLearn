@@ -40,7 +40,7 @@ public class FileController {
                     OutputStream os = response.getOutputStream();
                     int i = bis.read(buffer);
                     while (i != -1) {
-                        os.write(buffer, 0, i);
+                        os.write(buffer, 0, buffer.length);
                         i = bis.read(buffer);
                     }
                     return "下载成功";
