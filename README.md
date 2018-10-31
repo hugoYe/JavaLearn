@@ -341,3 +341,152 @@ spring.mvc.static-path-pattern=/static/**
 ```
 
 OK，一切准备就绪，剩下的就是启动Application了。
+
+四. 项目分层结构及模块划分方式     
+![项目分层](doc/pic/springbootlayer.jpg "项目分层")  
+
+- **特殊类名规范** 
+
+Spring配置类: configuration/*Configuration,例如WebConfiguration/DatasourceConfiguration
+
+Properties类： properties/*Properties,例如FtpProperties
+
+dao类：dao/*Dao或者dao/*Repository
+
+service类：service/*Service
+
+- ** 分层命名规范 ** 
+
+domain: 数据库PO
+
+dao/repository：数据库访问层
+
+service：业务逻辑层
+
+dto：数据传输对象
+
+constants：枚举常量
+
+controller：web控制器
+
+form：web请求对象
+
+vo：web响应对象
+
+validator：校验器
+
+batch：批处理Job类
+
+
+##### 2. 项目划分
+
+对于每个项目可以按照如下方式进行划分为4个模块，独立为4个maven模块
+
+- **Parent**
+
+负责依赖管理，公用的maven依赖
+
+- **Service (lib)**
+
+包含整个项目的业务逻辑/数据访问代码
+
+- **Exportapi (lib 或 app)** 
+
+项目对外API提供，RPC等。依赖Service，可单独部署也可打进web包进行部署。
+
+- **Web (app)**
+
+项目web接口暴露代码，包括前后端接口暴露，文档，拦截器。依赖service、exportapi
+
+- **Batch (app)** 
+
+项目批处理任务，常驻进程任务或者定时任务，依赖service
+
+#### 五、Spring常用模块应用
+
+##### 1. Spring MVC
+
+- **接口定义规范** 
+
+```
+Http Method
+
+GET：读取数据，不允许有数据的修改等操作
+   列表URL设计：GET:/web/custmer
+   单条数据URL设计：GET:/web/customer/{custmerId}
+POST：新建数据
+   POST:/web/custmer
+PUT：修改数据
+   PUT:/web/custmer/{custormId}
+   PUT:/web/custmer/status/{custormId}
+DELTE：删除数据
+   DELETE:/web/custmer/{custormId}
+
+请求体与响应体
+
+请求与响应除QueryString及PathVariable外，其余数据交互应以Json格式进行交互
+
+Controller配置为@RestController, 前后端ContentType:application/json; charset=UTF8
+
+```
+
+- **Swagger应用** 
+
+所有controller都用swagger annotation进行注解，springfox嵌入以提供接口文档及try out调试功能
+
+- **TraceFilter** 
+
+添加TraceFilter，对于每个请求随机生成RequestID并放入MDC进行日志打印，便于排查
+
+- **异常消息定义及ExceptionHandler** 
+
+自定义完善的异常处理器，按照和前端定义好的接口产生异常消息体。通过HTTP CODE定义各类状态
+
+```
+200 成功
+409 校验失败，例如非空、长度、格式等
+400 客户端请求格式错误，例如不是合法的Json
+401 未授权即未登录
+403 无权限访问
+404 不存在，未找到响应对象
+500 服务器内部错误
+
+```
+异常消息体定义
+
+```json
+{
+  "errorCode": 1, // 保留错误码字段
+  "message": "全局异常消息",
+  "fieldErrors": [
+    {
+      "name": "名称不允许重复"
+    },
+    {
+      "desc": "描述太短"
+    }
+  ]
+}
+
+```
+##### 2. JPA用法
+
+- **数据源及数据库连接池配置**
+
+建议使用Alibaba Druid连接池配置
+
+同时建议配置DruidStat,即可通过web管理数据源监测数据，见
+
+```java
+
+    @Bean
+    public ServletRegistrationBean druidServlet(DruidStatProperties druidStatProperties) {
+        ServletRegistrationBean reg = new ServletRegistrationBean();
+        reg.setServlet(new StatViewServlet());
+        reg.addUrlMappings("/druid/*");
+        reg.addInitParameter("loginUsername", druidStatProperties.getUsername());
+        reg.addInitParameter("loginPassword", druidStatProperties.getPassword());
+        return reg;
+    }
+
+```

@@ -41,4 +41,10 @@ public class UserController {
             return user.getId() + "/" + user.getName() + "/" + user.getPassword();
         else return "null";
     }
+
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @ResponseBody
+    public String login(@RequestBody User u) {
+        return "success";
+    }
 }
