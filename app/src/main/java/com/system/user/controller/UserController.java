@@ -14,11 +14,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index() {
-        return "user/index";
-    }
-
     @ApiOperation("根据ID获取用户信息")
     @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "id",
             dataType = "int", required = true, value = "用户的id", defaultValue = "1")})

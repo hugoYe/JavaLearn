@@ -2,6 +2,7 @@ package com.system.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
@@ -15,5 +16,12 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
+
+//        // 前端
+//        registry.addResourceHandler("index.html").addResourceLocations("classpath:/META-INF/resources/");
+//        registry.addResourceHandler("/static/**")
+//                .addResourceLocations("classpath:/static/");
+
     }
+
 }
