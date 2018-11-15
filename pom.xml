@@ -39,7 +39,6 @@
 
     <dependencyManagement>
         <dependencies>
-         
 
             <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
             <!-- database support -->
@@ -71,6 +70,13 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+
+            <!-- json support -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.29</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
