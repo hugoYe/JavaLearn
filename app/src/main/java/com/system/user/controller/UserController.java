@@ -1,8 +1,10 @@
 package com.system.user.controller;
 
 import com.system.common.vo.ResponseVO;
+import com.system.exception.BizException;
 import com.system.user.dto.UserDTO;
 import com.system.user.form.UserAddForm;
+import com.system.user.form.UserEditForm;
 import com.system.user.service.UserService;
 import com.system.user.vo.UserVO;
 import io.swagger.annotations.Api;
@@ -10,10 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -38,6 +38,24 @@ public class UserController {
         }
 
         return ResponseVO.failResponse("addUser fail!");
+    }
+
+    @PutMapping(value = "/edit/{id}")
+    @ApiOperation("编辑用户")
+    @ResponseBody
+    public ResponseVO<Integer> editUser(@PathVariable(name = "id") int id, UserEditForm form) {
+        if (StringUtils.isEmpty(form.getPassword()) || StringUtils.isEmpty(form.getConfirmPassword())) {
+            throw new BizException("none password!");
+        }
+        if (!form.getPassword().equals(form.getConfirmPassword())) {
+            throw new BizException("Entered passwords differ!");
+        }
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(id);
+        BeanUtils.copyProperties(form, userDTO);
+        Integer editId = userService.editUser(userDTO);
+
+        return ResponseVO.successResponse(editId);
     }
 
 //    @ApiOperation("根据ID获取用户信息")

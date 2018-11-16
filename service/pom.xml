@@ -21,6 +21,16 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+
         <!-- spring framework support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

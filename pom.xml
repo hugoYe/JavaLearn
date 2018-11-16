@@ -48,6 +48,18 @@
                 <version>5.1.39</version>
             </dependency>
 
+            <!-- commons -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.7</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.3</version>
+            </dependency>
+
             <!-- spring framework support -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
