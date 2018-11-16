@@ -2,7 +2,9 @@ package com.system.user.controller;
 
 import com.system.common.vo.ResponseVO;
 import com.system.exception.BizException;
+import com.system.user.dto.ModifyPasswordDTO;
 import com.system.user.dto.UserDTO;
+import com.system.user.form.ModifyPasswordForm;
 import com.system.user.form.UserAddForm;
 import com.system.user.form.UserEditForm;
 import com.system.user.service.UserService;
@@ -43,7 +45,7 @@ public class UserController {
     @PutMapping(value = "/edit/{id}")
     @ApiOperation("编辑用户")
     @ResponseBody
-    public ResponseVO<Integer> editUser(@PathVariable(name = "id") int id, UserEditForm form) {
+    public ResponseVO<Integer> editUser(@PathVariable(name = "id") int id, @RequestBody UserEditForm form) {
         if (StringUtils.isEmpty(form.getPassword()) || StringUtils.isEmpty(form.getConfirmPassword())) {
             throw new BizException("none password!");
         }
@@ -56,6 +58,21 @@ public class UserController {
         Integer editId = userService.editUser(userDTO);
 
         return ResponseVO.successResponse(editId);
+    }
+
+    @PutMapping(value = "/modifyPassword")
+    @ApiOperation("修改密码")
+    @ResponseBody
+    public ResponseVO<Integer> modifyPassword(@RequestBody ModifyPasswordForm form) {
+        if (!form.getNewPassword().equals(form.getConfirmPassword())) {
+            throw new BizException("Entered passwords differ!");
+        }
+
+        ModifyPasswordDTO dto = new ModifyPasswordDTO();
+        BeanUtils.copyProperties(form, dto);
+        Integer modifyId = userService.modifyPassword(dto);
+
+        return ResponseVO.successResponse(modifyId);
     }
 
 //    @ApiOperation("根据ID获取用户信息")

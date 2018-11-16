@@ -6,6 +6,7 @@ import com.system.common.support.XBeanUtil;
 import com.system.exception.BizException;
 import com.system.user.dao.UserDao;
 import com.system.user.domain.UserDomain;
+import com.system.user.dto.ModifyPasswordDTO;
 import com.system.user.dto.UserDTO;
 import com.system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.lang.reflect.InvocationTargetException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,10 +38,9 @@ public class UserServiceImpl implements UserService {
         UserDomain user = new UserDomain();
         try {
             XBeanUtil.copyProperties(user, userDTO, false);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            throw new BizException();
         }
         user = userDao.save(user);
         userDTO.setId(user.getId());
@@ -68,12 +66,28 @@ public class UserServiceImpl implements UserService {
 
         try {
             XBeanUtil.copyProperties(editUser, userDTO, false);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            throw new BizException();
         }
         UserDomain saved = userDao.save(editUser);
+
+        return saved.getId();
+    }
+
+    @Override
+    public Integer modifyPassword(ModifyPasswordDTO dto) {
+        UserDomain user = userDao.findByIdAndIsDeleted(dto.getId(), YesNoEnum.NO.getValue());
+        if (null == user) {
+            throw new BizException("User not exist!");
+        }
+
+        if (!dto.getPrePassword().equals(user.getPassword())) {
+            throw new BizException("Original password error!");
+        }
+
+        user.setPassword(dto.getNewPassword());
+        UserDomain saved = userDao.save(user);
 
         return saved.getId();
     }

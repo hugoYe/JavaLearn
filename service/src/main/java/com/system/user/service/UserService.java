@@ -1,5 +1,6 @@
 package com.system.user.service;
 
+import com.system.user.dto.ModifyPasswordDTO;
 import com.system.user.dto.UserDTO;
 
 public interface UserService {
@@ -19,6 +20,14 @@ public interface UserService {
      * @return Integer
      */
     Integer editUser(UserDTO userDTO);
+
+    /**
+     * 编辑用户信息
+     *
+     * @param dto 修改密码信息
+     * @return Integer
+     */
+    Integer modifyPassword(ModifyPasswordDTO dto);
 
     /**
      * 删除用户
