@@ -3,23 +3,28 @@ package com.system.user.service.impl;
 import com.system.common.constants.WebConstants;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.support.XBeanUtil;
+import com.system.common.utils.SHA256Utils;
 import com.system.exception.BizException;
 import com.system.user.dao.UserDao;
 import com.system.user.domain.UserDomain;
 import com.system.user.dto.ModifyPasswordDTO;
 import com.system.user.dto.UserDTO;
 import com.system.user.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Value("${application.login.salt:phoenixAd}")
+    private String salt;
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
@@ -41,6 +46,9 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new BizException();
+        }
+        if (StringUtils.isNotBlank(userDTO.getPassword())) {
+            user.setPassword(SHA256Utils.encryptPassword(userDTO.getPassword(), salt));
         }
         user = userDao.save(user);
         userDTO.setId(user.getId());
@@ -82,11 +90,12 @@ public class UserServiceImpl implements UserService {
             throw new BizException("User not exist!");
         }
 
-        if (!dto.getPrePassword().equals(user.getPassword())) {
+        String prePassword = SHA256Utils.encryptPassword(dto.getPrePassword(), salt);
+        if (!prePassword.equals(user.getPassword())) {
             throw new BizException("Original password error!");
         }
 
-        user.setPassword(dto.getNewPassword());
+        user.setPassword(SHA256Utils.encryptPassword(dto.getNewPassword(), salt));
         UserDomain saved = userDao.save(user);
 
         return saved.getId();
