@@ -18,15 +18,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(value = "/user")
-@Api(tags = "user", description = "用户相关接口")
+@Api(tags = "User", description = "用户相关接口")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
 
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/user/add")
     @ApiOperation("添加用户")
     @ResponseBody
     public ResponseVO<UserVO> addUser(@RequestBody UserAddForm form) {
@@ -39,15 +38,15 @@ public class UserController {
             return ResponseVO.successResponse(userVO);
         }
 
-        return ResponseVO.failResponse("addUser fail!");
+        return ResponseVO.failResponse("AddUser fail!");
     }
 
-    @PutMapping(value = "/edit/{id}")
+    @PutMapping(value = "/user/edit/{id}")
     @ApiOperation("编辑用户")
     @ResponseBody
     public ResponseVO<Integer> editUser(@PathVariable(name = "id") int id, @RequestBody UserEditForm form) {
         if (StringUtils.isEmpty(form.getPassword()) || StringUtils.isEmpty(form.getConfirmPassword())) {
-            throw new BizException("none password!");
+            throw new BizException("None password!");
         }
         if (!form.getPassword().equals(form.getConfirmPassword())) {
             throw new BizException("Entered passwords differ!");
@@ -60,7 +59,7 @@ public class UserController {
         return ResponseVO.successResponse(editId);
     }
 
-    @PutMapping(value = "/modifyPassword")
+    @PutMapping(value = "/user/modifyPassword")
     @ApiOperation("修改密码")
     @ResponseBody
     public ResponseVO<Integer> modifyPassword(@RequestBody ModifyPasswordForm form) {

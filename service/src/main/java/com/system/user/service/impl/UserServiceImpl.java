@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         // 用户名唯一性校验
         UserDomain exist = userDao.findByName(userDTO.getName());
         if (null != exist) {
-            throw new BizException("user.name.exist");
+            throw new BizException("User name already exists!");
         }
 
         // 添加用户默认密码
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
         if (!StringUtils.isEmpty(userDTO.getName())) {
             UserDomain user = userDao.findByName(userDTO.getName());
             if (null != user && !user.getId().equals(editUser.getId())) {
-                throw new BizException("user.name.exist");
+                throw new BizException("User name already exists!");
             }
         }
 
