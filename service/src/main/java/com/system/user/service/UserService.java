@@ -6,6 +6,15 @@ import com.system.user.dto.UserDTO;
 public interface UserService {
 
     /**
+     * 用户登录
+     *
+     * @param name     用户名
+     * @param password 密码
+     * @return UserDTO
+     */
+    UserDTO login(String name, String password);
+
+    /**
      * 添加用户
      *
      * @param userDTO 用户信息

@@ -38,10 +38,9 @@ public class UserController {
     @ResponseBody
     public ResponseVO<UserVO> login(@RequestBody LoginForm form, HttpServletRequest request) {
         UserVO userVO = new UserVO();
-        ResponseVO<UserVO> responseVO = ResponseVO.failResponse("login fail!");
-        responseVO.setErrorCode("20001");
-        responseVO.setData(userVO);
-        return responseVO;
+        UserDTO userDTO = userService.login(form.getName(), form.getPassword());
+        BeanUtils.copyProperties(userDTO, userVO);
+        return ResponseVO.successResponse(userVO);
     }
 
 

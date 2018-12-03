@@ -25,16 +25,30 @@ public class UserServiceImpl implements UserService {
 
     @Value("${application.login.salt:phoenixAd}")
     private String salt;
-//
-//    public UserDTO login(String name, String password) {
-//        // 用户名唯一性校验
-//        UserDomain exist = userDao.findByNameAndIsDeleted(name, YesNoEnum.NO.getValue());
-//        if (null != exist) {
-//            throw new BizException("user.name.exist");
-//        }
-//
-//
-//    }
+
+    @Override
+    public UserDTO login(String name, String password) {
+        // 校验用户是否存在
+        UserDomain exist = userDao.findByNameAndIsDeleted(name, YesNoEnum.NO.getValue());
+        if (null == exist) {
+            throw new BizException("user.not.exist");
+        }
+
+        String prePassword = SHA256Utils.encryptPassword(password, salt);
+        if (!prePassword.equals(exist.getPassword())) {
+            throw new BizException("user.original.password.error", "20001");
+        }
+
+        UserDTO userDTO = new UserDTO();
+        try {
+            XBeanUtil.copyProperties(userDTO, exist, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException();
+        }
+
+        return userDTO;
+    }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
@@ -71,7 +85,7 @@ public class UserServiceImpl implements UserService {
         // 校验用户是否存在
         UserDomain editUser = userDao.findByIdAndIsDeleted(userDTO.getId(), YesNoEnum.NO.getValue());
         if (null == editUser) {
-            throw new BizException("User not exist!");
+            throw new BizException("user.not.exist");
         }
 
         // 校验用户名唯一性
@@ -97,12 +111,12 @@ public class UserServiceImpl implements UserService {
     public Integer modifyPassword(ModifyPasswordDTO dto) {
         UserDomain user = userDao.findByIdAndIsDeleted(dto.getId(), YesNoEnum.NO.getValue());
         if (null == user) {
-            throw new BizException("User not exist!");
+            throw new BizException("user.not.exist");
         }
 
         String prePassword = SHA256Utils.encryptPassword(dto.getPrePassword(), salt);
         if (!prePassword.equals(user.getPassword())) {
-            throw new BizException("Original password error!");
+            throw new BizException("user.original.password.error");
         }
 
         user.setPassword(SHA256Utils.encryptPassword(dto.getNewPassword(), salt));

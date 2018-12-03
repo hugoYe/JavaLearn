@@ -26,6 +26,11 @@ public class BizException extends RuntimeException {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
+    public BizException(String message, Object errorCode) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+
     public BizException(String message, Object errorCode, Object[] args) {
         super(message);
         this.errorCode = errorCode;
