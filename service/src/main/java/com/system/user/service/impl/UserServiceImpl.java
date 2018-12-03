@@ -25,14 +25,24 @@ public class UserServiceImpl implements UserService {
 
     @Value("${application.login.salt:phoenixAd}")
     private String salt;
+//
+//    public UserDTO login(String name, String password) {
+//        // 用户名唯一性校验
+//        UserDomain exist = userDao.findByNameAndIsDeleted(name, YesNoEnum.NO.getValue());
+//        if (null != exist) {
+//            throw new BizException("user.name.exist");
+//        }
+//
+//
+//    }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public UserDTO addUser(UserDTO userDTO) {
         // 用户名唯一性校验
-        UserDomain exist = userDao.findByName(userDTO.getName());
+        UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
         if (null != exist) {
-            throw new BizException("User name already exists!");
+            throw new BizException("user.name.exist");
         }
 
         // 添加用户默认密码
@@ -66,9 +76,9 @@ public class UserServiceImpl implements UserService {
 
         // 校验用户名唯一性
         if (!StringUtils.isEmpty(userDTO.getName())) {
-            UserDomain user = userDao.findByName(userDTO.getName());
+            UserDomain user = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
             if (null != user && !user.getId().equals(editUser.getId())) {
-                throw new BizException("User name already exists!");
+                throw new BizException("user.name.exist");
             }
         }
 

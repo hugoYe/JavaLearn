@@ -15,6 +15,9 @@ public class UserVO {
     @ApiModelProperty("用户真实姓名")
     private String realName;
 
+    @ApiModelProperty("是否管理员")
+    private Integer isRoot;
+
     public String getName() {
         return name;
     }
@@ -37,5 +40,13 @@ public class UserVO {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getIsRoot() {
+        return isRoot;
+    }
+
+    public void setIsRoot(Integer isRoot) {
+        this.isRoot = isRoot;
     }
 }

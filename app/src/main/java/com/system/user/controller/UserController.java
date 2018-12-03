@@ -1,9 +1,13 @@
 package com.system.user.controller;
 
+import com.system.common.annotation.NoAuth;
+import com.system.common.annotation.NoLogin;
+import com.system.common.constants.WebConstants;
 import com.system.common.vo.ResponseVO;
 import com.system.exception.BizException;
 import com.system.user.dto.ModifyPasswordDTO;
 import com.system.user.dto.UserDTO;
+import com.system.user.form.LoginForm;
 import com.system.user.form.ModifyPasswordForm;
 import com.system.user.form.UserAddForm;
 import com.system.user.form.UserEditForm;
@@ -17,15 +21,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @Api(tags = "User", description = "用户相关接口")
+@RequestMapping(value = WebConstants.API_PREFIX + "/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @NoLogin
+    @NoAuth
+    @ApiOperation("用户登录")
+    @PostMapping(value = "/login")
+    @ResponseBody
+    public ResponseVO<UserVO> login(@RequestBody LoginForm form, HttpServletRequest request) {
+        UserVO userVO = new UserVO();
+        ResponseVO<UserVO> responseVO = ResponseVO.failResponse("login fail!");
+        responseVO.setErrorCode("20001");
+        responseVO.setData(userVO);
+        return responseVO;
+    }
 
-    @PostMapping(value = "/user/add")
+
+    @PostMapping(value = "/add")
     @ApiOperation("添加用户")
     @ResponseBody
     public ResponseVO<UserVO> addUser(@RequestBody UserAddForm form) {
@@ -41,7 +61,7 @@ public class UserController {
         return ResponseVO.failResponse("AddUser fail!");
     }
 
-    @PutMapping(value = "/user/edit/{id}")
+    @PutMapping(value = "/edit/{id}")
     @ApiOperation("编辑用户")
     @ResponseBody
     public ResponseVO<Integer> editUser(@PathVariable(name = "id") int id, @RequestBody UserEditForm form) {
@@ -59,7 +79,7 @@ public class UserController {
         return ResponseVO.successResponse(editId);
     }
 
-    @PutMapping(value = "/user/modifyPassword")
+    @PutMapping(value = "/modifyPassword")
     @ApiOperation("修改密码")
     @ResponseBody
     public ResponseVO<Integer> modifyPassword(@RequestBody ModifyPasswordForm form) {

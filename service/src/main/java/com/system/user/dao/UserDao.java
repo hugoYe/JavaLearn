@@ -14,7 +14,7 @@ public interface UserDao extends JpaRepository<UserDomain, Integer> {
     /**
      * JPA框架内部实现了业务逻辑的处理，因此这个方法不需要写@Query操作就可以直接查询数据库，具体内部截取规则可以参照类头部给出的文章
      */
-    UserDomain findByName(String name);
+    UserDomain findByNameAndIsDeleted(String name, Integer isDeleted);
 
     UserDomain findByIdAndIsDeleted(Integer id, Integer isDeleted);
 }
