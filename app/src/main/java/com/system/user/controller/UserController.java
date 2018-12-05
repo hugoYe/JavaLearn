@@ -5,6 +5,7 @@ import com.system.common.annotation.NoLogin;
 import com.system.common.constants.WebConstants;
 import com.system.common.vo.ResponseVO;
 import com.system.exception.BizException;
+import com.system.permission.Permission;
 import com.system.user.dto.ModifyPasswordDTO;
 import com.system.user.dto.UserDTO;
 import com.system.user.form.LoginForm;
@@ -36,10 +37,24 @@ public class UserController {
     @ApiOperation("用户登录")
     @PostMapping(value = "/login")
     @ResponseBody
-    public ResponseVO<UserVO> login(@RequestBody LoginForm form, HttpServletRequest request) {
-        UserVO userVO = new UserVO();
+    public ResponseVO<Integer> login(@RequestBody LoginForm form, HttpServletRequest request) {
         UserDTO userDTO = userService.login(form.getName(), form.getPassword());
-        BeanUtils.copyProperties(userDTO, userVO);
+        return ResponseVO.successResponse(userDTO.getId());
+    }
+
+
+    @ApiOperation("获取用户信息")
+    @GetMapping(value = "/getUserInfo")
+    @ResponseBody
+    public ResponseVO<UserVO> getUserById(@RequestParam("id") Integer id) {
+        UserVO userVO = new UserVO();
+        userVO.setId(0);
+        userVO.setUsername("yzn");
+        userVO.setRealName("yezhennan");
+        userVO.setAvatar("");
+        Permission permission = new Permission();
+        permission.setRole("admin");
+        userVO.setPermissions(permission);
         return ResponseVO.successResponse(userVO);
     }
 
@@ -116,9 +131,4 @@ public class UserController {
 //        else return "null";
 //    }
 
-//    @RequestMapping(value = "login", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String login(@RequestBody User u) {
-//        return "success";
-//    }
 }

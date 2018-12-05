@@ -1,37 +1,49 @@
 package com.system.user.vo;
 
+import com.system.permission.Permission;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "用户对象")
 public class UserVO {
 
-    @ApiModelProperty("用户名")
-    private String name;
+    @ApiModelProperty("用户id")
+    private Integer id;
 
-    @ApiModelProperty("用户密码")
-    private String password;
+    @ApiModelProperty("头像")
+    private String avatar;
+
+    @ApiModelProperty("用户名")
+    private String username;
 
     @ApiModelProperty("用户真实姓名")
     private String realName;
 
-    @ApiModelProperty("是否管理员")
-    private Integer isRoot;
+    @ApiModelProperty("用户权限")
+    private Permission permissions;
 
-    public String getName() {
-        return name;
+    public Integer getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getRealName() {
@@ -42,11 +54,11 @@ public class UserVO {
         this.realName = realName;
     }
 
-    public Integer getIsRoot() {
-        return isRoot;
+    public Permission getPermissions() {
+        return permissions;
     }
 
-    public void setIsRoot(Integer isRoot) {
-        this.isRoot = isRoot;
+    public void setPermissions(Permission permissions) {
+        this.permissions = permissions;
     }
 }
