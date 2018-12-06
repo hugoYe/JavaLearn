@@ -22,6 +22,19 @@ public class UserVO {
     @ApiModelProperty("用户权限")
     private Permission permissions;
 
+    @ApiModelProperty("创建日期")
+    private String createTime;
+
+    @ApiModelProperty("渠道id")
+    private String channelId;
+
+    @ApiModelProperty("渠道名称")
+    private String channelName;
+
+    @ApiModelProperty("所属公司")
+    private String company;
+
+
     public Integer getId() {
         return id;
     }
@@ -60,5 +73,37 @@ public class UserVO {
 
     public void setPermissions(Permission permissions) {
         this.permissions = permissions;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

@@ -53,7 +53,7 @@ public class RouterController {
         routeVO.setZhName("用户详情");
         routeVO.setRoute("/user/:id");
         routeVO.setMenuParentId("-1");
-        routeVO.setBreadcrumbParentId("2");
+        routeVO.setBreadcrumbParentId("3");
         list.add(routeVO);
 
         routeVO = new RouteVO();

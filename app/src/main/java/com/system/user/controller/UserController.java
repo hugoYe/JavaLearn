@@ -3,6 +3,7 @@ package com.system.user.controller;
 import com.system.common.annotation.NoAuth;
 import com.system.common.annotation.NoLogin;
 import com.system.common.constants.WebConstants;
+import com.system.common.utils.DateUtils;
 import com.system.common.vo.ResponseVO;
 import com.system.exception.BizException;
 import com.system.permission.Permission;
@@ -14,6 +15,7 @@ import com.system.user.form.UserAddForm;
 import com.system.user.form.UserEditForm;
 import com.system.user.service.UserService;
 import com.system.user.vo.UserVO;
+import com.system.user.vo.UsersVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +25,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Controller
 @Api(tags = "User", description = "用户相关接口")
@@ -43,10 +48,10 @@ public class UserController {
     }
 
 
-    @ApiOperation("获取用户信息")
+    @ApiOperation("获取当前登入用户信息")
     @GetMapping(value = "/getUserInfo")
     @ResponseBody
-    public ResponseVO<UserVO> getUserById(Integer id) {
+    public ResponseVO<UserVO> getUserInfo(Integer id) {
         UserVO userVO = new UserVO();
         userVO.setId(0);
         userVO.setUsername("yzn");
@@ -55,6 +60,51 @@ public class UserController {
         Permission permission = new Permission();
         permission.setRole("admin");
         userVO.setPermissions(permission);
+        return ResponseVO.successResponse(userVO);
+    }
+
+    @ApiOperation("获取非管理员用户信息")
+    @GetMapping(value = "/getUsers")
+    @ResponseBody
+    public ResponseVO<UsersVO> getUsers(Integer page, Integer pageSize) {
+        UsersVO usersVO = new UsersVO();
+        Random random = new Random();
+        List<UserVO> list = new ArrayList<>();
+        for (int i = 0; i < 16; i++) {
+            UserVO user = new UserVO();
+            user.setAvatar("");
+            user.setUsername("phoenix" + random.nextInt(100));
+            user.setId(random.nextInt(100));
+            user.setRealName("phoenix" + random.nextInt(100));
+            user.setChannelId("pad" + random.nextInt(100));
+            user.setChannelName("pad" + random.nextInt(100));
+            user.setCreateTime(DateUtils.getFormatDate(DateUtils.randomDate("2017-1-1", "2018-12-30")));
+            user.setCompany("上海" + random.nextInt(100));
+            list.add(user);
+        }
+
+        usersVO.setTotal(list.size());
+        usersVO.setList(list);
+
+        return ResponseVO.successResponse(usersVO);
+
+    }
+
+    @ApiOperation("获取用户")
+    @GetMapping(value = "getUser/{id}")
+    @ResponseBody
+    public ResponseVO<UserVO> getUserById(@PathVariable(name = "id") int id) {
+        UserVO userVO = new UserVO();
+        Random random = new Random();
+        userVO.setAvatar("");
+        userVO.setUsername("phoenix" + random.nextInt(100));
+        userVO.setId(random.nextInt(100));
+        userVO.setRealName("phoenix" + random.nextInt(100));
+        userVO.setChannelId("pad" + random.nextInt(100));
+        userVO.setChannelName("pad" + random.nextInt(100));
+        userVO.setCreateTime(DateUtils.getFormatDate(DateUtils.randomDate("2017-1-1", "2018-12-30")));
+        userVO.setCompany("上海" + random.nextInt(100));
+
         return ResponseVO.successResponse(userVO);
     }
 
@@ -107,28 +157,5 @@ public class UserController {
 
         return ResponseVO.successResponse(modifyId);
     }
-
-//    @ApiOperation("根据ID获取用户信息")
-//    @ApiImplicitParams({@ApiImplicitParam(paramType = "query", name = "id",
-//            dataType = "int", required = true, value = "用户的id", defaultValue = "1")})
-//    @ApiResponses({@ApiResponse(code = 400, message = "请求参数没填好"), @ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对")})
-//    @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
-//    @ResponseBody
-//    public User getUserInfo(@RequestParam("id") int id) {
-//        if (id == 1) {
-//            return userService.findUserByName("yezhennan");
-//        }
-//
-//        return new User();
-//    }
-
-//    @RequestMapping(value = "/show", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String show(@RequestParam(value = "name") String name) {
-//        User user = userService.findUserByName(name);
-//        if (null != user)
-//            return user.getId() + "/" + user.getName() + "/" + user.getPassword();
-//        else return "null";
-//    }
 
 }
