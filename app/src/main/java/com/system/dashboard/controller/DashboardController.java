@@ -33,7 +33,7 @@ public class DashboardController {
         number.setNumber(2781);
         numbers.add(number);
 
-        number = new TotalNumber();  
+        number = new TotalNumber();
         number.setIcon("area-chart");
         number.setColor("#d6fbb5");
         number.setTitle("Yesterday PV");

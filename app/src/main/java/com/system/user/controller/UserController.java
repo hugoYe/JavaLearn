@@ -46,7 +46,7 @@ public class UserController {
     @ApiOperation("获取用户信息")
     @GetMapping(value = "/getUserInfo")
     @ResponseBody
-    public ResponseVO<UserVO> getUserById(@RequestParam("id") Integer id) {
+    public ResponseVO<UserVO> getUserById(Integer id) {
         UserVO userVO = new UserVO();
         userVO.setId(0);
         userVO.setUsername("yzn");
