@@ -233,8 +233,8 @@ public interface UserRepositoty extends JpaRepository<User, Long> {
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@EnableJpaRepositories(basePackages = "com.system.user.dao")
-@EntityScan(basePackages = "com.system.user.entity")
+@EnableJpaRepositories(basePackages = ccom.system.business.useress.user)
+@EntityScan(basePackages com.system.business.usersiness.user)
 public class JpaConfiguration {
     @Bean
     PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {

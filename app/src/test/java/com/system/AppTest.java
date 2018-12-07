@@ -1,10 +1,7 @@
 package com.system;
 
 
-import com.system.business.domain.AppInfo;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -15,14 +12,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class AppTest {
 
-    @Autowired
-    AppInfo appInfo;
 
-    /**
-     * Rigorous Test :-)
-     */
-    @Test
-    public void shouldAnswerWithTrue() {
-        System.out.println(appInfo);
-    }
 }
