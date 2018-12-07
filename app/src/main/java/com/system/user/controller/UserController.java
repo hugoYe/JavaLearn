@@ -56,7 +56,6 @@ public class UserController {
         userVO.setId(0);
         userVO.setUsername("yzn");
         userVO.setRealName("yezhennan");
-        userVO.setAvatar("");
         Permission permission = new Permission();
         permission.setRole("admin");
         userVO.setPermissions(permission);
@@ -72,7 +71,6 @@ public class UserController {
         List<UserVO> list = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             UserVO user = new UserVO();
-            user.setAvatar("");
             user.setUsername("phoenix" + random.nextInt(100));
             user.setId(random.nextInt(100));
             user.setRealName("phoenix" + random.nextInt(100));
@@ -96,7 +94,6 @@ public class UserController {
     public ResponseVO<UserVO> getUserById(@PathVariable(name = "id") int id) {
         UserVO userVO = new UserVO();
         Random random = new Random();
-        userVO.setAvatar("");
         userVO.setUsername("phoenix" + random.nextInt(100));
         userVO.setId(random.nextInt(100));
         userVO.setRealName("phoenix" + random.nextInt(100));

@@ -10,9 +10,6 @@ public class UserVO {
     @ApiModelProperty("用户id")
     private Integer id;
 
-    @ApiModelProperty("头像")
-    private String avatar;
-
     @ApiModelProperty("用户名")
     private String username;
 
@@ -41,14 +38,6 @@ public class UserVO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getUsername() {

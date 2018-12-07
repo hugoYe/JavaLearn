@@ -59,8 +59,8 @@ CREATE TABLE `t_user_channel` (
 DROP TABLE IF EXISTS `t_operation_data`;
 CREATE TABLE `t_operation_data` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
-  `pv` int(11) unsigned NOT NULL COMMENT '新增',
-  `uv` int(11) unsigned NOT NULL COMMENT '日活',
+  `pv` int(11) unsigned NOT NULL COMMENT '页面访问量',
+  `uv` int(11) unsigned NOT NULL COMMENT '独立访客访问数',
   `income` double(16,2) NOT NULL COMMENT '收入',
   `date` date NOT NULL COMMENT '日期',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
