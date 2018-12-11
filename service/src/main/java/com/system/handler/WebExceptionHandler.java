@@ -4,6 +4,7 @@ import com.system.common.vo.ResponseVO;
 import com.system.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,10 +25,15 @@ public class WebExceptionHandler {
         ResponseVO<Object> vo = new ResponseVO<>();
         String message = e.getMessage();
         if (null != message) {
-            message = messageSource.getMessage(message, e.getArgs(), LocaleContextHolder.getLocale());
+            try {
+                message = messageSource.getMessage(message, e.getArgs(), LocaleContextHolder.getLocale());
+
+            } catch (NoSuchMessageException error) {
+                error.printStackTrace();
+            }
             vo.setMsg(message);
         }
-        vo.setErrorCode(e.getErrorCode() == null ? null : String.valueOf(e.getErrorCode()));
+        vo.setErrorCode(e.getErrorCode() == null ? "500" : String.valueOf(e.getErrorCode()));
 
         return vo;
     }

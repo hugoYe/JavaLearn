@@ -40,6 +40,15 @@ public class RouterController {
 
         routeVO = new RouteVO();
         routeVO.setId("3");
+        routeVO.setName("Channels");
+        routeVO.setIcon("appstore");
+        routeVO.setZhName("渠道管理");
+        routeVO.setRoute("/channels");
+        routeVO.setBreadcrumbParentId("1");
+        list.add(routeVO);
+
+        routeVO = new RouteVO();
+        routeVO.setId("4");
         routeVO.setName("Users");
         routeVO.setIcon("team");
         routeVO.setZhName("用户管理");
@@ -48,16 +57,16 @@ public class RouterController {
         list.add(routeVO);
 
         routeVO = new RouteVO();
-        routeVO.setId("31");
+        routeVO.setId("41");
         routeVO.setName("User Detail");
         routeVO.setZhName("用户详情");
         routeVO.setRoute("/user/:id");
         routeVO.setMenuParentId("-1");
-        routeVO.setBreadcrumbParentId("3");
+        routeVO.setBreadcrumbParentId("4");
         list.add(routeVO);
 
         routeVO = new RouteVO();
-        routeVO.setId("4");
+        routeVO.setId("5");
         routeVO.setName("User Center");
         routeVO.setIcon("user");
         routeVO.setZhName("个人中心");

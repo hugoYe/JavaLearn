@@ -1,15 +1,15 @@
 package com.system.business.user.service.impl;
 
-import com.system.common.constants.WebConstants;
-import com.system.common.constants.YesNoEnum;
-import com.system.common.support.XBeanUtil;
-import com.system.common.utils.SHA256Utils;
-import com.system.exception.BizException;
 import com.system.business.user.dao.UserDao;
 import com.system.business.user.domain.UserDomain;
 import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
 import com.system.business.user.service.UserService;
+import com.system.common.constants.WebConstants;
+import com.system.common.constants.YesNoEnum;
+import com.system.common.support.XBeanUtil;
+import com.system.common.utils.SHA256Utils;
+import com.system.exception.BizException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

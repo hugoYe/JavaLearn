@@ -31,6 +31,7 @@ public class BizException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
+
     public BizException(String message, Object errorCode, Object[] args) {
         super(message);
         this.errorCode = errorCode;

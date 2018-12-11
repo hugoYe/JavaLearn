@@ -1,26 +1,62 @@
 package com.system.common.interceptor;
 
+import com.system.business.user.dao.UserDao;
+import com.system.business.user.domain.UserDomain;
+import com.system.common.annotation.NoLogin;
+import com.system.common.constants.YesNoEnum;
+import com.system.common.utils.Jwtutils;
+import com.system.exception.BizException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    UserDao userDao;
+
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        /*
-         * 1、登录验证：先判断用户是否登录，
-         *     （1）如果未登录，check本次请求请求是否有NoLogin注解：如果有，则放行通过，否则抛出异常；
-         *     （2）如果已经登录，将visitor设置进context，随后再进行权限验证
-         * 2、权限验证：不管用户是否登录，都需要做权限验证，步骤如下：
-         *     （1）check本次请求请求的方法是否有NoAuth注解，如果有，则放行；如果没有，则进行后续操作（2）
-         *     （2）判断当前用户是否是超级管理员，如果是，则放行通过；否则进行权限验证，有权限则放行，没有则拦截
-         */
 
-//        throw new BizException("common.system.user.not.login");
+        HandlerMethod handlerMethod = (HandlerMethod) o;
+        Method method = handlerMethod.getMethod();
+        if (method.isAnnotationPresent(NoLogin.class)) {
+            return true;
+        }
+
+        // 从 http 请求头中取出 token
+        String token = httpServletRequest.getHeader("token");
+        if (StringUtils.isEmpty(token)) {
+            httpServletResponse.setStatus(401);
+            throw new BizException("user.not.login", "401");
+        }
+
+        // 获取 token 中的 user id
+        Integer userId;
+
+        try {
+            Claims claims = Jwtutils.parseJWT(token);
+            userId = claims.get("userId", Integer.class);
+        } catch (ExpiredJwtException e) {
+            throw new BizException("user.token.expires", "401");
+        }
+
+        UserDomain user = userDao.findByIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
+        if (null == user) {
+            throw new BizException("user.not.exist");
+        }
+
+
         return true;
     }
 

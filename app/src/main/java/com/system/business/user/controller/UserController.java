@@ -1,11 +1,5 @@
 package com.system.business.user.controller;
 
-import com.system.common.annotation.NoAuth;
-import com.system.common.annotation.NoLogin;
-import com.system.common.constants.WebConstants;
-import com.system.common.utils.DateUtils;
-import com.system.common.vo.ResponseVO;
-import com.system.exception.BizException;
 import com.system.business.permission.Permission;
 import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
@@ -14,8 +8,16 @@ import com.system.business.user.form.ModifyPasswordForm;
 import com.system.business.user.form.UserAddForm;
 import com.system.business.user.form.UserEditForm;
 import com.system.business.user.service.UserService;
+import com.system.business.user.vo.LoginVO;
 import com.system.business.user.vo.UserVO;
 import com.system.business.user.vo.UsersVO;
+import com.system.common.annotation.NoAuth;
+import com.system.common.annotation.NoLogin;
+import com.system.common.constants.WebConstants;
+import com.system.common.utils.DateUtils;
+import com.system.common.utils.Jwtutils;
+import com.system.common.vo.ResponseVO;
+import com.system.exception.BizException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -42,9 +44,19 @@ public class UserController {
     @ApiOperation("用户登录")
     @PostMapping(value = "/login")
     @ResponseBody
-    public ResponseVO<Integer> login(@RequestBody LoginForm form, HttpServletRequest request) {
+    public ResponseVO<LoginVO> login(@RequestBody LoginForm form, HttpServletRequest request) {
         UserDTO userDTO = userService.login(form.getName(), form.getPassword());
-        return ResponseVO.successResponse(userDTO.getId());
+        LoginVO loginVO = new LoginVO();
+        String token = Jwtutils.createJWT(1000*30, userDTO.getId());
+        loginVO.setToken(token);
+        return ResponseVO.successResponse(loginVO);
+    }
+
+    @ApiOperation("用户登出")
+    @GetMapping(value = "/logout")
+    @ResponseBody
+    public ResponseVO<Integer> logout() {
+        return ResponseVO.successResponse();
     }
 
 
