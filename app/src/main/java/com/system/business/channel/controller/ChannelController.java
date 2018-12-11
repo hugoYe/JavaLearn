@@ -4,6 +4,7 @@ import com.system.business.channel.dto.ChannelDto;
 import com.system.business.channel.form.ChannelForm;
 import com.system.business.channel.service.ChannelService;
 import com.system.business.channel.vo.ChannelVO;
+import com.system.common.annotation.NoLogin;
 import com.system.common.constants.WebConstants;
 import com.system.common.vo.ResponseVO;
 import io.swagger.annotations.Api;
@@ -38,6 +39,15 @@ public class ChannelController {
     @DeleteMapping
     public ResponseVO<Boolean> deleteChannel(@RequestParam String channelId) {
         Boolean r = channelService.deleteChannel(channelId);
+
+        return ResponseVO.successResponse(r);
+    }
+
+
+    @ApiOperation("批量删除渠道")
+    @DeleteMapping(value = "/deleteChannelBatch")
+    public ResponseVO<Boolean> deleteChannelBatch(@RequestParam String[] channelIds) {
+        Boolean r = channelService.deleteChannelBatch(channelIds);
 
         return ResponseVO.successResponse(r);
     }

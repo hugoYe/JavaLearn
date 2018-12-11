@@ -53,6 +53,21 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
+    public Boolean deleteChannelBatch(String[] channelIds) {
+        for (String id : channelIds) {
+            ChannelDomain exist = channelDao.findByChannelIdAndIsDeleted(id, YesNoEnum.NO.getValue());
+            if (null == exist) {
+                throw new BizException("channel.not.exist");
+            }
+
+            exist.setIsDeleted(YesNoEnum.YES.getValue());
+            channelDao.save(exist);
+        }
+
+        return true;
+    }
+
+    @Override
     public Boolean updateChannel(ChannelDto channelDto) {
         ChannelDomain exist = channelDao.findByChannelIdAndIsDeleted(channelDto.getChannelId(), YesNoEnum.NO.getValue());
         if (null == exist) {
