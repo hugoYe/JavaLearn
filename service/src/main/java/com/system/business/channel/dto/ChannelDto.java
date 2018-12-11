@@ -1,41 +1,33 @@
-package com.system.business.channel.domain;
+package com.system.business.channel.dto;
 
-import com.system.common.domain.BaseDomain;
+import java.util.Date;
 
-import javax.persistence.*;
-
-/**
- * 渠道表
- */
-@Entity
-@Table(name = "t_channel")
-public class ChannelDomain extends BaseDomain {
+public class ChannelDto {
 
     /**
      * 主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Integer id;
 
     /**
      * 渠道id
      */
-    @Column(name = "channel_id")
     private String channelId;
 
     /**
      * 渠道名称
      */
-    @Column(name = "channel_name")
     private String channelName;
 
     /**
-     * 被删除的数据: 1.已删除，0.未删除
+     * 创建时间
      */
-    @Column(name = "is_deleted")
-    private Integer isDeleted = 0;
+    private Date createTime;
+
+    /**
+     * 修改时间
+     */
+    private Date updateTime;
 
     public Integer getId() {
         return id;
@@ -61,11 +53,19 @@ public class ChannelDomain extends BaseDomain {
         this.channelName = channelName;
     }
 
-    public Integer getIsDeleted() {
-        return isDeleted;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }
