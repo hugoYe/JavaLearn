@@ -6,9 +6,6 @@ import com.system.common.annotation.NoLogin;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.utils.Jwtutils;
 import com.system.exception.BizException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -34,28 +31,11 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        // 从 http 请求头中取出 token
-        String token = httpServletRequest.getHeader("token");
-        if (StringUtils.isEmpty(token)) {
-            httpServletResponse.setStatus(401);
-            throw new BizException("user.not.login", "401");
-        }
-
-        // 获取 token 中的 user id
-        Integer userId;
-
-        try {
-            Claims claims = Jwtutils.parseJWT(token);
-            userId = claims.get("userId", Integer.class);
-        } catch (ExpiredJwtException e) {
-            throw new BizException("user.token.expires", "401");
-        }
-
+        Integer userId = Jwtutils.verifyToken(httpServletRequest, httpServletResponse);
         UserDomain user = userDao.findByIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
         if (null == user) {
             throw new BizException("user.not.exist");
         }
-
 
         return true;
     }

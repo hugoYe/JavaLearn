@@ -52,6 +52,26 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
+    public UserDTO getUserById(Integer userId) {
+        // 校验用户是否存在
+        UserDomain exist = userDao.findByIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
+        if (null == exist) {
+            throw new BizException("user.not.exist");
+        }
+
+        UserDTO user = new UserDTO();
+        try {
+            XBeanUtil.copyProperties(user, exist, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException();
+        }
+
+        return user;
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Override
     public UserDTO addUser(UserDTO userDTO) {
         // 用户名唯一性校验
         UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());

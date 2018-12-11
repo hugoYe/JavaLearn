@@ -32,6 +32,27 @@ public class UserDTO {
      */
     private Integer isDeleted;
 
+    /**
+     * 创建日期
+     */
+    private String createTime;
+
+    /**
+     * 渠道id
+     */
+    private String channelId;
+
+    /**
+     * 渠道名称
+     */
+    private String channelName;
+
+    /**
+     * 所属公司
+     */
+    private String company;
+
+
     public Integer getId() {
         return id;
     }
@@ -80,6 +101,38 @@ public class UserDTO {
         this.isDeleted = isDeleted;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -89,6 +142,10 @@ public class UserDTO {
                 ", realName='" + realName + '\'' +
                 ", isRoot=" + isRoot +
                 ", isDeleted=" + isDeleted +
+                ", createTime='" + createTime + '\'' +
+                ", channelId='" + channelId + '\'' +
+                ", channelName='" + channelName + '\'' +
+                ", company='" + company + '\'' +
                 '}';
     }
 }

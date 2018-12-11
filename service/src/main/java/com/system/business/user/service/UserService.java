@@ -15,6 +15,14 @@ public interface UserService {
     UserDTO login(String name, String password);
 
     /**
+     * 根据用户id获取用户
+     *
+     * @param userId 用户id
+     * @return UserDTO
+     */
+    UserDTO getUserById(Integer userId);
+
+    /**
      * 添加用户
      *
      * @param userDTO 用户信息

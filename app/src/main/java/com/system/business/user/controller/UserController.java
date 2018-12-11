@@ -1,6 +1,8 @@
 package com.system.business.user.controller;
 
 import com.system.business.permission.Permission;
+import com.system.business.permission.Role;
+import com.system.business.router.RouteConstant;
 import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
 import com.system.business.user.form.LoginForm;
@@ -14,6 +16,7 @@ import com.system.business.user.vo.UsersVO;
 import com.system.common.annotation.NoAuth;
 import com.system.common.annotation.NoLogin;
 import com.system.common.constants.WebConstants;
+import com.system.common.constants.YesNoEnum;
 import com.system.common.utils.DateUtils;
 import com.system.common.utils.Jwtutils;
 import com.system.common.vo.ResponseVO;
@@ -27,6 +30,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -47,7 +51,7 @@ public class UserController {
     public ResponseVO<LoginVO> login(@RequestBody LoginForm form, HttpServletRequest request) {
         UserDTO userDTO = userService.login(form.getName(), form.getPassword());
         LoginVO loginVO = new LoginVO();
-        String token = Jwtutils.createJWT(1000*30, userDTO.getId());
+        String token = Jwtutils.createJWT(Jwtutils.TOW_DAY, userDTO.getId());
         loginVO.setToken(token);
         return ResponseVO.successResponse(loginVO);
     }
@@ -63,14 +67,26 @@ public class UserController {
     @ApiOperation("获取当前登入用户信息")
     @GetMapping(value = "/getUserInfo")
     @ResponseBody
-    public ResponseVO<UserVO> getUserInfo(Integer id) {
+    public ResponseVO<UserVO> getUserInfo(HttpServletRequest request, HttpServletResponse response) {
+
+        Integer userId = Jwtutils.verifyToken(request, response);
+        UserDTO user = userService.getUserById(userId);
+
         UserVO userVO = new UserVO();
-        userVO.setId(0);
-        userVO.setUsername("yzn");
-        userVO.setRealName("yezhennan");
+        userVO.setId(user.getId());
+        userVO.setUsername(user.getName());
+        userVO.setRealName(user.getRealName());
         Permission permission = new Permission();
-        permission.setRole("admin");
+
+        if (user.getIsRoot() == YesNoEnum.YES.getValue()) {
+            permission.setRole(Role.ROLE_ADMIN);
+            permission.setVisit(RouteConstant.MANAGER_ROUTE_IDS);
+        } else {
+            permission.setRole(Role.ROLE_VISTOR);
+            permission.setVisit(RouteConstant.VISTOR_ROUTE_IDS);
+        }
         userVO.setPermissions(permission);
+
         return ResponseVO.successResponse(userVO);
     }
 

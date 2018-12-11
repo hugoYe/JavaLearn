@@ -1,20 +1,23 @@
 package com.system.common.utils;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.system.exception.BizException;
+import io.jsonwebtoken.*;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class Jwtutils {
+    public static final long TOW_DAY = 1000 * 60 * 60 * 24 * 2;
+
     /**
      * 用户登录成功后生成Jwt
      * 使用Hs256算法  私匙使用用户密码
@@ -37,7 +40,6 @@ public class Jwtutils {
 
         //生成签名的时候使用的秘钥secret,这个方法本地封装了的，一般可以从本地配置文件中读取，切记这个秘钥不能外露哦。
         // 它就是你服务端的私钥，在任何场景都不应该流露出去。一旦客户端得知这个secret, 那就意味着客户端是可以自我签发jwt了。
-//        String key = user.getPassword();
         SecretKey key = generalKey();
 
         //生成签发人
@@ -76,7 +78,6 @@ public class Jwtutils {
      */
     public static Claims parseJWT(String token) {
         //签名秘钥，和生成的签名的秘钥一模一样
-//        String key = user.getPassword();
         SecretKey key = generalKey();
 
         //得到DefaultJwtParser
@@ -93,20 +94,31 @@ public class Jwtutils {
 
     /**
      * 校验token
-     * 在这里可以使用官方的校验，我这里校验的是token中携带的密码于数据库一致的话就校验通过
      *
-     * @param token
-     * @return
+     * @param request 请求
+     * @return Integer 用户id
      */
-    public static Boolean isVerify(String token) {
+    public static Integer verifyToken(HttpServletRequest request, HttpServletResponse response) {
 
-        Claims claims = parseJWT(token);
+        // 从 http 请求头中取出 token
+        String token = request.getHeader("token");
+        if (StringUtils.isEmpty(token)) {
+            response.setStatus(401);
+            throw new BizException("user.not.login", "401");
+        }
 
-//        if (claims.get("password").equals(user.getPassword())) {
-//            return true;
-//        }
+        // 获取 token 中的 user id
+        Integer userId;
+        try {
+            Claims claims = Jwtutils.parseJWT(token);
+            userId = claims.get("userId", Integer.class);
+        } catch (ExpiredJwtException e) {
+            response.setStatus(401);
+            throw new BizException("user.token.expires", "401");
+        }
 
-        return false;
+
+        return userId;
     }
 
     /**
