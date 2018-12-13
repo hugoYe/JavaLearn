@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,13 +48,14 @@ public class ChannelServiceImpl implements ChannelService {
         }
 
         exist.setIsDeleted(YesNoEnum.YES.getValue());
+        exist.setUpdateTime(new Date());
         channelDao.save(exist);
 
         return true;
     }
 
     @Override
-    public Boolean deleteChannelBatch(String[] channelIds) {
+    public Boolean deleteChannelBatch(List<String>  channelIds) {
         for (String id : channelIds) {
             ChannelDomain exist = channelDao.findByChannelIdAndIsDeleted(id, YesNoEnum.NO.getValue());
             if (null == exist) {
@@ -61,6 +63,7 @@ public class ChannelServiceImpl implements ChannelService {
             }
 
             exist.setIsDeleted(YesNoEnum.YES.getValue());
+            exist.setUpdateTime(new Date());
             channelDao.save(exist);
         }
 
@@ -80,6 +83,8 @@ public class ChannelServiceImpl implements ChannelService {
             e.printStackTrace();
             throw new BizException();
         }
+
+        exist.setUpdateTime(new Date());
 
         channelDao.save(exist);
 
