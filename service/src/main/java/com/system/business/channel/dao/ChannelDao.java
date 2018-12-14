@@ -2,8 +2,11 @@ package com.system.business.channel.dao;
 
 import com.system.business.channel.domain.ChannelDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,4 +19,9 @@ public interface ChannelDao extends JpaRepository<ChannelDomain, Integer> {
 
     @Query("from ChannelDomain t where t.isDeleted = 0")
     List<ChannelDomain> findAllChannels();
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("update ChannelDomain c set c.isDeleted=:isDeleted where c.channelId in:channelIds")
+    Integer deleteChannelBatchByChannelId(@Param("channelIds") List<String> channelIds, @Param("isDeleted") Integer isDeleted);
 }

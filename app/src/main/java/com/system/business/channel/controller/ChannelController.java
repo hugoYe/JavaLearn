@@ -47,8 +47,8 @@ public class ChannelController {
 
     @ApiOperation("批量删除渠道")
     @DeleteMapping(value = "/deleteChannelBatch")
-    public ResponseVO<Boolean> deleteChannelBatch(@RequestBody String[] channelIds) {
-        Boolean r = channelService.deleteChannelBatch(channelIds);
+    public ResponseVO<Integer> deleteChannelBatch(@RequestBody List<String> channelIds) {
+        Integer r = channelService.deleteChannelBatch(channelIds);
 
         return ResponseVO.successResponse(r);
     }

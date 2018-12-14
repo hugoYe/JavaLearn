@@ -18,8 +18,10 @@ public interface ChannelService {
 
     /**
      * 批量删除渠道，只做逻辑删除，并非真的从数据库删除
+     *
+     * @return Integer 返回成功处理的数据个数
      */
-    Boolean deleteChannelBatch(String[]  channelIds);
+    Integer deleteChannelBatch(List<String>  channelIds);
 
     /**
      * 更新渠道
