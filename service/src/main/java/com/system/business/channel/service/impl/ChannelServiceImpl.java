@@ -55,7 +55,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Boolean deleteChannelBatch(List<String>  channelIds) {
+    public Boolean deleteChannelBatch(String[]  channelIds) {
         for (String id : channelIds) {
             ChannelDomain exist = channelDao.findByChannelIdAndIsDeleted(id, YesNoEnum.NO.getValue());
             if (null == exist) {
