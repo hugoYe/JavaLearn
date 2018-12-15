@@ -1,6 +1,8 @@
 package com.system.business.channel.service;
 
 import com.system.business.channel.dto.ChannelDto;
+import com.system.common.dto.PageDTO;
+import com.system.common.dto.PageQueryDTO;
 
 import java.util.List;
 
@@ -36,6 +38,6 @@ public interface ChannelService {
     /**
      * 获取所有渠道
      */
-    List<ChannelDto> getChannels();
+    PageDTO<ChannelDto> getChannels(PageQueryDTO pageQueryDTO);
 
 }

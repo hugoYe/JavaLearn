@@ -2,6 +2,7 @@ package com.system.business.channel.dao;
 
 import com.system.business.channel.domain.ChannelDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface ChannelDao extends JpaRepository<ChannelDomain, Integer> {
+public interface ChannelDao extends JpaRepository<ChannelDomain, Integer>, JpaSpecificationExecutor<ChannelDomain> {
 
     ChannelDomain findByChannelId(String channelId);
 

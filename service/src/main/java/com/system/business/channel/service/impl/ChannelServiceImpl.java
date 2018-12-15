@@ -5,11 +5,18 @@ import com.system.business.channel.domain.ChannelDomain;
 import com.system.business.channel.dto.ChannelDto;
 import com.system.business.channel.service.ChannelService;
 import com.system.common.constants.YesNoEnum;
+import com.system.common.dto.PageDTO;
+import com.system.common.dto.PageQueryDTO;
 import com.system.common.support.XBeanUtil;
 import com.system.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -101,21 +108,39 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public List<ChannelDto> getChannels() {
-        List<ChannelDomain> list = channelDao.findAllChannels();
-        List<ChannelDto> list1 = new ArrayList<>();
-        for (ChannelDomain domain : list) {
+    public PageDTO<ChannelDto> getChannels(PageQueryDTO pageQueryDTO) {
+
+        // 指定查询条件
+        Specification<ChannelDomain> spec = (root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            //默认查询未删除
+            predicates.add(builder.equal(root.get("isDeleted"), YesNoEnum.NO.getValue()));
+
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+
+        // 指定查询页面以及排序
+        PageRequest request = new PageRequest(pageQueryDTO.getPage() - 1, pageQueryDTO.getPageSize(), Sort.Direction
+                .fromString(pageQueryDTO.getOrderDesc()), pageQueryDTO.getOrder());
+
+        Page<ChannelDomain> findList = channelDao.findAll(spec, request);
+
+
+        PageDTO<ChannelDto> result = PageDTO.of(findList, domain -> {
             ChannelDto dto = new ChannelDto();
+
             try {
                 XBeanUtil.copyProperties(dto, domain, false);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new BizException();
             }
-            list1.add(dto);
-        }
 
-        return list1;
+            return dto;
+        });
+        
+        return result;
     }
+
 
 }

@@ -5,8 +5,11 @@ import com.system.business.channel.form.ChannelForm;
 import com.system.business.channel.service.ChannelService;
 import com.system.business.channel.vo.ChannelVO;
 import com.system.common.constants.WebConstants;
+import com.system.common.dto.PageDTO;
+import com.system.common.dto.PageQueryDTO;
+import com.system.common.form.PageForm;
+import com.system.common.support.XBeanUtil;
 import com.system.common.utils.DateUtils;
-import com.system.common.vo.ListVO;
 import com.system.common.vo.ResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -75,11 +78,19 @@ public class ChannelController {
         return ResponseVO.successResponse(res);
     }
 
-    @ApiOperation("获取所有渠道")
-    @GetMapping(value = "/getAllChannel")
-    public ResponseVO<ListVO<ChannelVO>> getAllChannel() {
-        ListVO<ChannelVO> list = new ListVO<>();
-        List<ChannelDto> findAll = channelService.getChannels();
+    @ApiOperation("获取渠道列表")
+    @GetMapping(value = "/getChannels")
+    public ResponseVO<PageDTO<ChannelVO>> getChannels(PageForm form) {
+        PageQueryDTO pageQueryDTO = new PageQueryDTO();
+        try {
+            XBeanUtil.copyProperties(pageQueryDTO, form, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        PageDTO<ChannelDto> query = channelService.getChannels(pageQueryDTO);
+
+        List<ChannelDto> findAll = query.getList();
         List<ChannelVO> resList = new ArrayList<>();
         for (ChannelDto find : findAll) {
             ChannelVO vo = new ChannelVO();
@@ -89,9 +100,6 @@ public class ChannelController {
             resList.add(vo);
         }
 
-        list.setList(resList);
-        list.setTotal(resList.size());
-
-        return ResponseVO.successResponse(list);
+        return ResponseVO.successResponse(new PageDTO<ChannelVO>(query.getTotal(), resList));
     }
 }
