@@ -138,9 +138,18 @@ public class ChannelServiceImpl implements ChannelService {
 
             return dto;
         });
-        
+
         return result;
     }
 
+    @Override
+    public List<String> getAllChannelName() {
+        List<ChannelDomain> findAll = channelDao.findAllChannels();
+        List<String> allChannelName = new ArrayList<>();
+        for (ChannelDomain domain : findAll) {
+            allChannelName.add(domain.getChannelName());
+        }
 
+        return allChannelName;
+    }
 }

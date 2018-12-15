@@ -36,8 +36,13 @@ public interface ChannelService {
     ChannelDto getChannel(String channelId);
 
     /**
-     * 获取所有渠道
+     * 获取渠道列表
      */
     PageDTO<ChannelDto> getChannels(PageQueryDTO pageQueryDTO);
+
+    /**
+     * 获取所有渠道名称
+     */
+    List<String> getAllChannelName();
 
 }
