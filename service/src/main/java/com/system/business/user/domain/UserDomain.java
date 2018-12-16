@@ -27,6 +27,13 @@ public class UserDomain extends BaseDomain {
     @Column(name = "name")
     private String name;
 
+
+    /**
+     * 用户真实名称
+     */
+    @Column(name = "real_name")
+    private String realName;
+
     /**
      * 密码
      */
@@ -34,10 +41,10 @@ public class UserDomain extends BaseDomain {
     private String password;
 
     /**
-     * 用户真实名称
+     * 公司名称
      */
-    @Column(name = "real_name")
-    private String realName;
+    @Column(name = "company")
+    private String company;
 
     /**
      * 是否超管 1是 0否
@@ -67,6 +74,14 @@ public class UserDomain extends BaseDomain {
         this.name = name;
     }
 
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -75,12 +90,12 @@ public class UserDomain extends BaseDomain {
         this.password = password;
     }
 
-    public String getRealName() {
-        return realName;
+    public String getCompany() {
+        return company;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public Integer getIsRoot() {
@@ -97,17 +112,5 @@ public class UserDomain extends BaseDomain {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDomain{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", realName='" + realName + '\'' +
-                ", isRoot=" + isRoot +
-                ", isDeleted=" + isDeleted +
-                '}';
     }
 }

@@ -74,7 +74,7 @@ public class UserController {
 
         UserVO userVO = new UserVO();
         userVO.setId(user.getId());
-        userVO.setUsername(user.getName());
+        userVO.setUserName(user.getName());
         userVO.setRealName(user.getRealName());
         Permission permission = new Permission();
 
@@ -99,7 +99,7 @@ public class UserController {
         List<UserVO> list = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             UserVO user = new UserVO();
-            user.setUsername("phoenix" + random.nextInt(100));
+            user.setUserName("phoenix" + random.nextInt(100));
             user.setId(random.nextInt(100));
             user.setRealName("phoenix" + random.nextInt(100));
             user.setChannelId("pad" + random.nextInt(100));
@@ -122,7 +122,7 @@ public class UserController {
     public ResponseVO<UserVO> getUserById(@PathVariable(name = "id") int id) {
         UserVO userVO = new UserVO();
         Random random = new Random();
-        userVO.setUsername("phoenix" + random.nextInt(100));
+        userVO.setUserName("phoenix" + random.nextInt(100));
         userVO.setId(random.nextInt(100));
         userVO.setRealName("phoenix" + random.nextInt(100));
         userVO.setChannelId("pad" + random.nextInt(100));
@@ -133,21 +133,16 @@ public class UserController {
         return ResponseVO.successResponse(userVO);
     }
 
-
-    @PostMapping(value = "/add")
+    @PostMapping
     @ApiOperation("添加用户")
     @ResponseBody
-    public ResponseVO<UserVO> addUser(@RequestBody UserAddForm form) {
+    public ResponseVO<Boolean> addUser(@RequestBody UserAddForm form) {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(form, userDTO);
-        userService.addUser(userDTO);
-        if (null != userDTO.getId()) {
-            UserVO userVO = new UserVO();
-            BeanUtils.copyProperties(userDTO, userVO);
-            return ResponseVO.successResponse(userVO);
-        }
+        userDTO.setName(form.getUserName());
+        Boolean res = userService.addUser(userDTO);
 
-        return ResponseVO.failResponse("AddUser fail!");
+        return ResponseVO.successResponse(res);
     }
 
     @PutMapping(value = "/edit/{id}")

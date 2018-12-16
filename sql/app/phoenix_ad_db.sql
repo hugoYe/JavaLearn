@@ -6,8 +6,9 @@ DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
   `name` varchar(64) NOT NULL COMMENT '用户名',
-  `password` varchar(64) NOT NULL COMMENT '密码',
   `real_name` varchar(64) NOT NULL COMMENT '用户姓名',
+  `password` varchar(64) NOT NULL COMMENT '密码',
+  `company` varchar(128) NOT NULL COMMENT '公司名称',
   `is_root` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否超级管理员: 1.是 0.不是',
   `is_deleted` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '被删除的数据: 1.已删除，0.未删除',
   `create_by` int(11) NOT NULL DEFAULT '0' COMMENT '创建人',

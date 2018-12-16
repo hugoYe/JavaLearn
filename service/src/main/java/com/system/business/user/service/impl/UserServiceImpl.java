@@ -1,10 +1,14 @@
 package com.system.business.user.service.impl;
 
+import com.system.business.channel.dao.ChannelDao;
+import com.system.business.channel.domain.ChannelDomain;
 import com.system.business.user.dao.UserDao;
 import com.system.business.user.domain.UserDomain;
 import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
 import com.system.business.user.service.UserService;
+import com.system.business.userchannel.dao.UserAndChannelDao;
+import com.system.business.userchannel.domain.UserAndChannelDomain;
 import com.system.common.constants.WebConstants;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.support.XBeanUtil;
@@ -17,11 +21,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private ChannelDao channelDao;
+
+    @Autowired
+    private UserAndChannelDao userAndChannelDao;
 
     @Value("${application.login.salt:phoenixAd}")
     private String salt;
@@ -72,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
-    public UserDTO addUser(UserDTO userDTO) {
+    public Boolean addUser(UserDTO userDTO) {
         // 用户名唯一性校验
         UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
         if (null != exist) {
@@ -95,8 +108,22 @@ public class UserServiceImpl implements UserService {
             user.setPassword(SHA256Utils.encryptPassword(userDTO.getPassword(), salt));
         }
         user = userDao.save(user);
-        userDTO.setId(user.getId());
-        return userDTO;
+
+        if (userDTO.getChannelName() != null && userDTO.getChannelName().size() > 0) {
+            List<UserAndChannelDomain> ucList = new ArrayList<>();
+            List<ChannelDomain> findAll = channelDao.queryChannelIdByNames(userDTO.getChannelName());
+            for (ChannelDomain domain : findAll) {
+                UserAndChannelDomain uc = new UserAndChannelDomain();
+                uc.setUserId(user.getId());
+                uc.setChannelId(domain.getChannelId());
+                uc.setIsDeleted(YesNoEnum.NO.getValue());
+                ucList.add(uc);
+            }
+
+            userAndChannelDao.save(ucList);
+        }
+
+        return true;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)

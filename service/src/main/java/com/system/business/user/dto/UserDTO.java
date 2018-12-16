@@ -1,5 +1,7 @@
 package com.system.business.user.dto;
 
+import java.util.List;
+
 public class UserDTO {
 
     /**
@@ -45,7 +47,7 @@ public class UserDTO {
     /**
      * 渠道名称
      */
-    private String channelName;
+    private List<String> channelName;
 
     /**
      * 所属公司
@@ -117,11 +119,11 @@ public class UserDTO {
         this.channelId = channelId;
     }
 
-    public String getChannelName() {
+    public List<String> getChannelName() {
         return channelName;
     }
 
-    public void setChannelName(String channelName) {
+    public void setChannelName(List<String> channelName) {
         this.channelName = channelName;
     }
 

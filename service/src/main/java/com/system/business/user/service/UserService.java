@@ -26,9 +26,9 @@ public interface UserService {
      * 添加用户
      *
      * @param userDTO 用户信息
-     * @return UserDTO
+     * @return
      */
-    UserDTO addUser(UserDTO userDTO);
+    Boolean addUser(UserDTO userDTO);
 
     /**
      * 编辑用户信息

@@ -11,7 +11,7 @@ public class UserVO {
     private Integer id;
 
     @ApiModelProperty("用户名")
-    private String username;
+    private String userName;
 
     @ApiModelProperty("用户真实姓名")
     private String realName;
@@ -40,12 +40,12 @@ public class UserVO {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getRealName() {
