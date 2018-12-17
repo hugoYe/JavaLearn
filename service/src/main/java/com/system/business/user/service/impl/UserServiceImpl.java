@@ -120,11 +120,11 @@ public class UserServiceImpl implements UserService {
 
         if (userDTO.getChannelName() != null && userDTO.getChannelName().size() > 0) {
             List<UserAndChannelDomain> ucList = new ArrayList<>();
-            List<ChannelDomain> findAll = channelDao.queryChannelIdByNames(userDTO.getChannelName());
-            for (ChannelDomain domain : findAll) {
+            List<String> findAll = channelDao.queryChannelIdByNames(userDTO.getChannelName());
+            for (String id : findAll) {
                 UserAndChannelDomain uc = new UserAndChannelDomain();
                 uc.setUserId(user.getId());
-                uc.setChannelId(domain.getChannelId());
+                uc.setChannelId(id);
                 uc.setIsDeleted(YesNoEnum.NO.getValue());
                 ucList.add(uc);
             }

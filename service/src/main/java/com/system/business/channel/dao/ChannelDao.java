@@ -21,8 +21,9 @@ public interface ChannelDao extends JpaRepository<ChannelDomain, Integer>, JpaSp
     @Query("from ChannelDomain t where t.isDeleted = 0")
     List<ChannelDomain> findAllChannels();
 
-    @Query("from ChannelDomain t where t.channelName in:channelNames and t.isDeleted = 0")
-    List<ChannelDomain> queryChannelIdByNames(@Param("channelNames") List<String> channelNames);
+    // nativeQuery = true 表明采用sql原生代码方式
+    @Query(value = "select t.channel_id from t_channel t where t.channel_name in:channelNames and t.is_deleted = 0", nativeQuery = true)
+    List<String> queryChannelIdByNames(@Param("channelNames") List<String> channelNames);
 
     @Query("from ChannelDomain t where t.channelId in:channelIds and t.isDeleted=0")
     List<ChannelDomain> queryChannelByIds(@Param("channelIds") List<String> channelIds);
