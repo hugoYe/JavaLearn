@@ -5,18 +5,17 @@ import com.system.business.permission.Role;
 import com.system.business.router.RouteConstant;
 import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
-import com.system.business.user.form.LoginForm;
-import com.system.business.user.form.ModifyPasswordForm;
-import com.system.business.user.form.UserAddForm;
-import com.system.business.user.form.UserEditForm;
+import com.system.business.user.dto.UserQueryDto;
+import com.system.business.user.form.*;
 import com.system.business.user.service.UserService;
 import com.system.business.user.vo.LoginVO;
 import com.system.business.user.vo.UserVO;
-import com.system.business.user.vo.UsersVO;
 import com.system.common.annotation.NoAuth;
 import com.system.common.annotation.NoLogin;
 import com.system.common.constants.WebConstants;
 import com.system.common.constants.YesNoEnum;
+import com.system.common.dto.PageDTO;
+import com.system.common.support.XBeanUtil;
 import com.system.common.utils.DateUtils;
 import com.system.common.utils.Jwtutils;
 import com.system.common.vo.ResponseVO;
@@ -93,27 +92,30 @@ public class UserController {
     @ApiOperation("获取非管理员用户信息")
     @GetMapping(value = "/getUsers")
     @ResponseBody
-    public ResponseVO<UsersVO> getUsers(Integer page, Integer pageSize) {
-        UsersVO usersVO = new UsersVO();
-        Random random = new Random();
-        List<UserVO> list = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
-            UserVO user = new UserVO();
-            user.setUserName("phoenix" + random.nextInt(100));
-            user.setId(random.nextInt(100));
-            user.setRealName("phoenix" + random.nextInt(100));
-            user.setChannelId("pad" + random.nextInt(100));
-            user.setChannelName("pad" + random.nextInt(100));
-            user.setCreateTime(DateUtils.getFormatDate(DateUtils.randomDate("2017-1-1", "2018-12-30")));
-            user.setCompany("上海" + random.nextInt(100));
-            list.add(user);
+    public ResponseVO<PageDTO<UserVO>> getUsers(UserQueryForm form) {
+        UserQueryDto queryDto = new UserQueryDto();
+        try {
+            XBeanUtil.copyProperties(queryDto, form, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (null != form.getCreateTime() && form.getCreateTime().size() == 2) {
+            queryDto.setBeginTime(form.getCreateTime().get(0));
+            queryDto.setEndTime(form.getCreateTime().get(1));
         }
 
-        usersVO.setTotal(list.size());
-        usersVO.setList(list);
+        PageDTO<UserDTO> find = userService.getUsers(queryDto);
+        List<UserDTO> findList = find.getList();
+        List<UserVO> resList = new ArrayList<>();
+        for (UserDTO dto : findList) {
+            UserVO vo = new UserVO();
+            BeanUtils.copyProperties(dto, vo);
+            vo.setUserName(dto.getName());
+            resList.add(vo);
+        }
 
-        return ResponseVO.successResponse(usersVO);
 
+        return ResponseVO.successResponse(new PageDTO<UserVO>(find.getTotal(), resList));
     }
 
     @ApiOperation("获取用户")
@@ -125,8 +127,8 @@ public class UserController {
         userVO.setUserName("phoenix" + random.nextInt(100));
         userVO.setId(random.nextInt(100));
         userVO.setRealName("phoenix" + random.nextInt(100));
-        userVO.setChannelId("pad" + random.nextInt(100));
-        userVO.setChannelName("pad" + random.nextInt(100));
+//        userVO.setChannelId("pad" + random.nextInt(100));
+//        userVO.setChannelName("pad" + random.nextInt(100));
         userVO.setCreateTime(DateUtils.getFormatDate(DateUtils.randomDate("2017-1-1", "2018-12-30")));
         userVO.setCompany("上海" + random.nextInt(100));
 

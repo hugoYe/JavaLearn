@@ -1,5 +1,6 @@
 package com.system.business.user.dto;
 
+import java.util.Date;
 import java.util.List;
 
 public class UserDTO {
@@ -37,12 +38,12 @@ public class UserDTO {
     /**
      * 创建日期
      */
-    private String createTime;
+    private Date createTime;
 
     /**
      * 渠道id
      */
-    private String channelId;
+    private List<String> channelId;
 
     /**
      * 渠道名称
@@ -103,19 +104,19 @@ public class UserDTO {
         this.isDeleted = isDeleted;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public String getChannelId() {
+    public List<String> getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(String channelId) {
+    public void setChannelId(List<String> channelId) {
         this.channelId = channelId;
     }
 

@@ -6,22 +6,31 @@ import com.system.business.user.dao.UserDao;
 import com.system.business.user.domain.UserDomain;
 import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
+import com.system.business.user.dto.UserQueryDto;
 import com.system.business.user.service.UserService;
 import com.system.business.userchannel.dao.UserAndChannelDao;
 import com.system.business.userchannel.domain.UserAndChannelDomain;
 import com.system.common.constants.WebConstants;
 import com.system.common.constants.YesNoEnum;
+import com.system.common.dto.PageDTO;
 import com.system.common.support.XBeanUtil;
+import com.system.common.utils.DateUtils;
 import com.system.common.utils.SHA256Utils;
 import com.system.exception.BizException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -152,6 +161,69 @@ public class UserServiceImpl implements UserService {
         UserDomain saved = userDao.save(editUser);
 
         return saved.getId();
+    }
+
+    @Override
+    public PageDTO<UserDTO> getUsers(UserQueryDto queryDto) {
+        Specification<UserDomain> spec = (root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            //默认查询未删除
+            predicates.add(builder.equal(root.get("isDeleted"), YesNoEnum.NO.getValue()));
+
+            if (null != queryDto.getName()) {
+                predicates.add(builder.equal(root.get("name"), queryDto.getName()));
+            }
+
+            if (null != queryDto.getBeginTime() && null != queryDto.getEndTime()) {
+                Date beginTime = DateUtils.parse(queryDto.getBeginTime());
+                Date endTime = DateUtils.parse(queryDto.getEndTime());
+                predicates.add(builder.between(root.get("create_time"), beginTime, endTime));
+            }
+
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+
+        PageRequest request = new PageRequest(queryDto.getPage() - 1, queryDto.getPageSize(), Sort.Direction
+                .fromString(queryDto.getOrderDesc()), queryDto.getOrder());
+
+        Page<UserDomain> findList = userDao.findAll(spec, request);
+
+        PageDTO<UserDTO> result = PageDTO.of(findList, domain -> {
+            UserDTO dto = new UserDTO();
+
+            try {
+                XBeanUtil.copyProperties(dto, domain, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BizException();
+            }
+
+            return dto;
+        });
+
+        List<Integer> userIds = new ArrayList<>();
+        for (UserDTO dto : result.getList()) {
+            userIds.add(dto.getId());
+        }
+
+        List<UserAndChannelDomain> ucList = userAndChannelDao.findByUserIds(userIds);
+        List<String> channelIds = new ArrayList<>();
+        for (UserAndChannelDomain domain : ucList) {
+            channelIds.add(domain.getChannelId());
+        }
+
+        List<ChannelDomain> cList = channelDao.queryChannelByIds(channelIds);
+        List<String> channelNames = new ArrayList<>();
+        for (ChannelDomain domain : cList) {
+            channelNames.add(domain.getChannelName());
+        }
+
+        for (UserDTO dto : result.getList()) {
+            dto.setChannelId(channelIds);
+            dto.setChannelName(channelNames);
+        }
+
+        return result;
     }
 
     @Override

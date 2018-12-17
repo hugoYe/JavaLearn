@@ -24,6 +24,9 @@ public interface ChannelDao extends JpaRepository<ChannelDomain, Integer>, JpaSp
     @Query("from ChannelDomain t where t.channelName in:channelNames and t.isDeleted = 0")
     List<ChannelDomain> queryChannelIdByNames(@Param("channelNames") List<String> channelNames);
 
+    @Query("from ChannelDomain t where t.channelId in:channelIds and t.isDeleted=0")
+    List<ChannelDomain> queryChannelByIds(@Param("channelIds") List<String> channelIds);
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query("update ChannelDomain c set c.isDeleted=:isDeleted where c.channelId in:channelIds")

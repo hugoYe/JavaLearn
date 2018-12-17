@@ -2,6 +2,8 @@ package com.system.business.user.service;
 
 import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
+import com.system.business.user.dto.UserQueryDto;
+import com.system.common.dto.PageDTO;
 
 public interface UserService {
 
@@ -37,6 +39,14 @@ public interface UserService {
      * @return Integer
      */
     Integer editUser(UserDTO userDTO);
+
+    /**
+     * 获取分页用户列表
+     *
+     * @param queryDto 用户信息
+     * @return PageDTO<UserDTO>
+     */
+    PageDTO<UserDTO> getUsers(UserQueryDto queryDto);
 
     /**
      * 编辑用户信息

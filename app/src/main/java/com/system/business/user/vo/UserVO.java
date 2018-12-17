@@ -4,6 +4,8 @@ import com.system.business.permission.Permission;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 @ApiModel(description = "用户对象")
 public class UserVO {
 
@@ -23,10 +25,10 @@ public class UserVO {
     private String createTime;
 
     @ApiModelProperty("渠道id")
-    private String channelId;
+    private List<String> channelId;
 
     @ApiModelProperty("渠道名称")
-    private String channelName;
+    private List<String> channelName;
 
     @ApiModelProperty("所属公司")
     private String company;
@@ -72,19 +74,19 @@ public class UserVO {
         this.createTime = createTime;
     }
 
-    public String getChannelId() {
+    public List<String> getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(String channelId) {
+    public void setChannelId(List<String> channelId) {
         this.channelId = channelId;
     }
 
-    public String getChannelName() {
+    public List<String> getChannelName() {
         return channelName;
     }
 
-    public void setChannelName(String channelName) {
+    public void setChannelName(List<String> channelName) {
         this.channelName = channelName;
     }
 

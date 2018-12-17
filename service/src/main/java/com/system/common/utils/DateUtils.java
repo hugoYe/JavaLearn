@@ -1,7 +1,9 @@
 package com.system.common.utils;
 
+import com.system.exception.BizException;
 import org.springframework.util.Assert;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -60,5 +62,34 @@ public class DateUtils {
             return random(begin, end);
         }
         return rtn;
+    }
+
+    /**
+     * 解析
+     *
+     * @param dateStr
+     * @return
+     */
+    public static Date parse(String dateStr) {
+        try {
+            return new SimpleDateFormat(DATETIME_CERTIFICAT_FORMAT).parse(dateStr);
+        } catch (ParseException e) {
+            throw new BizException(e);
+        }
+    }
+
+    /**
+     * 解析
+     *
+     * @param dateStr
+     * @param pattern
+     * @return
+     */
+    public static Date parse(String dateStr, String pattern) {
+        try {
+            return new SimpleDateFormat(pattern).parse(dateStr);
+        } catch (ParseException e) {
+            throw new BizException(e);
+        }
     }
 }
