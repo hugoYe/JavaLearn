@@ -111,6 +111,7 @@ public class UserController {
             UserVO vo = new UserVO();
             BeanUtils.copyProperties(dto, vo);
             vo.setUserName(dto.getName());
+            vo.setCreateTime(DateUtils.getFormatDate(dto.getCreateTime()));
             resList.add(vo);
         }
 

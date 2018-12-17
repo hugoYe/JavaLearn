@@ -188,6 +188,19 @@ public class UserServiceImpl implements UserService {
 
         Page<UserDomain> findList = userDao.findAll(spec, request);
 
+        List<Integer> userIds = new ArrayList<>();
+        for (UserDomain d : findList.getContent()) {
+            userIds.add(d.getId());
+        }
+
+        List<UserAndChannelDomain> ucList = userAndChannelDao.findByUserIds(userIds);
+        List<String> channelIds = new ArrayList<>();
+        for (UserAndChannelDomain domain : ucList) {
+            channelIds.add(domain.getChannelId());
+        }
+
+        List<ChannelDomain> cList = channelDao.queryChannelByIds(channelIds);
+
         PageDTO<UserDTO> result = PageDTO.of(findList, domain -> {
             UserDTO dto = new UserDTO();
 
@@ -198,30 +211,23 @@ public class UserServiceImpl implements UserService {
                 throw new BizException();
             }
 
+            List<String> cIds = new ArrayList<>();
+            List<String> cNames = new ArrayList<>();
+            for (UserAndChannelDomain d : ucList) {
+                if (dto.getId().equals(d.getUserId())) {
+                    cIds.add(d.getChannelId());
+                    for (ChannelDomain c : cList) {
+                        if (c.getChannelId().equals(d.getChannelId())) {
+                            cNames.add(c.getChannelName());
+                        }
+                    }
+                }
+            }
+            dto.setChannelId(cIds);
+            dto.setChannelName(cNames);
+
             return dto;
         });
-
-        List<Integer> userIds = new ArrayList<>();
-        for (UserDTO dto : result.getList()) {
-            userIds.add(dto.getId());
-        }
-
-        List<UserAndChannelDomain> ucList = userAndChannelDao.findByUserIds(userIds);
-        List<String> channelIds = new ArrayList<>();
-        for (UserAndChannelDomain domain : ucList) {
-            channelIds.add(domain.getChannelId());
-        }
-
-        List<ChannelDomain> cList = channelDao.queryChannelByIds(channelIds);
-        List<String> channelNames = new ArrayList<>();
-        for (ChannelDomain domain : cList) {
-            channelNames.add(domain.getChannelName());
-        }
-
-        for (UserDTO dto : result.getList()) {
-            dto.setChannelId(channelIds);
-            dto.setChannelName(channelNames);
-        }
 
         return result;
     }
