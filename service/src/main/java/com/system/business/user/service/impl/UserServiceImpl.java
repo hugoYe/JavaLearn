@@ -32,6 +32,9 @@ import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -118,16 +121,8 @@ public class UserServiceImpl implements UserService {
         }
         user = userDao.save(user);
 
-        if (userDTO.getChannelName() != null && userDTO.getChannelName().size() > 0) {
-            List<UserAndChannelDomain> ucList = new ArrayList<>();
-            List<String> findAll = channelDao.queryChannelIdByNames(userDTO.getChannelName());
-            for (String id : findAll) {
-                UserAndChannelDomain uc = new UserAndChannelDomain();
-                uc.setUserId(user.getId());
-                uc.setChannelId(id);
-                uc.setIsDeleted(YesNoEnum.NO.getValue());
-                ucList.add(uc);
-            }
+        if (userDTO.getChannelId() != null && userDTO.getChannelId().size() > 0) {
+            List<UserAndChannelDomain> ucList = generateUserAndChannelDomainList(user.getId(), userDTO.getChannelId());
 
             userAndChannelDao.save(ucList);
         }
@@ -135,23 +130,73 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    private List<UserAndChannelDomain> generateUserAndChannelDomainList(Integer userID, List<String> channelIds) {
+        List<UserAndChannelDomain> ucList = new ArrayList<>();
+        for (String cId : channelIds) {
+            UserAndChannelDomain uc = new UserAndChannelDomain();
+            uc.setUserId(userID);
+            uc.setChannelId(cId);
+            uc.setIsDeleted(YesNoEnum.NO.getValue());
+            ucList.add(uc);
+        }
+
+        return ucList;
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
-    public Boolean updateUser(UserDTO userDTO) {
+    public Integer updateUser(UserDTO userDTO) {
         // 校验用户是否存在
-        UserDomain editUser = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
-        if (null == editUser) {
+        UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
+        if (null == exist) {
             throw new BizException("user.not.exist");
         }
 
-        try {
-            XBeanUtil.copyProperties(editUser, userDTO, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BizException();
+        List<UserAndChannelDomain> all = userAndChannelDao.findAllByUserId(userDTO.getId());
+        Map<String, UserAndChannelDomain> allMap = all.stream().collect(Collectors.toMap(UserAndChannelDomain::getChannelId, Function.identity()));
+        List<String> selectChannelIds = userDTO.getChannelId();
+        List<String> addedChannelIds = new ArrayList<>();
+        List<String> updateChannelIds = new ArrayList<>();
+        List<String> deletedChannelIds = new ArrayList<>();
+
+        for (String cId : selectChannelIds) {
+            if (allMap.containsKey(cId)) {
+                UserAndChannelDomain uc = allMap.get(cId);
+                if (uc.getIsDeleted() == YesNoEnum.YES.getValue()) {
+                    updateChannelIds.add(cId);
+                }
+            } else {
+                addedChannelIds.add(cId);
+            }
+        }
+
+        for (UserAndChannelDomain domain : all) {
+            if (!selectChannelIds.contains(domain.getChannelId()) && domain.getIsDeleted() == YesNoEnum.NO.getValue()) {
+                deletedChannelIds.add(domain.getChannelId());
+            }
         }
 
 
-        return null;
+        Integer u = 0;
+        if (updateChannelIds.size() > 0) {
+            u = userAndChannelDao.updateUserAndChannel(exist.getId(), updateChannelIds, YesNoEnum.NO.getValue());
+        }
+
+        Integer d = 0;
+        if (deletedChannelIds.size() > 0) {
+            d = userAndChannelDao.updateUserAndChannel(exist.getId(), deletedChannelIds, YesNoEnum.YES.getValue());
+        }
+
+        Integer a = addedChannelIds.size();
+        if (a > 0) {
+            List<UserAndChannelDomain> ucList = generateUserAndChannelDomainList(exist.getId(), addedChannelIds);
+
+            userAndChannelDao.save(ucList);
+        }
+
+        Integer res = u + d + a;
+
+        return res;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)

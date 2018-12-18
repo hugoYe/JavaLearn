@@ -20,6 +20,9 @@ public class UserForm {
     @ApiModelProperty("公司名称")
     private String company;
 
+    @ApiModelProperty("渠道id")
+    private List<String> channelId;
+
     @ApiModelProperty("渠道名称")
     private List<String> channelName;
 
@@ -53,6 +56,14 @@ public class UserForm {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public List<String> getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(List<String> channelId) {
+        this.channelId = channelId;
     }
 
     public List<String> getChannelName() {

@@ -32,7 +32,7 @@ public interface UserService {
      */
     Boolean addUser(UserDTO userDTO);
 
-    Boolean updateUser(UserDTO userDTO);
+    Integer updateUser(UserDTO userDTO);
 
     /**
      * 编辑用户信息

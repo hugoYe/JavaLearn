@@ -151,11 +151,11 @@ public class UserController {
     @PutMapping
     @ApiOperation("更新用户")
     @ResponseBody
-    public ResponseVO<Boolean> updateUser(@RequestBody UserForm form) {
+    public ResponseVO<Integer> updateUser(@RequestBody UserForm form) {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(form, userDTO);
         userDTO.setName(form.getUserName());
-        Boolean res = userService.updateUser(userDTO);
+        Integer res = userService.updateUser(userDTO);
 
         return ResponseVO.successResponse(res);
     }
