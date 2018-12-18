@@ -143,6 +143,30 @@ public class UserServiceImpl implements UserService {
         return ucList;
     }
 
+    @Override
+    public Integer deleteUser(Integer id) {
+        // 校验用户是否存在
+        UserDomain exist = userDao.findByIdAndIsDeleted(id, YesNoEnum.NO.getValue());
+        if (null == exist) {
+            throw new BizException("user.not.exist");
+        }
+
+        exist.setIsDeleted(YesNoEnum.YES.getValue());
+        userDao.save(exist);
+
+        userAndChannelDao.deleteUserAndChannel(id);
+
+        return id;
+    }
+
+    @Override
+    public Integer deleteUserBatch(List<Integer> userIds) {
+        Integer res = userDao.deleteUserBatch(userIds);
+        userAndChannelDao.deleteUserAndChannelBatch(userIds);
+
+        return res;
+    }
+
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public Integer updateUser(UserDTO userDTO) {
@@ -329,8 +353,4 @@ public class UserServiceImpl implements UserService {
         return saved.getId();
     }
 
-    @Override
-    public Integer deleteUser(int id) {
-        return null;
-    }
 }

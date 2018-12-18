@@ -148,6 +148,24 @@ public class UserController {
         return ResponseVO.successResponse(res);
     }
 
+    @ApiOperation("删除用户")
+    @DeleteMapping(value = "/{id}")
+    @ResponseBody
+    public ResponseVO<Integer> deleteUser(@PathVariable(name = "id") Integer id) {
+        Integer res = userService.deleteUser(id);
+
+        return ResponseVO.successResponse(res);
+    }
+
+    @ApiOperation("批量删除用户")
+    @DeleteMapping(value = "/deleteUserBatch")
+    @ResponseBody
+    public ResponseVO<Integer> deleteUserBatch(List<Integer> userIds) {
+        Integer res = userService.deleteUserBatch(userIds);
+
+        return ResponseVO.successResponse(res);
+    }
+
     @PutMapping
     @ApiOperation("更新用户")
     @ResponseBody

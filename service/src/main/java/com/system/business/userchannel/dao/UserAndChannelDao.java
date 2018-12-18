@@ -23,4 +23,14 @@ public interface UserAndChannelDao extends JpaRepository<UserAndChannelDomain, I
     @Query("update UserAndChannelDomain t set t.isDeleted = :isDeleted where t.userId = :userId and t.channelId in:channelIds")
     Integer updateUserAndChannel(@Param("userId") Integer userId, @Param("channelIds") List<String> channelIds,
                                  @Param("isDeleted") Integer isDeleted);
+
+    @Transactional
+    @Modifying
+    @Query("update UserAndChannelDomain t set t.isDeleted = 1 where t.userId = :userId")
+    Integer deleteUserAndChannel(@Param("userId") Integer userId);
+
+    @Transactional
+    @Modifying
+    @Query("update UserAndChannelDomain t set t.isDeleted = 1 where t.userId in:userIds")
+    Integer deleteUserAndChannelBatch(@Param("userIds") List<Integer> userIds);
 }

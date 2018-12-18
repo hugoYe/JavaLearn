@@ -3,7 +3,13 @@ package com.system.business.user.dao;
 import com.system.business.user.domain.UserDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * IBM针对JPA框架的介绍文章
@@ -18,5 +24,10 @@ public interface UserDao extends JpaRepository<UserDomain, Integer>, JpaSpecific
     UserDomain findByNameAndIsDeleted(String name, Integer isDeleted);
 
     UserDomain findByIdAndIsDeleted(Integer id, Integer isDeleted);
+
+    @Transactional
+    @Modifying
+    @Query("update UserDomain t set t.isDeleted = 1 where t.id in:userIds")
+    Integer deleteUserBatch(@Param("userIds") List<Integer> userIds);
 }
 

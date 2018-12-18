@@ -5,6 +5,8 @@ import com.system.business.user.dto.UserDTO;
 import com.system.business.user.dto.UserQueryDto;
 import com.system.common.dto.PageDTO;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -32,6 +34,16 @@ public interface UserService {
      */
     Boolean addUser(UserDTO userDTO);
 
+    /**
+     * 删除用户
+     *
+     * @param id 用户id
+     * @return Integer
+     */
+    Integer deleteUser(Integer id);
+
+    Integer deleteUserBatch(List<Integer> userIds);
+
     Integer updateUser(UserDTO userDTO);
 
     /**
@@ -58,11 +70,4 @@ public interface UserService {
      */
     Integer modifyPassword(ModifyPasswordDTO dto);
 
-    /**
-     * 删除用户
-     *
-     * @param id 用户id
-     * @return Integer
-     */
-    Integer deleteUser(int id);
 }
