@@ -195,13 +195,26 @@ public class UserServiceImpl implements UserService {
             userIds.add(d.getId());
         }
 
-        List<UserAndChannelDomain> ucList = userAndChannelDao.findByUserIds(userIds);
+        List<UserAndChannelDomain> findUcList = new ArrayList<>();
+        try {
+            findUcList = userAndChannelDao.findByUserIds(userIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<UserAndChannelDomain> ucList = findUcList;
+
         List<String> channelIds = new ArrayList<>();
         for (UserAndChannelDomain domain : ucList) {
             channelIds.add(domain.getChannelId());
         }
 
-        List<ChannelDomain> cList = channelDao.queryChannelByIds(channelIds);
+        List<ChannelDomain> findCList = new ArrayList<>();
+        try {
+            findCList = channelDao.queryChannelByIds(channelIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<ChannelDomain> cList = findCList;
 
         PageDTO<UserDTO> result = PageDTO.of(findList, domain -> {
             UserDTO dto = new UserDTO();
