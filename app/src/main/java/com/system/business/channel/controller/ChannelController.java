@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "Channel", description = "渠道管理相关接口")
@@ -103,11 +104,19 @@ public class ChannelController {
         return ResponseVO.successResponse(new PageDTO<ChannelVO>(query.getTotal(), resList));
     }
 
-    @ApiOperation("获取渠道名称列表")
-    @GetMapping(value = "/getAllChannelName")
-    public ResponseVO<List<String>> getAllChannelName() {
-        List<String> list = channelService.getAllChannelName();
-        
+    @ApiOperation("获取渠道字典")
+    @GetMapping(value = "/getChannelDict")
+    public ResponseVO<List<ChannelVO>> getChannelDict() {
+        List<ChannelDto> find = channelService.getChannelDict();
+        List<ChannelVO> list = find.stream().map(dto -> {
+            ChannelVO vo = new ChannelVO();
+            BeanUtils.copyProperties(dto, vo);
+            vo.setCreateTime(DateUtils.getFormatDate(dto.getCreateTime()));
+            vo.setUpdateTime(DateUtils.getFormatDate(dto.getUpdateTime()));
+
+            return vo;
+        }).collect(Collectors.toList());
+
         return ResponseVO.successResponse(list);
     }
 }

@@ -23,7 +23,7 @@ public interface ChannelService {
      *
      * @return Integer 返回成功处理的数据个数
      */
-    Integer deleteChannelBatch(List<String>  channelIds);
+    Integer deleteChannelBatch(List<String> channelIds);
 
     /**
      * 更新渠道
@@ -41,8 +41,8 @@ public interface ChannelService {
     PageDTO<ChannelDto> getChannels(PageQueryDTO pageQueryDTO);
 
     /**
-     * 获取所有渠道名称
+     * 获取渠道字典
      */
-    List<String> getAllChannelName();
+    List<ChannelDto> getChannelDict();
 
 }

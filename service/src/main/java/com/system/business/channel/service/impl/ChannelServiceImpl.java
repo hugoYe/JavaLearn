@@ -20,6 +20,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ChannelServiceImpl implements ChannelService {
@@ -143,13 +144,21 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public List<String> getAllChannelName() {
+    public List<ChannelDto> getChannelDict() {
         List<ChannelDomain> findAll = channelDao.findAllChannels();
-        List<String> allChannelName = new ArrayList<>();
-        for (ChannelDomain domain : findAll) {
-            allChannelName.add(domain.getChannelName());
-        }
+        List<ChannelDto> res = findAll.stream().map(domain -> {
+            ChannelDto dto = new ChannelDto();
 
-        return allChannelName;
+            try {
+                XBeanUtil.copyProperties(dto, domain, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BizException();
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
+
+        return res;
     }
 }
