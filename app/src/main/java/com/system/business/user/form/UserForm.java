@@ -5,8 +5,11 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
-@ApiModel("添加用户表单")
-public class UserAddForm {
+@ApiModel("用户信息表单")
+public class UserForm {
+
+    @ApiModelProperty("用户id")
+    private Integer id;
 
     @ApiModelProperty("用户名")
     private String userName;
@@ -22,6 +25,14 @@ public class UserAddForm {
 
     public String getUserName() {
         return userName;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setUserName(String userName) {

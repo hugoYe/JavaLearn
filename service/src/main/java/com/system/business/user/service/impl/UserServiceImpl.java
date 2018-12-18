@@ -135,6 +135,25 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
+    public Boolean updateUser(UserDTO userDTO) {
+        // 校验用户是否存在
+        UserDomain editUser = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
+        if (null == editUser) {
+            throw new BizException("user.not.exist");
+        }
+
+        try {
+            XBeanUtil.copyProperties(editUser, userDTO, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException();
+        }
+
+
+        return null;
+    }
+
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public Integer editUser(UserDTO userDTO) {
