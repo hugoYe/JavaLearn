@@ -177,8 +177,8 @@ public class UserServiceImpl implements UserService {
             }
 
             if (null != queryDto.getBeginTime() && null != queryDto.getEndTime()) {
-                Date beginTime = DateUtils.parse(queryDto.getBeginTime());
-                Date endTime = DateUtils.parse(queryDto.getEndTime());
+                Date beginTime = DateUtils.parse(queryDto.getBeginTime(), DateUtils.DATETIME_FORMAT);
+                Date endTime = DateUtils.parse(queryDto.getEndTime(), DateUtils.DATETIME_FORMAT);
                 predicates.add(builder.between(root.get("createTime"), beginTime, endTime));
             }
 
