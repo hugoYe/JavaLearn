@@ -169,6 +169,8 @@ public class UserServiceImpl implements UserService {
             List<Predicate> predicates = new ArrayList<>();
             //默认查询未删除
             predicates.add(builder.equal(root.get("isDeleted"), YesNoEnum.NO.getValue()));
+            // 非管理员用户
+            predicates.add(builder.equal(root.get("isRoot"), YesNoEnum.NO.getValue()));
 
             if (null != queryDto.getName()) {
                 predicates.add(builder.equal(root.get("name"), queryDto.getName()));
@@ -177,7 +179,7 @@ public class UserServiceImpl implements UserService {
             if (null != queryDto.getBeginTime() && null != queryDto.getEndTime()) {
                 Date beginTime = DateUtils.parse(queryDto.getBeginTime());
                 Date endTime = DateUtils.parse(queryDto.getEndTime());
-                predicates.add(builder.between(root.get("create_time"), beginTime, endTime));
+                predicates.add(builder.between(root.get("createTime"), beginTime, endTime));
             }
 
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
