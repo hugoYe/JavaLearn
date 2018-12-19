@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Controller
 @Api(tags = "User", description = "用户相关接口")
@@ -72,21 +71,29 @@ public class UserController {
         UserDTO user = userService.getUserById(userId);
 
         UserVO userVO = new UserVO();
-        userVO.setId(user.getId());
+        try {
+            XBeanUtil.copyProperties(userVO, user, false);
+        } catch (Exception e) {
+        }
         userVO.setUserName(user.getName());
-        userVO.setRealName(user.getRealName());
-        Permission permission = new Permission();
+        userVO.setCreateTime(DateUtils.formatDate(user.getCreateTime()));
+        Permission permission = generatePermission(user.getIsRoot());
+        userVO.setPermissions(permission);
 
-        if (user.getIsRoot() == YesNoEnum.YES.getValue()) {
+        return ResponseVO.successResponse(userVO);
+    }
+
+    private Permission generatePermission(Integer isRoot) {
+        Permission permission = new Permission();
+        if (isRoot == YesNoEnum.YES.getValue()) {
             permission.setRole(Role.ROLE_ADMIN);
             permission.setVisit(RouteConstant.MANAGER_ROUTE_IDS);
         } else {
             permission.setRole(Role.ROLE_VISTOR);
             permission.setVisit(RouteConstant.VISTOR_ROUTE_IDS);
         }
-        userVO.setPermissions(permission);
 
-        return ResponseVO.successResponse(userVO);
+        return permission;
     }
 
     @ApiOperation("获取非管理员用户信息")
@@ -122,16 +129,19 @@ public class UserController {
     @ApiOperation("获取用户")
     @GetMapping(value = "getUser/{id}")
     @ResponseBody
-    public ResponseVO<UserVO> getUserById(@PathVariable(name = "id") int id) {
+    public ResponseVO<UserVO> getUserById(@PathVariable(name = "id") int userId) {
+
+        UserDTO user = userService.getUserById(userId);
+
         UserVO userVO = new UserVO();
-        Random random = new Random();
-        userVO.setUserName("phoenix" + random.nextInt(100));
-        userVO.setId(random.nextInt(100));
-        userVO.setRealName("phoenix" + random.nextInt(100));
-//        userVO.setChannelId("pad" + random.nextInt(100));
-//        userVO.setChannelName("pad" + random.nextInt(100));
-        userVO.setCreateTime(DateUtils.getFormatDate(DateUtils.randomDate("2017-1-1", "2018-12-30")));
-        userVO.setCompany("上海" + random.nextInt(100));
+        try {
+            XBeanUtil.copyProperties(userVO, user, false);
+        } catch (Exception e) {
+        }
+        userVO.setUserName(user.getName());
+        userVO.setCreateTime(DateUtils.formatDate(user.getCreateTime()));
+        Permission permission = generatePermission(user.getIsRoot());
+        userVO.setPermissions(permission);
 
         return ResponseVO.successResponse(userVO);
     }

@@ -13,6 +13,9 @@ import java.util.List;
 @Repository
 public interface UserAndChannelDao extends JpaRepository<UserAndChannelDomain, Integer> {
 
+    @Query("from UserAndChannelDomain uc where uc.isDeleted = 0 and uc.userId = :userId")
+    List<UserAndChannelDomain> findByUserId(@Param("userId") Integer userId);
+
     @Query("from UserAndChannelDomain uc where uc.isDeleted = 0 and uc.userId in:ids")
     List<UserAndChannelDomain> findByUserIds(@Param("ids") List<Integer> ids);
 

@@ -92,6 +92,15 @@ public class UserServiceImpl implements UserService {
             throw new BizException();
         }
 
+        if (user.getIsRoot() == YesNoEnum.NO.getValue()) {
+            List<UserAndChannelDomain> ucList = userAndChannelDao.findByUserId(userId);
+            List<String> channelIds = ucList.stream().map(UserAndChannelDomain::getChannelId).collect(Collectors.toList());
+            user.setChannelId(channelIds);
+            List<ChannelDomain> cList = channelDao.queryChannelByIds(channelIds);
+            List<String> channelNames = cList.stream().map(ChannelDomain::getChannelName).collect(Collectors.toList());
+            user.setChannelName(channelNames);
+        }
+
         return user;
     }
 
