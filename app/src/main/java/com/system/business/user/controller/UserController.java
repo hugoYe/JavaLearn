@@ -3,10 +3,13 @@ package com.system.business.user.controller;
 import com.system.business.permission.Permission;
 import com.system.business.permission.Role;
 import com.system.business.router.RouteConstant;
-import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
+import com.system.business.user.dto.UserEditDTO;
 import com.system.business.user.dto.UserQueryDto;
-import com.system.business.user.form.*;
+import com.system.business.user.form.LoginForm;
+import com.system.business.user.form.UserEditForm;
+import com.system.business.user.form.UserForm;
+import com.system.business.user.form.UserQueryForm;
 import com.system.business.user.service.UserService;
 import com.system.business.user.vo.LoginVO;
 import com.system.business.user.vo.UserVO;
@@ -19,13 +22,11 @@ import com.system.common.support.XBeanUtil;
 import com.system.common.utils.DateUtils;
 import com.system.common.utils.Jwtutils;
 import com.system.common.vo.ResponseVO;
-import com.system.exception.BizException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -188,37 +189,17 @@ public class UserController {
         return ResponseVO.successResponse(res);
     }
 
-    @PutMapping(value = "/edit/{id}")
-    @ApiOperation("编辑用户")
+
+    @PostMapping(value = "/editUser")
+    @ApiOperation("编辑用户信息")
     @ResponseBody
-    public ResponseVO<Integer> editUser(@PathVariable(name = "id") int id, @RequestBody UserEditForm form) {
-        if (StringUtils.isEmpty(form.getPassword()) || StringUtils.isEmpty(form.getConfirmPassword())) {
-            throw new BizException("None password!");
-        }
-        if (!form.getPassword().equals(form.getConfirmPassword())) {
-            throw new BizException("Entered passwords differ!");
-        }
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(id);
-        BeanUtils.copyProperties(form, userDTO);
-        Integer editId = userService.editUser(userDTO);
+    public ResponseVO<Boolean> editUser(@RequestBody UserEditForm form) {
 
-        return ResponseVO.successResponse(editId);
-    }
-
-    @PutMapping(value = "/modifyPassword")
-    @ApiOperation("修改密码")
-    @ResponseBody
-    public ResponseVO<Integer> modifyPassword(@RequestBody ModifyPasswordForm form) {
-        if (!form.getNewPassword().equals(form.getConfirmPassword())) {
-            throw new BizException("Entered passwords differ!");
-        }
-
-        ModifyPasswordDTO dto = new ModifyPasswordDTO();
+        UserEditDTO dto = new UserEditDTO();
         BeanUtils.copyProperties(form, dto);
-        Integer modifyId = userService.modifyPassword(dto);
+        Boolean needToLogout = userService.editUser(dto);
 
-        return ResponseVO.successResponse(modifyId);
+        return ResponseVO.successResponse(needToLogout);
     }
 
 }

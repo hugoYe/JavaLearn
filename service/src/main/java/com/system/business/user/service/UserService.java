@@ -1,7 +1,7 @@
 package com.system.business.user.service;
 
-import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
+import com.system.business.user.dto.UserEditDTO;
 import com.system.business.user.dto.UserQueryDto;
 import com.system.common.dto.PageDTO;
 
@@ -46,13 +46,6 @@ public interface UserService {
 
     Integer updateUser(UserDTO userDTO);
 
-    /**
-     * 编辑用户信息
-     *
-     * @param userDTO 用户信息
-     * @return Integer
-     */
-    Integer editUser(UserDTO userDTO);
 
     /**
      * 获取分页用户列表
@@ -65,9 +58,9 @@ public interface UserService {
     /**
      * 编辑用户信息
      *
-     * @param dto 修改密码信息
+     * @param dto 修改信息
      * @return Integer
      */
-    Integer modifyPassword(ModifyPasswordDTO dto);
+    Boolean editUser(UserEditDTO dto);
 
 }

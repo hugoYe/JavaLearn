@@ -1,27 +1,35 @@
-package com.system.business.user.form;
+package com.system.business.user.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+public class UserEditDTO {
 
-@ApiModel(value = "用户编辑表单")
-public class UserEditForm {
-
-    @ApiModelProperty("用户id")
+    /**
+     * 主键
+     */
     private Integer id;
 
-    @ApiModelProperty("用户真实姓名")
+    /**
+     * 用户真实姓名
+     */
     private String realName;
 
-    @ApiModelProperty("公司名称")
+    /**
+     * 公司名称
+     */
     private String company;
 
-    @ApiModelProperty(value = "原始密码")
+    /**
+     * 原始密码
+     */
     private String currentPassword;
 
-    @ApiModelProperty(value = "新密码")
+    /**
+     * 新密码
+     */
     private String newPassword;
 
-    @ApiModelProperty(value = "确认密码")
+    /**
+     * 确认密码
+     */
     private String confirmPassword;
 
     public Integer getId() {
@@ -72,5 +80,3 @@ public class UserEditForm {
         this.confirmPassword = confirmPassword;
     }
 }
-
-

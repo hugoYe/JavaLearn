@@ -4,8 +4,8 @@ import com.system.business.channel.dao.ChannelDao;
 import com.system.business.channel.domain.ChannelDomain;
 import com.system.business.user.dao.UserDao;
 import com.system.business.user.domain.UserDomain;
-import com.system.business.user.dto.ModifyPasswordDTO;
 import com.system.business.user.dto.UserDTO;
+import com.system.business.user.dto.UserEditDTO;
 import com.system.business.user.dto.UserQueryDto;
 import com.system.business.user.service.UserService;
 import com.system.business.userchannel.dao.UserAndChannelDao;
@@ -232,33 +232,6 @@ public class UserServiceImpl implements UserService {
         return res;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    @Override
-    public Integer editUser(UserDTO userDTO) {
-        // 校验用户是否存在
-        UserDomain editUser = userDao.findByIdAndIsDeleted(userDTO.getId(), YesNoEnum.NO.getValue());
-        if (null == editUser) {
-            throw new BizException("user.not.exist");
-        }
-
-        // 校验用户名唯一性
-        if (!StringUtils.isEmpty(userDTO.getName())) {
-            UserDomain user = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
-            if (null != user && !user.getId().equals(editUser.getId())) {
-                throw new BizException("user.name.exist");
-            }
-        }
-
-        try {
-            XBeanUtil.copyProperties(editUser, userDTO, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BizException();
-        }
-        UserDomain saved = userDao.save(editUser);
-
-        return saved.getId();
-    }
 
     @Override
     public PageDTO<UserDTO> getUsers(UserQueryDto queryDto) {
@@ -345,21 +318,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer modifyPassword(ModifyPasswordDTO dto) {
+    public Boolean editUser(UserEditDTO dto) {
         UserDomain user = userDao.findByIdAndIsDeleted(dto.getId(), YesNoEnum.NO.getValue());
         if (null == user) {
             throw new BizException("user.not.exist");
         }
 
-        String prePassword = SHA256Utils.encryptPassword(dto.getPrePassword(), salt);
-        if (!prePassword.equals(user.getPassword())) {
-            throw new BizException("user.original.password.error");
+        try {
+            XBeanUtil.copyProperties(user, dto, false);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        user.setPassword(SHA256Utils.encryptPassword(dto.getNewPassword(), salt));
-        UserDomain saved = userDao.save(user);
+        Boolean needToLogout = false;
 
-        return saved.getId();
+        if (StringUtils.isNotBlank(dto.getCurrentPassword())
+                && StringUtils.isNotBlank(dto.getNewPassword())
+                && StringUtils.isNotBlank(dto.getConfirmPassword())) {
+
+            String curPassword = SHA256Utils.encryptPassword(dto.getCurrentPassword(), salt);
+            if (!user.getPassword().equals(curPassword)) {
+                throw new BizException("user.original.password.error");
+            }
+
+            if (!dto.getNewPassword().equals(dto.getConfirmPassword())) {
+                throw new BizException("user.entered.passwords.differ");
+            }
+
+            needToLogout = true;
+
+            user.setPassword(SHA256Utils.encryptPassword(dto.getNewPassword(), salt));
+        }
+
+        userDao.save(user);
+
+        return needToLogout;
     }
 
 }
