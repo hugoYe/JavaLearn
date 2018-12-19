@@ -160,7 +160,7 @@ public class UserController {
     @ApiOperation("批量删除用户")
     @DeleteMapping(value = "/deleteUserBatch")
     @ResponseBody
-    public ResponseVO<Integer> deleteUserBatch(List<Integer> userIds) {
+    public ResponseVO<Integer> deleteUserBatch(@RequestBody List<Integer> userIds) {
         Integer res = userService.deleteUserBatch(userIds);
 
         return ResponseVO.successResponse(res);
