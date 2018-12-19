@@ -1,6 +1,6 @@
 package com.system.business.operation.controller;
 
-import com.system.business.operation.vo.IncomeVO;
+import com.system.business.operation.vo.OperationVO;
 import com.system.common.constants.WebConstants;
 import com.system.common.vo.ResponseVO;
 import io.swagger.annotations.Api;
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(tags = "Income", description = "收入相关接口")
 @RequestMapping(value = WebConstants.API_PREFIX + "/operation")
-public class IncomeController {
+public class OperationController {
 
     @ApiOperation("获取收入")
     @GetMapping
-    public ResponseVO<IncomeVO> getIncome(Integer page, Integer pageSize) {
-        IncomeVO incomeVO = new IncomeVO();
-//        List<IncomeVO.Income> list = new ArrayList<>();
+    public ResponseVO<OperationVO> getIncome(Integer page, Integer pageSize) {
+        OperationVO incomeVO = new OperationVO();
+//        List<OperationVO.Income> list = new ArrayList<>();
 //        Random random = new Random();
 //        for (int i = 0; i < 58; i++) {
-//            IncomeVO.Income operation = new IncomeVO.Income();
+//            OperationVO.Income operation = new OperationVO.Income();
 //            operation.setDate(DateUtils.getFormatDate(DateUtils.randomDate("2017-1-1", "2018-12-30")));
 //            operation.setChannelId("pad"+random.nextInt(500));
 //            operation.setChannelName("phoenix");

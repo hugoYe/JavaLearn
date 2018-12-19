@@ -3,6 +3,7 @@ package com.system.business.operation.domain;
 import com.system.common.domain.BaseDomain;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 运营数据表
@@ -41,7 +42,7 @@ public class OperationDomain extends BaseDomain {
      * 日期
      */
     @Column(name = "date")
-    private Double date;
+    private Date date;
 
     /**
      * 用户id
@@ -93,11 +94,11 @@ public class OperationDomain extends BaseDomain {
         this.income = income;
     }
 
-    public Double getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Double date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

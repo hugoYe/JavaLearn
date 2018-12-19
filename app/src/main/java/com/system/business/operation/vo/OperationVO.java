@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "收入实体对象")
-public class IncomeVO {
+public class OperationVO {
 
     @ApiModelProperty("日期")
     private String date;
