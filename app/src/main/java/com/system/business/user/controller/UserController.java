@@ -64,9 +64,9 @@ public class UserController {
 
 
     @ApiOperation("获取当前登入用户信息")
-    @GetMapping(value = "/getUserInfo")
+    @GetMapping(value = "/getLogonUserInfo")
     @ResponseBody
-    public ResponseVO<UserVO> getUserInfo(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseVO<UserVO> getLogonUserInfo(HttpServletRequest request, HttpServletResponse response) {
 
         Integer userId = Jwtutils.verifyToken(request, response);
         UserDTO user = userService.getUserById(userId);
