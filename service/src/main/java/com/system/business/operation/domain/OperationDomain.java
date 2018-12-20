@@ -39,6 +39,12 @@ public class OperationDomain extends BaseDomain {
     private Double income;
 
     /**
+     * 真实收入
+     */
+    @Column(name = "real_income")
+    private Double realIncome;
+
+    /**
      * 日期
      */
     @Column(name = "date")
@@ -92,6 +98,14 @@ public class OperationDomain extends BaseDomain {
 
     public void setIncome(Double income) {
         this.income = income;
+    }
+
+    public Double getRealIncome() {
+        return realIncome;
+    }
+
+    public void setRealIncome(Double realIncome) {
+        this.realIncome = realIncome;
     }
 
     public Date getDate() {

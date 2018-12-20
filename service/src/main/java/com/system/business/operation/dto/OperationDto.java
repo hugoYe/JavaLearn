@@ -19,6 +19,11 @@ public class OperationDto {
     private Double income;
 
     /**
+     * 真实收入
+     */
+    private Double realIncome;
+
+    /**
      * 日期
      */
     private Date date;
@@ -70,6 +75,14 @@ public class OperationDto {
 
     public void setIncome(Double income) {
         this.income = income;
+    }
+
+    public Double getRealIncome() {
+        return realIncome;
+    }
+
+    public void setRealIncome(Double realIncome) {
+        this.realIncome = realIncome;
     }
 
     public Date getDate() {

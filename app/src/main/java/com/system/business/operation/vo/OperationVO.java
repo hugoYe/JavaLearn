@@ -33,6 +33,9 @@ public class OperationVO {
     @ApiModelProperty("收入")
     private Double income;
 
+    @ApiModelProperty("真实收入")
+    private Double realIncome;
+
 
     public String getDate() {
         return date;
@@ -104,5 +107,13 @@ public class OperationVO {
 
     public void setIncome(Double income) {
         this.income = income;
+    }
+
+    public Double getRealIncome() {
+        return realIncome;
+    }
+
+    public void setRealIncome(Double realIncome) {
+        this.realIncome = realIncome;
     }
 }

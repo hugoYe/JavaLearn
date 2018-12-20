@@ -63,6 +63,7 @@ CREATE TABLE `t_operation_data` (
   `pv` int(11) unsigned NOT NULL COMMENT '页面访问量',
   `uv` int(11) unsigned NOT NULL COMMENT '独立访客访问数',
   `income` double(16,2) NOT NULL COMMENT '收入',
+  `real_income` double(16,2) NOT NULL COMMENT '真实收入',
   `date` date NOT NULL COMMENT '日期',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
   `channel_id` varchar(32) NOT NULL COMMENT '渠道ID',
