@@ -9,6 +9,15 @@ public class OperationVO {
     @ApiModelProperty("日期")
     private String date;
 
+    @ApiModelProperty("用户id")
+    private Integer userId;
+
+    @ApiModelProperty("用户名")
+    private String userName;
+
+    @ApiModelProperty("用户真名")
+    private String realName;
+
     @ApiModelProperty("渠道id")
     private String channelId;
 
@@ -21,8 +30,8 @@ public class OperationVO {
     @ApiModelProperty("uv")
     private Integer uv;
 
-    @ApiModelProperty("operation")
-    private Integer income;
+    @ApiModelProperty("收入")
+    private Double income;
 
 
     public String getDate() {
@@ -31,6 +40,30 @@ public class OperationVO {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public String getChannelId() {
@@ -65,12 +98,11 @@ public class OperationVO {
         this.uv = uv;
     }
 
-    public Integer getIncome() {
+    public Double getIncome() {
         return income;
     }
 
-    public void setIncome(Integer income) {
+    public void setIncome(Double income) {
         this.income = income;
     }
-
 }

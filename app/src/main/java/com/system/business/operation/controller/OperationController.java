@@ -2,6 +2,7 @@ package com.system.business.operation.controller;
 
 import com.system.business.operation.vo.OperationVO;
 import com.system.common.constants.WebConstants;
+import com.system.common.dto.PageDTO;
 import com.system.common.vo.ResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,15 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
-@Api(tags = "Income", description = "收入相关接口")
+@Api(tags = "Income", description = "运营收入相关接口")
 @RequestMapping(value = WebConstants.API_PREFIX + "/operation")
 public class OperationController {
 
     @ApiOperation("获取收入")
     @GetMapping
-    public ResponseVO<OperationVO> getIncome(Integer page, Integer pageSize) {
-        OperationVO incomeVO = new OperationVO();
+    public ResponseVO<PageDTO<OperationVO>> getIncome(Integer page, Integer pageSize) {
+        List<OperationVO> list = new ArrayList<>();
+        PageDTO<OperationVO> res = new PageDTO<>(1, list);
 //        List<OperationVO.Income> list = new ArrayList<>();
 //        Random random = new Random();
 //        for (int i = 0; i < 58; i++) {
@@ -34,6 +39,6 @@ public class OperationController {
 //        incomeVO.setTotal(list.size());
 //        incomeVO.setList(list);
 
-        return ResponseVO.successResponse(incomeVO);
+        return ResponseVO.successResponse(res);
     }
 }
