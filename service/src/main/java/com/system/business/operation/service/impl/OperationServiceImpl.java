@@ -14,6 +14,7 @@ import com.system.common.dto.PageDTO;
 import com.system.common.support.XBeanUtil;
 import com.system.common.utils.DateUtils;
 import com.system.exception.BizException;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,14 +74,25 @@ public class OperationServiceImpl implements OperationService {
             predicates.add(builder.equal(root.get("isDeleted"), YesNoEnum.NO.getValue()));
 
             List<Integer> userIds = queryDto.getUserIds();
-            if (null != userIds && userIds.size() > 0) {
-                predicates.add(builder.in(root.get("userId")).in(queryDto.getUserIds()));
+            if (CollectionUtils.isNotEmpty(userIds)) {
+//                predicates.add(builder.in(root.get("userId")).in(queryDto.getUserIds()));
+                CriteriaBuilder.In<Integer> in = builder.in(root.get("userId"));
+                for (Integer userId : userIds) {
+                    in.value(userId);
+                }
+                predicates.add(in);
             }
 
             List<String> channelIds = queryDto.getChannelIds();
-            if (null != channelIds && channelIds.size() > 0) {
-                predicates.add(builder.in(root.get("channelId")).in(channelIds));
+            if (CollectionUtils.isNotEmpty(channelIds)) {
+//                predicates.add(builder.in(root.get("channelId")).in(channelIds));
+                CriteriaBuilder.In<String> in = builder.in(root.get("channelId"));
+                for (String channelId : channelIds) {
+                    in.value(channelId);
+                }
+                predicates.add(in);
             }
+
 
             List<String> dates = queryDto.getDate();
             if (null != dates && dates.size() > 0) {
@@ -99,8 +112,18 @@ public class OperationServiceImpl implements OperationService {
         List<OperationDomain> l = queryList.getContent();
         List<Integer> userIds = l.stream().map(OperationDomain::getUserId).collect(Collectors.toList());
         List<String> channelIds = l.stream().map(OperationDomain::getChannelId).collect(Collectors.toList());
-        List<UserDomain> users = userDao.findByIds(userIds);
-        List<ChannelDomain> channels = channelDao.queryChannelByIds(channelIds);
+        List<UserDomain> users = new ArrayList<>();
+        try {
+            users = userDao.findByIds(userIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<ChannelDomain> channels = new ArrayList<>();
+        try {
+            channels = channelDao.queryChannelByIds(channelIds);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Map<Integer, UserDomain> usersMap = users.stream().collect(Collectors.toMap(UserDomain::getId, Function.identity()));
         Map<String, ChannelDomain> channelsMap = channels.stream().collect(Collectors.toMap(ChannelDomain::getChannelId, Function.identity()));
 
