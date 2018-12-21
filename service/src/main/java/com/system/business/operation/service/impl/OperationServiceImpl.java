@@ -1,10 +1,14 @@
 package com.system.business.operation.service.impl;
 
+import com.system.business.channel.dao.ChannelDao;
+import com.system.business.channel.domain.ChannelDomain;
 import com.system.business.operation.dao.OperationDao;
 import com.system.business.operation.domain.OperationDomain;
 import com.system.business.operation.dto.OperationDto;
 import com.system.business.operation.dto.OperationQueryDto;
 import com.system.business.operation.service.OperationService;
+import com.system.business.user.dao.UserDao;
+import com.system.business.user.domain.UserDomain;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.dto.PageDTO;
 import com.system.common.support.XBeanUtil;
@@ -21,12 +25,42 @@ import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class OperationServiceImpl implements OperationService {
 
     @Autowired
     private OperationDao operationDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private ChannelDao channelDao;
+
+    @Override
+    public Integer addIncome(OperationDto dto) {
+
+        OperationDomain exist = operationDao.findByUserIdAndChannelIdAndDate(dto.getUserId(), dto.getChannelId(), dto.getDate());
+        if (null != exist) {
+            throw new BizException("operation.record.exist");
+        }
+
+        OperationDomain save = new OperationDomain();
+        try {
+            XBeanUtil.copyProperties(save, dto, false);
+        } catch (Exception e) {
+            throw new BizException();
+        }
+        save.setIsDeleted(YesNoEnum.NO.getValue());
+
+        operationDao.save(save);
+
+        return null;
+    }
 
     @Override
     public PageDTO<OperationDto> getIncomeList(OperationQueryDto queryDto) {
@@ -62,6 +96,13 @@ public class OperationServiceImpl implements OperationService {
                 .fromString(queryDto.getOrderDesc()), "date");
 
         Page<OperationDomain> queryList = operationDao.findAll(spec, request);
+        List<OperationDomain> l = queryList.getContent();
+        List<Integer> userIds = l.stream().map(OperationDomain::getUserId).collect(Collectors.toList());
+        List<String> channelIds = l.stream().map(OperationDomain::getChannelId).collect(Collectors.toList());
+        List<UserDomain> users = userDao.findByIds(userIds);
+        List<ChannelDomain> channels = channelDao.queryChannelByIds(channelIds);
+        Map<Integer, UserDomain> usersMap = users.stream().collect(Collectors.toMap(UserDomain::getId, Function.identity()));
+        Map<String, ChannelDomain> channelsMap = channels.stream().collect(Collectors.toMap(ChannelDomain::getChannelId, Function.identity()));
 
         PageDTO<OperationDto> result = PageDTO.of(queryList, domain -> {
             OperationDto dto = new OperationDto();
@@ -71,6 +112,16 @@ public class OperationServiceImpl implements OperationService {
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new BizException();
+            }
+
+            if (usersMap.containsKey(dto.getUserId())) {
+                UserDomain user = usersMap.get(dto.getUserId());
+                dto.setUserName(user.getName());
+                dto.setRealName(user.getRealName());
+            }
+
+            if (channelsMap.containsKey(dto.getChannelId())) {
+                dto.setChannelName(channelsMap.get(dto.getChannelId()).getChannelName());
             }
 
             return dto;

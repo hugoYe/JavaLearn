@@ -27,6 +27,9 @@ public interface UserDao extends JpaRepository<UserDomain, Integer>, JpaSpecific
 
     List<UserDomain> findAllByIsDeletedAndIsRoot(Integer isDeleted, Integer isRoot);
 
+    @Query("from UserDomain t where t.id in:userIds and t.isDeleted = 0")
+    List<UserDomain> findByIds(@Param("userIds") List<Integer> userIds);
+
     @Transactional
     @Modifying
     @Query("update UserDomain t set t.isDeleted = 1 where t.id in:userIds")
