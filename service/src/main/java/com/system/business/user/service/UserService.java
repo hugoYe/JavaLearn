@@ -63,4 +63,6 @@ public interface UserService {
      */
     Boolean editUser(UserEditDTO dto);
 
+    List<UserDTO> getUserDict();
+
 }

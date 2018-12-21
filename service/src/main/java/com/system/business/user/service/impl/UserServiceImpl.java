@@ -355,4 +355,19 @@ public class UserServiceImpl implements UserService {
         return needToLogout;
     }
 
+    @Override
+    public List<UserDTO> getUserDict() {
+        List<UserDomain> find = userDao.findAllByIsDeletedAndIsRoot(YesNoEnum.NO.getValue(), YesNoEnum.NO.getValue());
+        List<UserDTO> res = find.stream().map(userDomain -> {
+            UserDTO dto = new UserDTO();
+            try {
+                XBeanUtil.copyProperties(dto, userDomain, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return dto;
+        }).collect(Collectors.toList());
+
+        return res;
+    }
 }

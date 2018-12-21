@@ -12,6 +12,7 @@ import com.system.business.user.form.UserForm;
 import com.system.business.user.form.UserQueryForm;
 import com.system.business.user.service.UserService;
 import com.system.business.user.vo.LoginVO;
+import com.system.business.user.vo.UserDictVO;
 import com.system.business.user.vo.UserVO;
 import com.system.common.annotation.NoAuth;
 import com.system.common.annotation.NoLogin;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Api(tags = "User", description = "用户相关接口")
@@ -200,6 +202,28 @@ public class UserController {
         Boolean needToLogout = userService.editUser(dto);
 
         return ResponseVO.successResponse(needToLogout);
+    }
+
+    @GetMapping(value = "/getUserDict")
+    @ApiOperation("获取用户字典")
+    @ResponseBody
+    public ResponseVO<List<UserDictVO>> getUserDict() {
+        List<UserDTO> find = userService.getUserDict();
+        List<UserDictVO> res = find.stream().map(dto -> {
+            UserDictVO vo = new UserDictVO();
+
+            try {
+                XBeanUtil.copyProperties(vo, dto, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            vo.setUserName(dto.getName());
+
+            return vo;
+        }).collect(Collectors.toList());
+
+        return ResponseVO.successResponse(res);
     }
 
 }
