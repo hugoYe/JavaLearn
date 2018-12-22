@@ -9,6 +9,8 @@ import com.system.business.operation.dto.OperationQueryDto;
 import com.system.business.operation.service.OperationService;
 import com.system.business.user.dao.UserDao;
 import com.system.business.user.domain.UserDomain;
+import com.system.business.userchannel.dao.UserAndChannelDao;
+import com.system.business.userchannel.domain.UserAndChannelDomain;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.dto.PageDTO;
 import com.system.common.support.XBeanUtil;
@@ -42,6 +44,9 @@ public class OperationServiceImpl implements OperationService {
 
     @Autowired
     private ChannelDao channelDao;
+
+    @Autowired
+    private UserAndChannelDao userAndChannelDao;
 
     @Override
     public Integer addIncome(OperationDto dto) {
@@ -151,5 +156,11 @@ public class OperationServiceImpl implements OperationService {
         });
 
         return result;
+    }
+
+    @Override
+    public List<UserAndChannelDomain> getUserAndChannelDict() {
+        List<UserAndChannelDomain> list = userAndChannelDao.findAllByIsDeleted(YesNoEnum.NO.getValue());
+        return list;
     }
 }

@@ -21,6 +21,8 @@ public interface UserAndChannelDao extends JpaRepository<UserAndChannelDomain, I
 
     List<UserAndChannelDomain> findAllByUserId(Integer userId);
 
+    List<UserAndChannelDomain> findAllByIsDeleted(Integer isDeleted);
+
     @Transactional
     @Modifying
     @Query("update UserAndChannelDomain t set t.isDeleted = :isDeleted where t.userId = :userId and t.channelId in:channelIds")

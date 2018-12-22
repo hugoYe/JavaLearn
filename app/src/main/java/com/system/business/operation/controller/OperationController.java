@@ -6,6 +6,7 @@ import com.system.business.operation.form.OperationForm;
 import com.system.business.operation.form.OperationQueryForm;
 import com.system.business.operation.service.OperationService;
 import com.system.business.operation.vo.OperationVO;
+import com.system.business.userchannel.domain.UserAndChannelDomain;
 import com.system.common.constants.WebConstants;
 import com.system.common.dto.PageDTO;
 import com.system.common.support.XBeanUtil;
@@ -67,5 +68,13 @@ public class OperationController {
         }).collect(Collectors.toList());
 
         return ResponseVO.successResponse(new PageDTO<OperationVO>(queryList.getTotal(), resList));
+    }
+
+    @ApiOperation("获取用户和渠道关系字典")
+    @GetMapping(value = "/getUserAndChannelDict")
+    public ResponseVO<List<UserAndChannelDomain>> getUserAndChannelDict() {
+        List<UserAndChannelDomain> find = operationService.getUserAndChannelDict();
+
+        return ResponseVO.successResponse(find);
     }
 }
