@@ -16,7 +16,7 @@ public class TotalNumber {
     private String title;
 
     @ApiModelProperty("具体数据")
-    private Integer number;
+    private Double number;
 
     public String getIcon() {
         return icon;
@@ -42,11 +42,11 @@ public class TotalNumber {
         this.title = title;
     }
 
-    public Integer getNumber() {
+    public Double getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(Double number) {
         this.number = number;
     }
 }

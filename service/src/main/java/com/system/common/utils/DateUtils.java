@@ -92,4 +92,8 @@ public class DateUtils {
             throw new BizException(e);
         }
     }
+
+    public static Date parseDate(Date date) {
+        return parse(formatDate(date), DATETIME_FORMAT);
+    }
 }
