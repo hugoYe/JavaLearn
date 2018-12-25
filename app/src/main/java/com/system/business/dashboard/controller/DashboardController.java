@@ -2,8 +2,8 @@ package com.system.business.dashboard.controller;
 
 import com.system.business.dashboard.dto.DashboardDto;
 import com.system.business.dashboard.service.DashboardService;
+import com.system.business.dashboard.vo.Chart;
 import com.system.business.dashboard.vo.DashboardVO;
-import com.system.business.dashboard.vo.PUV;
 import com.system.business.dashboard.vo.TotalNumber;
 import com.system.common.constants.WebConstants;
 import com.system.common.utils.DateUtils;
@@ -104,27 +104,30 @@ public class DashboardController {
         }
 
 
-        List<PUV> puvs = new ArrayList<>();
+        List<Chart> charts = new ArrayList<>();
         for (int i = listDate.size() - 1; i >= 0; i--) {
-            PUV puv = new PUV();
-            puv.setName(listDay.get(i));
-            puv.setPV(0);
-            puv.setUV(0);
+            Chart chart = new Chart();
+            chart.setxAxis(listDay.get(i));
+            chart.setIncome(0d);
+            chart.setPV(0);
+            chart.setUV(0);
             Date date = listDate.get(i);
             if (queryMap.containsKey(date)) {
                 List<DashboardDto> l = queryMap.get(date);
                 for (DashboardDto dto : l) {
-                    int pv = dto.getPv() + puv.getPV();
-                    int uv = dto.getUv() + puv.getUV();
-                    puv.setPV(pv);
-                    puv.setUV(uv);
+                    double income = dto.getIncome() + chart.getIncome();
+                    int pv = dto.getPv() + chart.getPV();
+                    int uv = dto.getUv() + chart.getUV();
+                    chart.setIncome(income);
+                    chart.setPV(pv);
+                    chart.setUV(uv);
                 }
             }
 
-            puvs.add(puv);
+            charts.add(chart);
         }
 
-        dashboardVO.setCompleted(puvs);
+        dashboardVO.setCompleted(charts);
 
         return ResponseVO.successResponse(dashboardVO);
     }

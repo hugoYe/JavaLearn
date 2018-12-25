@@ -4,10 +4,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "PV/UV数据")
-public class PUV {
+public class Chart {
 
     @ApiModelProperty("横轴")
-    private Integer name;
+    private Integer xAxis;
+
+    @ApiModelProperty("收入")
+    private Double income;
 
     @ApiModelProperty("PV")
     private Integer PV;
@@ -15,12 +18,20 @@ public class PUV {
     @ApiModelProperty("UV")
     private Integer UV;
 
-    public Integer getName() {
-        return name;
+    public Double getIncome() {
+        return income;
     }
 
-    public void setName(Integer name) {
-        this.name = name;
+    public void setIncome(Double income) {
+        this.income = income;
+    }
+
+    public Integer getxAxis() {
+        return xAxis;
+    }
+
+    public void setxAxis(Integer xAxis) {
+        this.xAxis = xAxis;
     }
 
     public Integer getPV() {
