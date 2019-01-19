@@ -40,3 +40,9 @@ su 用户名 切换用户登录
 shutdown -h now 关机    
 shutdown -r now 重启    
 reboot 重启   
+
+## Which查找命令
+Which命令是通过 PATH环境变量查找可执行文件路径，用于查找指向这个命令所在的文件夹
+
+## Whereis命令
+Whereis命令和find类似，不过不同的是whereis是通过本地架构好的数据库索引查找会比较快。如果没有更新到数据库里面的文件或命令则无法查找到信息
