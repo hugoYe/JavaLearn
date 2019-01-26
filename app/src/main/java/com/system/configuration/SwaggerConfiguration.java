@@ -37,14 +37,14 @@ public class SwaggerConfiguration implements ApplicationListener<EmbeddedServlet
                 //自定义信息可按需求填写
                 .title("Spring Boot中使用Swagger构建RESTful APIs")
                 .description("测试集成")
-                .termsOfServiceUrl(getAddress() + ":8081/")
+                .termsOfServiceUrl(getAddress() + ":8080/")
                 .version("1.0")
                 .build();
     }
 
     @Override
     public void onApplicationEvent(EmbeddedServletContainerInitializedEvent embeddedServletContainerInitializedEvent) {
-        System.err.println("swagger访问地址:http://" + getAddress() + ":" + "8081" + "/swagger-ui.html");
+        System.err.println("swagger访问地址:http://" + getAddress() + ":" + "8080" + "/swagger-ui.html");
     }
 
     private String getAddress() {
