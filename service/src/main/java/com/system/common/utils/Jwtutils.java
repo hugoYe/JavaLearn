@@ -80,13 +80,18 @@ public class Jwtutils {
         //签名秘钥，和生成的签名的秘钥一模一样
         SecretKey key = generalKey();
 
+        Claims claims;
         //得到DefaultJwtParser
-        Claims claims = Jwts.parser()
-                //设置签名的秘钥
-                .setSigningKey(key)
-                //设置需要解析的jwt
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            claims = Jwts.parser()
+                    //设置签名的秘钥
+                    .setSigningKey(key)
+                    //设置需要解析的jwt
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (MalformedJwtException e) {
+            throw new BizException("user.not.login", "401");
+        }
 
         return claims;
     }
@@ -112,11 +117,13 @@ public class Jwtutils {
         try {
             Claims claims = Jwtutils.parseJWT(token);
             userId = claims.get("userId", Integer.class);
+        } catch (MalformedJwtException e) {
+            response.setStatus(401);
+            throw new BizException("user.not.login", "401");
         } catch (ExpiredJwtException e) {
             response.setStatus(401);
             throw new BizException("user.token.expires", "401");
         }
-
 
         return userId;
     }
