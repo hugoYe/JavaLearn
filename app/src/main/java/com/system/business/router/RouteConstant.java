@@ -46,7 +46,7 @@ public class RouteConstant {
         routeVO.setId(ROUTE_ID_CHANNELS);
         routeVO.setName("Channels");
         routeVO.setIcon("appstore");
-        routeVO.setZhName("渠道管理");
+        routeVO.setZhName("客户渠道管理");
         routeVO.setRoute("/channels");
         routeVO.setBreadcrumbParentId("1");
         ROUTE_LIST.put(ROUTE_ID_CHANNELS, routeVO);
@@ -55,7 +55,7 @@ public class RouteConstant {
         routeVO.setId(ROUTE_ID_USERS);
         routeVO.setName("Users");
         routeVO.setIcon("team");
-        routeVO.setZhName("用户管理");
+        routeVO.setZhName("客户管理");
         routeVO.setRoute("/user");
         routeVO.setBreadcrumbParentId("1");
         ROUTE_LIST.put(ROUTE_ID_USERS, routeVO);
@@ -63,7 +63,7 @@ public class RouteConstant {
         routeVO = new RouteVO();
         routeVO.setId(ROUTE_ID_USER_DETAIL);
         routeVO.setName("User Detail");
-        routeVO.setZhName("用户详情");
+        routeVO.setZhName("客户详情");
         routeVO.setRoute("/user/:id");
         routeVO.setMenuParentId("-1");
         routeVO.setBreadcrumbParentId(ROUTE_ID_USERS);
