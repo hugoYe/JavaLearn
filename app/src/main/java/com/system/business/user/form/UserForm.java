@@ -15,10 +15,10 @@ public class UserForm {
     private String userName;
 
     @ApiModelProperty("用户真实姓名")
-    private String realName;
+    private String realName = "";
 
     @ApiModelProperty("公司名称")
-    private String company;
+    private String company = "";
 
     @ApiModelProperty("渠道id")
     private List<String> channelId;
