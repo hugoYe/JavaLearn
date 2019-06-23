@@ -30,11 +30,21 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Boolean addChannel(ChannelDto channelDto) {
-        ChannelDomain exist = channelDao.findByChannelId(channelDto.getChannelId());
-        if (null != exist) {
-            throw new BizException("channel.channelId.exist");
-        }
+        // 渠道id改成默认自动生成，因此不需要此判断
+//        ChannelDomain exist = channelDao.findByChannelId(channelDto.getChannelId());
+//        if (null != exist) {
+//            throw new BizException("channel.channelId.exist");
+//        }
 
+        long count = channelDao.count();
+        long newId = count + 1;
+        String channelId;
+        if (newId < 100) {
+            channelId = autoGenericCode(String.valueOf(newId));
+        } else {
+            channelId = String.valueOf(newId);
+        }
+        channelDto.setChannelId("wy" + channelId);
         ChannelDomain domain = new ChannelDomain();
         try {
             XBeanUtil.copyProperties(domain, channelDto, false);
@@ -46,6 +56,14 @@ public class ChannelServiceImpl implements ChannelService {
         channelDao.save(domain);
 
         return true;
+    }
+
+    private String autoGenericCode(String code) {
+        String result = "";
+        // 保留code的位数
+        result = String.format("%0" + 3 + "d", Integer.parseInt(code));
+
+        return result;
     }
 
     @Override
