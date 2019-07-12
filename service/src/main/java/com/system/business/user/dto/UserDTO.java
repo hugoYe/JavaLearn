@@ -1,5 +1,6 @@
 package com.system.business.user.dto;
 
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,11 @@ public class UserDTO {
      * 用户真实名称
      */
     private String realName;
+
+    /**
+     * 收益比例
+     */
+    private Integer incomeRate;
 
     /**
      * 是否超管 1是 0否
@@ -99,6 +105,14 @@ public class UserDTO {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getIncomeRate() {
+        return incomeRate;
+    }
+
+    public void setIncomeRate(Integer incomeRate) {
+        this.incomeRate = incomeRate;
     }
 
     public Integer getIsRoot() {

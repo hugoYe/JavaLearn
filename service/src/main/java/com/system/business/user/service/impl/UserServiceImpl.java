@@ -204,6 +204,14 @@ public class UserServiceImpl implements UserService {
             throw new BizException("user.not.exist");
         }
 
+        try {
+            XBeanUtil.copyProperties(exist, userDTO, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        userDao.save(exist);
+
         List<UserAndChannelDomain> all = userAndChannelDao.findAllByUserId(userDTO.getId());
         Map<String, UserAndChannelDomain> allMap = all.stream().collect(Collectors.toMap(UserAndChannelDomain::getChannelId, Function.identity()));
         List<String> selectChannelIds = userDTO.getChannelId();

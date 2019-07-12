@@ -13,6 +13,11 @@ public class UserEditDTO {
     private String realName;
 
     /**
+     * 收益比例
+     */
+    private Integer incomeRate;
+
+    /**
      * 公司名称
      */
     private String company;
@@ -46,6 +51,14 @@ public class UserEditDTO {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getIncomeRate() {
+        return incomeRate;
+    }
+
+    public void setIncomeRate(Integer incomeRate) {
+        this.incomeRate = incomeRate;
     }
 
     public String getCompany() {

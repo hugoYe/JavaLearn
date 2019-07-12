@@ -41,6 +41,12 @@ public class UserDomain extends BaseDomain {
     private String realName;
 
     /**
+     * 收益比例
+     */
+    @Column(name = "income_rate")
+    private Integer incomeRate;
+
+    /**
      * 密码
      */
     @Column(name = "password")
@@ -94,6 +100,14 @@ public class UserDomain extends BaseDomain {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getIncomeRate() {
+        return incomeRate;
+    }
+
+    public void setIncomeRate(Integer incomeRate) {
+        this.incomeRate = incomeRate;
     }
 
     public String getPassword() {

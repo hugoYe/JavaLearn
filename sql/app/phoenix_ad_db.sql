@@ -8,6 +8,7 @@ CREATE TABLE `t_user` (
   `user_id` varchar(64) NOT NULL COMMENT '用户id',
   `name` varchar(64) NOT NULL COMMENT '用户名',
   `real_name` varchar(64) NOT NULL COMMENT '用户姓名',
+  `income_rate` int(11) NOT NULL COMMENT '收益比例',
   `password` varchar(64) NOT NULL COMMENT '密码',
   `company` varchar(128) NOT NULL COMMENT '公司名称',
   `is_root` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否超级管理员: 1.是 0.不是',

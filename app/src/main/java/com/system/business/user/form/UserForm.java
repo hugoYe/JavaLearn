@@ -17,6 +17,9 @@ public class UserForm {
     @ApiModelProperty("用户真实姓名")
     private String realName = "";
 
+    @ApiModelProperty("收益比例")
+    private Integer incomeRate;
+
     @ApiModelProperty("公司名称")
     private String company = "";
 
@@ -48,6 +51,14 @@ public class UserForm {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getIncomeRate() {
+        return incomeRate;
+    }
+
+    public void setIncomeRate(Integer incomeRate) {
+        this.incomeRate = incomeRate;
     }
 
     public String getCompany() {

@@ -21,6 +21,9 @@ public class UserVO {
     @ApiModelProperty("用户真实姓名")
     private String realName;
 
+    @ApiModelProperty("收益比例")
+    private Integer incomeRate;
+
     @ApiModelProperty("用户权限")
     private Permission permissions;
 
@@ -67,6 +70,14 @@ public class UserVO {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getIncomeRate() {
+        return incomeRate;
+    }
+
+    public void setIncomeRate(Integer incomeRate) {
+        this.incomeRate = incomeRate;
     }
 
     public Permission getPermissions() {
