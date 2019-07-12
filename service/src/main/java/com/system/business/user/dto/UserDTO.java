@@ -11,6 +11,11 @@ public class UserDTO {
     private Integer id;
 
     /**
+     * 用户id
+     */
+    private String userId;
+
+    /**
      * 用户名
      */
     private String name;
@@ -62,6 +67,14 @@ public class UserDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {

@@ -108,10 +108,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean addUser(UserDTO userDTO) {
         // 用户名唯一性校验
-        UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
-        if (null != exist) {
-            throw new BizException("user.name.exist");
+//        UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
+//        if (null != exist) {
+//            throw new BizException("user.name.exist");
+//        }
+
+        long count = userDao.count();
+        long newId = count + 1;
+        String userId;
+        if (newId < 100) {
+            userId = autoGenericCode(String.valueOf(newId));
+        } else {
+            userId = String.valueOf(newId);
         }
+        userDTO.setUserId("wy" + userId);
 
         // 添加用户默认密码
         userDTO.setPassword(WebConstants.DREFAULT_PASSWORD);
@@ -138,6 +148,15 @@ public class UserServiceImpl implements UserService {
 
         return true;
     }
+
+    private String autoGenericCode(String code) {
+        String result = "";
+        // 保留code的位数
+        result = String.format("%0" + 3 + "d", Integer.parseInt(code));
+
+        return result;
+    }
+
 
     private List<UserAndChannelDomain> generateUserAndChannelDomainList(Integer userID, List<String> channelIds) {
         List<UserAndChannelDomain> ucList = new ArrayList<>();

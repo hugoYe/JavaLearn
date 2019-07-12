@@ -22,6 +22,12 @@ public class UserDomain extends BaseDomain {
     private Integer id;
 
     /**
+     * 用户id
+     */
+    @Column(name = "user_id")
+    private String userId;
+
+    /**
      * 用户名
      */
     @Column(name = "name")
@@ -64,6 +70,14 @@ public class UserDomain extends BaseDomain {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {
