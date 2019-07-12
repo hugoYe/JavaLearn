@@ -15,6 +15,9 @@ public class UserDictVO {
     @ApiModelProperty("用户真实姓名")
     private String realName;
 
+    @ApiModelProperty("收益比例")
+    private Integer incomeRate;
+
     public Integer getId() {
         return id;
     }
@@ -37,5 +40,13 @@ public class UserDictVO {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getIncomeRate() {
+        return incomeRate;
+    }
+
+    public void setIncomeRate(Integer incomeRate) {
+        this.incomeRate = incomeRate;
     }
 }
