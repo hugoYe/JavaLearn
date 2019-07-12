@@ -5,6 +5,7 @@
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+  `user_id` varchar(64) NOT NULL COMMENT '用户id',
   `name` varchar(64) NOT NULL COMMENT '用户名',
   `real_name` varchar(64) NOT NULL COMMENT '用户姓名',
   `password` varchar(64) NOT NULL COMMENT '密码',
