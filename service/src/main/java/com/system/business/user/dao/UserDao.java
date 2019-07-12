@@ -23,6 +23,8 @@ public interface UserDao extends JpaRepository<UserDomain, Integer>, JpaSpecific
      */
     UserDomain findByNameAndIsDeleted(String name, Integer isDeleted);
 
+    UserDomain findByUserIdAndIsDeleted(String userId, Integer isDeleted);
+
     UserDomain findByIdAndIsDeleted(Integer id, Integer isDeleted);
 
     List<UserDomain> findAllByIsDeletedAndIsRoot(Integer isDeleted, Integer isRoot);

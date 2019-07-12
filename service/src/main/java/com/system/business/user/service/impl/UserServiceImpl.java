@@ -52,11 +52,14 @@ public class UserServiceImpl implements UserService {
     private String salt;
 
     @Override
-    public UserDTO login(String name, String password) {
+    public UserDTO login(String nameOrUserId, String password) {
         // 校验用户是否存在
-        UserDomain exist = userDao.findByNameAndIsDeleted(name, YesNoEnum.NO.getValue());
+        UserDomain exist = userDao.findByNameAndIsDeleted(nameOrUserId, YesNoEnum.NO.getValue());
         if (null == exist) {
-            throw new BizException("user.not.exist");
+            exist = userDao.findByUserIdAndIsDeleted(nameOrUserId, YesNoEnum.NO.getValue());
+            if (null == exist) {
+                throw new BizException("user.not.exist");
+            }
         }
 
         String prePassword = SHA256Utils.encryptPassword(password, salt);

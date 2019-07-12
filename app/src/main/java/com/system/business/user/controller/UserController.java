@@ -50,7 +50,7 @@ public class UserController {
     @PostMapping(value = "/login")
     @ResponseBody
     public ResponseVO<LoginVO> login(@RequestBody LoginForm form, HttpServletRequest request) {
-        UserDTO userDTO = userService.login(form.getName(), form.getPassword());
+        UserDTO userDTO = userService.login(form.getNameOrUserId(), form.getPassword());
         LoginVO loginVO = new LoginVO();
         String token = Jwtutils.createJWT(Jwtutils.TOW_DAY, userDTO.getId());
         loginVO.setToken(token);

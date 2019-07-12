@@ -6,19 +6,18 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel("用户登录表单")
 public class LoginForm {
 
-    @ApiModelProperty("用户名")
-    private String name;
+    @ApiModelProperty("用户名/用户id")
+    private String nameOrUserId;
 
     @ApiModelProperty(value = "登录密码")
     private String password;
 
-
-    public String getName() {
-        return name;
+    public String getNameOrUserId() {
+        return nameOrUserId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameOrUserId(String nameOrUserId) {
+        this.nameOrUserId = nameOrUserId;
     }
 
     public String getPassword() {
