@@ -46,7 +46,7 @@ public class RouteConstant {
         routeVO.setId(ROUTE_ID_CHANNELS);
         routeVO.setName("Channels");
         routeVO.setIcon("appstore");
-        routeVO.setZhName("客户渠道管理");
+        routeVO.setZhName("渠道管理");
         routeVO.setRoute("/channels");
         routeVO.setBreadcrumbParentId("1");
         ROUTE_LIST.put(ROUTE_ID_CHANNELS, routeVO);

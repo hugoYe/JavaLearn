@@ -44,7 +44,7 @@ public class ChannelServiceImpl implements ChannelService {
         } else {
             channelId = String.valueOf(newId);
         }
-        channelDto.setChannelId("wy" + channelId);
+        channelDto.setChannelId("qd" + channelId);
         ChannelDomain domain = new ChannelDomain();
         try {
             XBeanUtil.copyProperties(domain, channelDto, false);
