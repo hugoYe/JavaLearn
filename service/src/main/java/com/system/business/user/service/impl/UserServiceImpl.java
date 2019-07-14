@@ -111,10 +111,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean addUser(UserDTO userDTO) {
         // 用户名唯一性校验
-//        UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
-//        if (null != exist) {
-//            throw new BizException("user.name.exist");
-//        }
+        UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
+        if (null != exist) {
+            throw new BizException("user.name.exist");
+        }
 
         long count = userDao.count();
         long newId = count + 1;
@@ -201,12 +201,18 @@ public class UserServiceImpl implements UserService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public Integer updateUser(UserDTO userDTO) {
+        // 用户名唯一性校验
+        UserDomain existName = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
+        if (null != existName) {
+            throw new BizException("user.name.exist");
+        }
+
         // 校验用户是否存在
-        UserDomain exist = userDao.findByNameAndIsDeleted(userDTO.getName(), YesNoEnum.NO.getValue());
+        UserDomain exist = userDao.findByIdAndIsDeleted(userDTO.getId(), YesNoEnum.NO.getValue());
         if (null == exist) {
             throw new BizException("user.not.exist");
         }
-
+        
         try {
             XBeanUtil.copyProperties(exist, userDTO, false);
         } catch (Exception e) {
