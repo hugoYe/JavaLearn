@@ -144,6 +144,7 @@ public class OperationServiceImpl implements OperationService {
 
             if (usersMap.containsKey(dto.getUserId())) {
                 UserDomain user = usersMap.get(dto.getUserId());
+                dto.setCustomerId(user.getUserId());
                 dto.setUserName(user.getName());
                 dto.setRealName(user.getRealName());
             }

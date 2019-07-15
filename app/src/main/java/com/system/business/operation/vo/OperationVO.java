@@ -12,6 +12,9 @@ public class OperationVO {
     @ApiModelProperty("用户id")
     private Integer userId;
 
+    @ApiModelProperty("客户id")
+    private String customerId;
+
     @ApiModelProperty("用户名")
     private String userName;
 
@@ -51,6 +54,14 @@ public class OperationVO {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getUserName() {

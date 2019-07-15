@@ -29,9 +29,14 @@ public class OperationDto {
     private Date date;
 
     /**
-     * 用户id
+     * 用户自增id
      */
     private Integer userId;
+
+    /**
+     * 客户id
+     */
+    private String customerId;
 
     /**
      * 用户名
@@ -99,6 +104,14 @@ public class OperationDto {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public String getUserName() {
