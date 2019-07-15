@@ -9,6 +9,9 @@ public class UserDictVO {
     @ApiModelProperty("用户id")
     private Integer id;
 
+    @ApiModelProperty("客户id")
+    private String userId;
+
     @ApiModelProperty("用户名")
     private String userName;
 
@@ -24,6 +27,14 @@ public class UserDictVO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

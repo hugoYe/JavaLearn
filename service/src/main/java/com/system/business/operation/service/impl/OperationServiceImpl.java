@@ -64,6 +64,9 @@ public class OperationServiceImpl implements OperationService {
         }
         save.setIsDeleted(YesNoEnum.NO.getValue());
 
+        List<UserAndChannelDomain> list = userAndChannelDao.findByUserId(dto.getUserId());
+        save.setChannelId(list.get(0).getChannelId());
+
         operationDao.save(save);
 
         return null;
