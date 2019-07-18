@@ -6,6 +6,9 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "收入实体对象")
 public class OperationVO {
 
+    @ApiModelProperty("主键")
+    private Integer id;
+
     @ApiModelProperty("日期")
     private String date;
 
@@ -39,6 +42,16 @@ public class OperationVO {
     @ApiModelProperty("真实收入")
     private Double realIncome;
 
+    @ApiModelProperty("收益比例")
+    private Integer incomeRate;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getDate() {
         return date;
@@ -126,5 +139,13 @@ public class OperationVO {
 
     public void setRealIncome(Double realIncome) {
         this.realIncome = realIncome;
+    }
+
+    public Integer getIncomeRate() {
+        return incomeRate;
+    }
+
+    public void setIncomeRate(Integer incomeRate) {
+        this.incomeRate = incomeRate;
     }
 }

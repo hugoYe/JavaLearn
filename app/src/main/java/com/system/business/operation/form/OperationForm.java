@@ -6,6 +6,9 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class OperationForm {
 
+    @ApiModelProperty("主键")
+    private Integer id;
+
     @ApiModelProperty("用户id")
     private String userId;
 
@@ -26,6 +29,14 @@ public class OperationForm {
 
     @ApiModelProperty("真实收入")
     private Double realIncome;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;

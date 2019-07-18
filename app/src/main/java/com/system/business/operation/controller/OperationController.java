@@ -1,7 +1,10 @@
 package com.system.business.operation.controller;
 
+import com.system.business.channel.dto.ChannelDto;
+import com.system.business.channel.form.ChannelForm;
 import com.system.business.operation.dto.OperationDto;
 import com.system.business.operation.dto.OperationQueryDto;
+import com.system.business.operation.form.OperationDeleteForm;
 import com.system.business.operation.form.OperationForm;
 import com.system.business.operation.form.OperationQueryForm;
 import com.system.business.operation.service.OperationService;
@@ -40,6 +43,27 @@ public class OperationController {
 
         return ResponseVO.successResponse(res);
     }
+
+    @ApiOperation("删除收入记录")
+    @DeleteMapping
+    public ResponseVO<Boolean> deleteIncome(@RequestBody OperationDeleteForm form) {
+        Boolean r = operationService.deleteIncome(form.getId());
+
+        return ResponseVO.successResponse(r);
+    }
+
+    @ApiOperation("更新收入记录")
+    @PutMapping
+    public ResponseVO<Boolean> updateIncome(@RequestBody OperationForm form) {
+        OperationDto dto = new OperationDto();
+        BeanUtils.copyProperties(form, dto);
+        dto.setUserId(Integer.valueOf(form.getUserId()));
+        dto.setDate(DateUtils.parse(form.getDate(), DateUtils.DATETIME_FORMAT));
+        Boolean r = operationService.updateIncome(dto);
+
+        return ResponseVO.successResponse(r);
+    }
+
 
     @ApiOperation("获取收入列表")
     @GetMapping

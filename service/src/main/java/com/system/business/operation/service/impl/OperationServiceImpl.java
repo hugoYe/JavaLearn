@@ -73,6 +73,42 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
+    public Boolean updateIncome(OperationDto dto) {
+        OperationDomain exist = operationDao.findByIdAndIsDeleted(dto.getId(), YesNoEnum.NO.getValue());
+        if (null == exist) {
+            throw new BizException("operation.record.not.exist");
+        }
+
+        try {
+            XBeanUtil.copyProperties(exist, dto, false);
+        } catch (Exception e) {
+            throw new BizException();
+        }
+
+        List<UserAndChannelDomain> list = userAndChannelDao.findByUserId(dto.getUserId());
+        exist.setChannelId(list.get(0).getChannelId());
+
+        operationDao.save(exist);
+
+        return true;
+    }
+
+    @Override
+    public Boolean deleteIncome(Integer id) {
+        OperationDomain exist = operationDao.findByIdAndIsDeleted(id, YesNoEnum.NO.getValue());
+        if (null == exist) {
+            throw new BizException("operation.record.not.exist");
+        }
+
+        exist.setIsDeleted(YesNoEnum.YES.getValue());
+        exist.setUpdateTime(new Date());
+
+        operationDao.save(exist);
+
+        return true;
+    }
+
+    @Override
     public PageDTO<OperationDto> getIncomeList(OperationQueryDto queryDto) {
 
         Specification<OperationDomain> spec = (root, query, builder) -> {
@@ -148,6 +184,7 @@ public class OperationServiceImpl implements OperationService {
             if (usersMap.containsKey(dto.getUserId())) {
                 UserDomain user = usersMap.get(dto.getUserId());
                 dto.setCustomerId(user.getUserId());
+                dto.setIncomeRate(user.getIncomeRate());
                 dto.setUserName(user.getName());
                 dto.setRealName(user.getRealName());
             }

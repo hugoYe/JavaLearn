@@ -15,6 +15,8 @@ public interface OperationDao extends JpaRepository<OperationDomain, Integer>, J
 
     OperationDomain findByUserIdAndChannelIdAndDate(Integer userId, String channelId, Date date);
 
+    OperationDomain findByIdAndIsDeleted(Integer id, Integer isDeleted);
+
     @Query("from OperationDomain t where t.isDeleted = 0 and t.date >= :preMonthDate and t.date < :curDate")
     List<OperationDomain> queryOneMonth(@Param("preMonthDate") Date preMonthDate, @Param("curDate") Date curDate);
 

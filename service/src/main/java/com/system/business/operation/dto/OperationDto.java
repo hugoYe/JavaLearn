@@ -3,6 +3,12 @@ package com.system.business.operation.dto;
 import java.util.Date;
 
 public class OperationDto {
+
+    /**
+     * 主键
+     */
+    private Integer id;
+
     /**
      * 页面访问量
      */
@@ -22,6 +28,11 @@ public class OperationDto {
      * 真实收入
      */
     private Double realIncome;
+
+    /**
+     * 收益比例
+     */
+    private Integer incomeRate;
 
     /**
      * 日期
@@ -58,6 +69,14 @@ public class OperationDto {
      */
     private String channelName;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getPv() {
         return pv;
     }
@@ -88,6 +107,14 @@ public class OperationDto {
 
     public void setRealIncome(Double realIncome) {
         this.realIncome = realIncome;
+    }
+
+    public Integer getIncomeRate() {
+        return incomeRate;
+    }
+
+    public void setIncomeRate(Integer incomeRate) {
+        this.incomeRate = incomeRate;
     }
 
     public Date getDate() {

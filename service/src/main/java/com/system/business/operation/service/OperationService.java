@@ -12,6 +12,10 @@ public interface OperationService {
 
     Integer addIncome(OperationDto dto);
 
+    Boolean updateIncome(OperationDto dto);
+
+    Boolean deleteIncome(Integer id);
+
     PageDTO<OperationDto> getIncomeList(OperationQueryDto queryDto);
 
     List<UserAndChannelDomain> getUserAndChannelDict();
