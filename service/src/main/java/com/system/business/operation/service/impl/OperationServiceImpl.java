@@ -51,6 +51,8 @@ public class OperationServiceImpl implements OperationService {
     @Override
     public Integer addIncome(OperationDto dto) {
 
+        UserDomain user = userDao.findByUserIdAndIsDeleted(dto.getCustomerId(), YesNoEnum.NO.getValue());
+        dto.setUserId(user.getId());
         OperationDomain exist = operationDao.findByUserIdAndChannelIdAndDate(dto.getUserId(), dto.getChannelId(), dto.getDate());
         if (null != exist) {
             throw new BizException("operation.record.exist");
@@ -63,6 +65,7 @@ public class OperationServiceImpl implements OperationService {
             throw new BizException();
         }
         save.setIsDeleted(YesNoEnum.NO.getValue());
+        save.setUserId(user.getId());
 
         List<UserAndChannelDomain> list = userAndChannelDao.findByUserId(dto.getUserId());
         save.setChannelId(list.get(0).getChannelId());
@@ -85,7 +88,9 @@ public class OperationServiceImpl implements OperationService {
             throw new BizException();
         }
 
-        List<UserAndChannelDomain> list = userAndChannelDao.findByUserId(dto.getUserId());
+        UserDomain user = userDao.findByUserIdAndIsDeleted(dto.getCustomerId(), YesNoEnum.NO.getValue());
+        exist.setUserId(user.getId());
+        List<UserAndChannelDomain> list = userAndChannelDao.findByUserId(user.getId());
         exist.setChannelId(list.get(0).getChannelId());
 
         operationDao.save(exist);

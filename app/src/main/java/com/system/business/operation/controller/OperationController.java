@@ -37,7 +37,7 @@ public class OperationController {
     public ResponseVO<Integer> addIncome(@RequestBody OperationForm form) {
         OperationDto dto = new OperationDto();
         BeanUtils.copyProperties(form, dto);
-        dto.setUserId(Integer.valueOf(form.getUserId()));
+        dto.setCustomerId(form.getUserId());
         dto.setDate(DateUtils.parse(form.getDate(), DateUtils.DATETIME_FORMAT));
         Integer res = operationService.addIncome(dto);
 
@@ -57,7 +57,7 @@ public class OperationController {
     public ResponseVO<Boolean> updateIncome(@RequestBody OperationForm form) {
         OperationDto dto = new OperationDto();
         BeanUtils.copyProperties(form, dto);
-        dto.setUserId(Integer.valueOf(form.getUserId()));
+        dto.setCustomerId(form.getUserId());
         dto.setDate(DateUtils.parse(form.getDate(), DateUtils.DATETIME_FORMAT));
         Boolean r = operationService.updateIncome(dto);
 
