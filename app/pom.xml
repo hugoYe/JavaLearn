@@ -62,6 +62,12 @@
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.1.0-beta4</version>
+        </dependency>
+
     </dependencies>
 
     <!--spring boot打包的话需要指定一个唯一的入门-->
