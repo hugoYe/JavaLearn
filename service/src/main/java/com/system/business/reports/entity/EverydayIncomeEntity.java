@@ -5,20 +5,19 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 @ColumnWidth(20)
 public class EverydayIncomeEntity implements Serializable {
 
     @ExcelProperty("日期")
-    private Date date;
+    private String date;
 
     @ExcelProperty("客户id")
-    private String userId;
+    private String customerId;
 
     @ExcelProperty("渠道名称")
-    private String channleName;
+    private String channelName;
 
     @ExcelProperty("pv/新增")
     private Integer pv;
@@ -32,28 +31,28 @@ public class EverydayIncomeEntity implements Serializable {
     @ExcelProperty("真实收入")
     private Double realIncome;
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
-    public String getChannleName() {
-        return channleName;
+    public String getChannelName() {
+        return channelName;
     }
 
-    public void setChannleName(String channleName) {
-        this.channleName = channleName;
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
     public Integer getPv() {
