@@ -3,6 +3,8 @@ package com.system.business.reports.controller;
 import com.alibaba.excel.EasyExcel;
 import com.system.business.operation.dto.OperationQueryDto;
 import com.system.business.operation.form.OperationQueryForm;
+import com.system.business.reports.dto.UploadExcelDto;
+import com.system.business.reports.UploadExcelListener;
 import com.system.business.reports.entity.EverydayIncomeEntity;
 import com.system.business.reports.service.EverydayIncomeService;
 import com.system.common.annotation.NoLogin;
@@ -13,8 +15,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -62,5 +66,16 @@ public class EverydayIncomeController {
 //        String fileName = "/Users/hugo/Documents/java/" + "simpleWrite" + ".xlsx";
 //        EasyExcel.write(fileName, EverydayIncomeEntity.class).sheet("模板").doWrite(list);
 
+    }
+
+    @NoLogin
+    @ApiOperation("导入excel报表数据到数据库")
+    @PostMapping(value = "/upload")
+    public void uploadExcel(MultipartFile file) {
+        try {
+            EasyExcel.read(file.getInputStream(), UploadExcelDto.class, new UploadExcelListener(everydayIncomeService)).sheet().doRead();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

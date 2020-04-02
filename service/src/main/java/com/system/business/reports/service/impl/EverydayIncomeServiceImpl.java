@@ -7,11 +7,13 @@ import com.system.business.operation.dao.OperationDao;
 import com.system.business.operation.domain.OperationDomain;
 import com.system.business.operation.dto.OperationDto;
 import com.system.business.operation.dto.OperationQueryDto;
+import com.system.business.reports.dto.UploadExcelDto;
 import com.system.business.reports.entity.EverydayIncomeEntity;
 import com.system.business.reports.service.EverydayIncomeService;
 import com.system.business.user.dao.UserDao;
 import com.system.business.user.domain.UserDomain;
 import com.system.business.userchannel.dao.UserAndChannelDao;
+import com.system.business.userchannel.domain.UserAndChannelDomain;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.support.XBeanUtil;
 import com.system.common.utils.DateUtils;
@@ -167,5 +169,31 @@ public class EverydayIncomeServiceImpl implements EverydayIncomeService {
 
 
         return listAll;
+    }
+
+    @Override
+    public void uploadExcel(List<UploadExcelDto> list) {
+        List<OperationDomain> saveList = list.stream().map(excelData -> {
+            OperationDomain domain = new OperationDomain();
+
+            domain.setDate(DateUtils.parse(excelData.getDate(), DateUtils.DATETIME_FORMAT));
+            domain.setPv(excelData.getPv());
+            domain.setUv(excelData.getUv());
+            domain.setRealIncome(excelData.getRealIncome());
+
+            UserDomain user = userDao.findByUserIdAndIsDeleted(excelData.getCustomerId(), YesNoEnum.NO.getValue());
+            domain.setUserId(user.getId());
+
+            domain.setIncome(domain.getRealIncome() * user.getIncomeRate() / 100);
+
+            List<UserAndChannelDomain> userChannelList = userAndChannelDao.findByUserId(domain.getUserId());
+            domain.setChannelId(userChannelList.get(0).getChannelId());
+
+            domain.setIsDeleted(YesNoEnum.NO.getValue());
+
+            return domain;
+        }).collect(Collectors.toList());
+
+        operationDao.save(saveList);
     }
 }
