@@ -192,6 +192,7 @@ public class OperationServiceImpl implements OperationService {
                 dto.setIncomeRate(user.getIncomeRate());
                 dto.setUserName(user.getName());
                 dto.setRealName(user.getRealName());
+                dto.setCurrency(user.getCurrency());
             }
 
             if (channelsMap.containsKey(dto.getChannelId())) {

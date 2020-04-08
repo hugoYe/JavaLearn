@@ -20,6 +20,9 @@ public class UserForm {
     @ApiModelProperty("收益比例")
     private Integer incomeRate;
 
+    @ApiModelProperty("币种")
+    private String currency;
+
     @ApiModelProperty("公司名称")
     private String company = "";
 
@@ -59,6 +62,14 @@ public class UserForm {
 
     public void setIncomeRate(Integer incomeRate) {
         this.incomeRate = incomeRate;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public String getCompany() {

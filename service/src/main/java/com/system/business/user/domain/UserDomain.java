@@ -47,6 +47,12 @@ public class UserDomain extends BaseDomain {
     private Integer incomeRate;
 
     /**
+     * 币种
+     */
+    @Column(name = "currency")
+    private String currency;
+
+    /**
      * 密码
      */
     @Column(name = "password")
@@ -108,6 +114,14 @@ public class UserDomain extends BaseDomain {
 
     public void setIncomeRate(Integer incomeRate) {
         this.incomeRate = incomeRate;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public String getPassword() {

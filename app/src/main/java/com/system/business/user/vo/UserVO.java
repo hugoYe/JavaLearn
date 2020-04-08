@@ -24,6 +24,9 @@ public class UserVO {
     @ApiModelProperty("收益比例")
     private Integer incomeRate;
 
+    @ApiModelProperty("币种")
+    private String currency;
+
     @ApiModelProperty("用户权限")
     private Permission permissions;
 
@@ -78,6 +81,14 @@ public class UserVO {
 
     public void setIncomeRate(Integer incomeRate) {
         this.incomeRate = incomeRate;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public Permission getPermissions() {

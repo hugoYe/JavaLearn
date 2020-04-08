@@ -1,6 +1,5 @@
 package com.system.business.user.dto;
 
-import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +34,11 @@ public class UserDTO {
      * 收益比例
      */
     private Integer incomeRate;
+
+    /**
+     * 币种
+     */
+    private String currency;
 
     /**
      * 是否超管 1是 0否
@@ -113,6 +117,14 @@ public class UserDTO {
 
     public void setIncomeRate(Integer incomeRate) {
         this.incomeRate = incomeRate;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public Integer getIsRoot() {

@@ -35,6 +35,11 @@ public class OperationDto {
     private Integer incomeRate;
 
     /**
+     * 币种
+     */
+    private String currency;
+
+    /**
      * 日期
      */
     private Date date;
@@ -115,6 +120,14 @@ public class OperationDto {
 
     public void setIncomeRate(Integer incomeRate) {
         this.incomeRate = incomeRate;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public Date getDate() {

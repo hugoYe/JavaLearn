@@ -45,6 +45,9 @@ public class OperationVO {
     @ApiModelProperty("收益比例")
     private Integer incomeRate;
 
+    @ApiModelProperty("币种")
+    private String currency;
+
     public Integer getId() {
         return id;
     }
@@ -147,5 +150,13 @@ public class OperationVO {
 
     public void setIncomeRate(Integer incomeRate) {
         this.incomeRate = incomeRate;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
