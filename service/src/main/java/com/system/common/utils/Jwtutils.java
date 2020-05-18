@@ -26,7 +26,7 @@ public class Jwtutils {
      * @param userId    登录成功的user id
      * @return
      */
-    public static String createJWT(long ttlMillis, Integer userId) {
+    public static String createJWT(long ttlMillis, String userId) {
         //指定签名的时候使用的签名算法，也就是header那部分，jjwt已经将这部分内容封装好了。
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -103,7 +103,7 @@ public class Jwtutils {
      * @param request 请求
      * @return Integer 用户id
      */
-    public static Integer verifyToken(HttpServletRequest request, HttpServletResponse response) {
+    public static String verifyToken(HttpServletRequest request, HttpServletResponse response) {
 
         // 从 http 请求头中取出 token
         String token = request.getHeader("token");
@@ -113,10 +113,10 @@ public class Jwtutils {
         }
 
         // 获取 token 中的 user id
-        Integer userId;
+        String userId;
         try {
             Claims claims = Jwtutils.parseJWT(token);
-            userId = claims.get("userId", Integer.class);
+            userId = claims.get("userId", String.class);
         } catch (MalformedJwtException e) {
             response.setStatus(401);
             throw new BizException("user.not.login", "401");

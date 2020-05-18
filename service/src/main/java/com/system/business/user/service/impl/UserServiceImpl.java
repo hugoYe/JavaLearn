@@ -52,15 +52,13 @@ public class UserServiceImpl implements UserService {
     private String salt;
 
     @Override
-    public UserDTO login(String nameOrUserId, String password) {
+    public UserDTO login(String account, String password) {
         // 校验用户是否存在
-        UserDomain exist = userDao.findByNameAndIsDeleted(nameOrUserId, YesNoEnum.NO.getValue());
+        UserDomain exist = userDao.findByUserIdAndIsDeleted(account, YesNoEnum.NO.getValue());
         if (null == exist) {
-            exist = userDao.findByUserIdAndIsDeleted(nameOrUserId, YesNoEnum.NO.getValue());
-            if (null == exist) {
-                throw new BizException("user.not.exist");
-            }
+            throw new BizException("user.not.exist");
         }
+
 
         String prePassword = SHA256Utils.encryptPassword(password, salt);
         if (!prePassword.equals(exist.getPassword())) {
@@ -80,9 +78,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
-    public UserDTO getUserById(Integer userId) {
+    public UserDTO getUserByUserId(String userId) {
         // 校验用户是否存在
-        UserDomain exist = userDao.findByIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
+        UserDomain exist = userDao.findByUserIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
         if (null == exist) {
             throw new BizException("user.not.exist");
         }
@@ -96,7 +94,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (user.getIsRoot() == YesNoEnum.NO.getValue()) {
-            List<UserAndChannelDomain> ucList = userAndChannelDao.findByUserId(userId);
+            List<UserAndChannelDomain> ucList = userAndChannelDao.findByUserId(exist.getId());
             List<String> channelIds = ucList.stream().map(UserAndChannelDomain::getChannelId).collect(Collectors.toList());
             user.setChannelId(channelIds);
             List<ChannelDomain> cList = channelDao.queryChannelByIds(channelIds);

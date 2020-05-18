@@ -31,8 +31,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        Integer userId = Jwtutils.verifyToken(httpServletRequest, httpServletResponse);
-        UserDomain user = userDao.findByIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
+        String userId = Jwtutils.verifyToken(httpServletRequest, httpServletResponse);
+        UserDomain user = userDao.findByUserIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
         if (null == user) {
             throw new BizException("user.not.exist");
         }

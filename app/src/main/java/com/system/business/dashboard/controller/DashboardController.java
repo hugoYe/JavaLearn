@@ -32,7 +32,7 @@ public class DashboardController {
     @GetMapping
     public ResponseVO<DashboardVO> queryDashboard(HttpServletRequest request, HttpServletResponse response) {
 
-        Integer userId = Jwtutils.verifyToken(request, response);
+        String userId = Jwtutils.verifyToken(request, response);
         List<DashboardDto> queryList = dashboardService.queryDashboard(userId);
         Map<Date, List<DashboardDto>> queryMap = new HashMap<>();
         for (DashboardDto dto : queryList) {

@@ -27,9 +27,9 @@ public class DashboardServiceImpl implements DashboardService {
     private UserDao userDao;
 
     @Override
-    public List<DashboardDto> queryDashboard(Integer userId) {
+    public List<DashboardDto> queryDashboard(String userId) {
 
-        UserDomain user = userDao.findByIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
+        UserDomain user = userDao.findByUserIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
 
         List<OperationDomain> queryList = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
@@ -40,7 +40,7 @@ public class DashboardServiceImpl implements DashboardService {
         if (user.getIsRoot() == YesNoEnum.YES.getValue()) {
             queryList = operationDao.queryOneMonth(preMonthDate, curDate);
         } else {
-            queryList = operationDao.queryOneMonthByUserId(userId, preMonthDate, curDate);
+            queryList = operationDao.queryOneMonthByUserId(user.getId(), preMonthDate, curDate);
         }
 
         List<DashboardDto> res = queryList.stream().map(operationDomain -> {

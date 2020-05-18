@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface DashboardService {
 
-    List<DashboardDto> queryDashboard(Integer userId);
+    List<DashboardDto> queryDashboard(String userId);
 }

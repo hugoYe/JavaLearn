@@ -50,9 +50,9 @@ public class UserController {
     @PostMapping(value = "/login")
     @ResponseBody
     public ResponseVO<LoginVO> login(@RequestBody LoginForm form, HttpServletRequest request) {
-        UserDTO userDTO = userService.login(form.getNameOrUserId(), form.getPassword());
+        UserDTO userDTO = userService.login(form.getAccount(), form.getPassword());
         LoginVO loginVO = new LoginVO();
-        String token = Jwtutils.createJWT(Jwtutils.TOW_DAY, userDTO.getId());
+        String token = Jwtutils.createJWT(Jwtutils.TOW_DAY, userDTO.getUserId());
         loginVO.setToken(token);
         return ResponseVO.successResponse(loginVO);
     }
@@ -70,8 +70,8 @@ public class UserController {
     @ResponseBody
     public ResponseVO<UserVO> getLogonUserInfo(HttpServletRequest request, HttpServletResponse response) {
 
-        Integer userId = Jwtutils.verifyToken(request, response);
-        UserDTO user = userService.getUserById(userId);
+        String userId = Jwtutils.verifyToken(request, response);
+        UserDTO user = userService.getUserByUserId(userId);
 
         UserVO userVO = new UserVO();
         try {
@@ -130,11 +130,11 @@ public class UserController {
     }
 
     @ApiOperation("获取用户")
-    @GetMapping(value = "getUser/{id}")
+    @GetMapping(value = "getUser/{userId}")
     @ResponseBody
-    public ResponseVO<UserVO> getUserById(@PathVariable(name = "id") int userId) {
+    public ResponseVO<UserVO> getUserById(@PathVariable(name = "userId") String userId) {
 
-        UserDTO user = userService.getUserById(userId);
+        UserDTO user = userService.getUserByUserId(userId);
 
         UserVO userVO = new UserVO();
         try {
