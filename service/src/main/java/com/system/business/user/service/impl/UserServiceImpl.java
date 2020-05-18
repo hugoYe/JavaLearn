@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
             throw new BizException();
         }
 
-        if (user.getIsRoot() == YesNoEnum.NO.getValue()) {
+        if (user.getUserRole().equals("visitor")) {
             List<UserAndChannelDomain> ucList = userAndChannelDao.findByUserId(exist.getId());
             List<String> channelIds = ucList.stream().map(UserAndChannelDomain::getChannelId).collect(Collectors.toList());
             user.setChannelId(channelIds);
@@ -127,6 +127,8 @@ public class UserServiceImpl implements UserService {
         // 添加用户默认密码
         userDTO.setPassword(WebConstants.DREFAULT_PASSWORD);
         userDTO.setIsDeleted(YesNoEnum.NO.getValue());
+        userDTO.setUserRole("visitor");
+
         userDTO.setIsRoot(YesNoEnum.NO.getValue());
 
         UserDomain user = new UserDomain();

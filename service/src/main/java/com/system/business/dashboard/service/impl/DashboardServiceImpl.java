@@ -37,7 +37,7 @@ public class DashboardServiceImpl implements DashboardService {
         cal.setTime(curDate);
         cal.add(Calendar.MONTH, -1);
         Date preMonthDate = cal.getTime();
-        if (user.getIsRoot() == YesNoEnum.YES.getValue()) {
+        if (user.getUserRole().equals("admin")) {
             queryList = operationDao.queryOneMonth(preMonthDate, curDate);
         } else {
             queryList = operationDao.queryOneMonthByUserId(user.getId(), preMonthDate, curDate);

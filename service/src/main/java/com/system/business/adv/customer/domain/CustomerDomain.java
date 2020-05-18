@@ -79,6 +79,12 @@ public class CustomerDomain extends BaseDomain {
     @Column(name = "is_deleted")
     private Integer isDeleted = 0;
 
+    /**
+     * 用户角色
+     */
+    @Column(name = "user_role")
+    private String userRole;
+
     public Integer getId() {
         return id;
     }
@@ -165,5 +171,13 @@ public class CustomerDomain extends BaseDomain {
 
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

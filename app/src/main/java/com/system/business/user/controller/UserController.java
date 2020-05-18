@@ -80,19 +80,18 @@ public class UserController {
         }
         userVO.setUserName(user.getName());
         userVO.setCreateTime(DateUtils.formatDate(user.getCreateTime()));
-        Permission permission = generatePermission(user.getIsRoot());
+        Permission permission = generatePermission(user.getUserRole());
         userVO.setPermissions(permission);
 
         return ResponseVO.successResponse(userVO);
     }
 
-    private Permission generatePermission(Integer isRoot) {
+    private Permission generatePermission(String userRole) {
         Permission permission = new Permission();
-        if (isRoot == YesNoEnum.YES.getValue()) {
-            permission.setRole(Role.ROLE_ADMIN);
+        permission.setRole(userRole);
+        if (userRole.equals(Role.ROLE_ADMIN)) {
             permission.setVisit(RouteConstant.MANAGER_ROUTE_IDS);
-        } else {
-            permission.setRole(Role.ROLE_VISTOR);
+        } else if (userRole.equals(Role.ROLE_VISITOR)) {
             permission.setVisit(RouteConstant.VISTOR_ROUTE_IDS);
         }
 
@@ -143,7 +142,7 @@ public class UserController {
         }
         userVO.setUserName(user.getName());
         userVO.setCreateTime(DateUtils.formatDate(user.getCreateTime()));
-        Permission permission = generatePermission(user.getIsRoot());
+        Permission permission = generatePermission(user.getUserRole());
         userVO.setPermissions(permission);
 
         return ResponseVO.successResponse(userVO);

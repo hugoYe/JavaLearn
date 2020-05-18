@@ -71,6 +71,12 @@ public class UserDomain extends BaseDomain {
     private Integer isRoot;
 
     /**
+     * 用户角色
+     */
+    @Column(name = "user_role")
+    private String userRole;
+
+    /**
      * 被删除的数据: 1.已删除，0.未删除
      */
     @Column(name = "is_deleted")
@@ -146,6 +152,14 @@ public class UserDomain extends BaseDomain {
 
     public void setIsRoot(Integer isRoot) {
         this.isRoot = isRoot;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     public Integer getIsDeleted() {

@@ -46,6 +46,11 @@ public class UserDTO {
     private Integer isRoot;
 
     /**
+     * 用户角色
+     */
+    private String userRole;
+
+    /**
      * 被删除的数据: 1.已删除，0.未删除
      */
     private Integer isDeleted;
@@ -133,6 +138,14 @@ public class UserDTO {
 
     public void setIsRoot(Integer isRoot) {
         this.isRoot = isRoot;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     public Integer getIsDeleted() {
