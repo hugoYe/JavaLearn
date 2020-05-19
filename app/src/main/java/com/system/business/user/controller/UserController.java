@@ -17,7 +17,6 @@ import com.system.business.user.vo.UserVO;
 import com.system.common.annotation.NoAuth;
 import com.system.common.annotation.NoLogin;
 import com.system.common.constants.WebConstants;
-import com.system.common.constants.YesNoEnum;
 import com.system.common.dto.PageDTO;
 import com.system.common.support.XBeanUtil;
 import com.system.common.utils.DateUtils;
@@ -92,7 +91,7 @@ public class UserController {
         if (userRole.equals(Role.ROLE_ADMIN)) {
             permission.setVisit(RouteConstant.MANAGER_ROUTE_IDS);
         } else if (userRole.equals(Role.ROLE_VISITOR)) {
-            permission.setVisit(RouteConstant.VISTOR_ROUTE_IDS);
+            permission.setVisit(RouteConstant.VISITOR_ROUTE_IDS);
         }
 
         return permission;
