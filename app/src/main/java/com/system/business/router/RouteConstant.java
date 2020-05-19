@@ -20,15 +20,22 @@ public class RouteConstant {
     public static final String ROUTE_ID_OFFER = "23";       // 广告业务offer管理
     public static final String ROUTE_ID_USERCENTER = "3";   //  个人中心
 
+    // 管理员访问权限菜单
     public static final String[] MANAGER_ROUTE_IDS = {ROUTE_ID_MENU_BASE, ROUTE_ID_DASHBOARD, ROUTE_ID_INCOME,
             ROUTE_ID_CHANNELS, ROUTE_ID_USERS, ROUTE_ID_USER_DETAIL, ROUTE_ID_MENU_OFFER, ROUTE_ID_ADVERTISER, ROUTE_ID_ADV_CUSTOMER,
             ROUTE_ID_OFFER, ROUTE_ID_USERCENTER};
 
+    // 基础业务客户访问权限菜单
     public static final String[] VISITOR_ROUTE_IDS = {ROUTE_ID_MENU_BASE, ROUTE_ID_DASHBOARD, ROUTE_ID_INCOME, ROUTE_ID_USERCENTER};
+
+    // 广告业务客户访问权限菜单
+    public static final String[] ADV_CUSTOMER_ROUTE_IDS = {ROUTE_ID_MENU_OFFER, ROUTE_ID_ADVERTISER, ROUTE_ID_ADV_CUSTOMER, ROUTE_ID_OFFER,
+            ROUTE_ID_USERCENTER};
 
     public static final HashMap<String, RouteVO> ROUTE_LIST = new HashMap<>();
     public static List<RouteVO> manager_route_list = new ArrayList<>();
     public static List<RouteVO> visitor_route_list = new ArrayList<>();
+    public static List<RouteVO> adv_customer_route_list = new ArrayList<>();
 
     static {
         RouteVO routeVO = new RouteVO();
@@ -142,6 +149,11 @@ public class RouteConstant {
         for (String id : VISITOR_ROUTE_IDS) {
             RouteVO vo = ROUTE_LIST.get(id);
             visitor_route_list.add(vo);
+        }
+
+        for (String id : ADV_CUSTOMER_ROUTE_IDS) {
+            RouteVO vo = ROUTE_LIST.get(id);
+            adv_customer_route_list.add(vo);
         }
     }
 
