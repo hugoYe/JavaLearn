@@ -1,13 +1,13 @@
 package com.system.business.adv.advertiser.controller;
 
 import com.system.business.adv.advertiser.dto.AdvertiserDto;
+import com.system.business.adv.advertiser.dto.AdvertiserQueryDto;
 import com.system.business.adv.advertiser.form.AdvertiserForm;
+import com.system.business.adv.advertiser.form.AdvertiserQueryForm;
 import com.system.business.adv.advertiser.service.AdvertiserService;
 import com.system.business.adv.advertiser.vo.AdvertiserVO;
 import com.system.common.constants.WebConstants;
 import com.system.common.dto.PageDTO;
-import com.system.common.dto.PageQueryDTO;
-import com.system.common.form.PageForm;
 import com.system.common.support.XBeanUtil;
 import com.system.common.utils.DateUtils;
 import com.system.common.vo.ResponseVO;
@@ -70,8 +70,9 @@ public class AdvertiserController {
     }
 
     @ApiOperation("获取广告主列表")
-    public ResponseVO<PageDTO<AdvertiserVO>> getAdvertiserList(PageForm form) {
-        PageQueryDTO pageQueryDTO = new PageQueryDTO();
+    @GetMapping(value = "/getAdvertiserList")
+    public ResponseVO<PageDTO<AdvertiserVO>> getAdvertiserList(AdvertiserQueryForm form) {
+        AdvertiserQueryDto pageQueryDTO = new AdvertiserQueryDto();
         try {
             XBeanUtil.copyProperties(pageQueryDTO, form, false);
         } catch (Exception e) {

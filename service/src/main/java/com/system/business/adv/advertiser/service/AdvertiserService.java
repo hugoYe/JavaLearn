@@ -1,8 +1,8 @@
 package com.system.business.adv.advertiser.service;
 
 import com.system.business.adv.advertiser.dto.AdvertiserDto;
+import com.system.business.adv.advertiser.dto.AdvertiserQueryDto;
 import com.system.common.dto.PageDTO;
-import com.system.common.dto.PageQueryDTO;
 
 
 public interface AdvertiserService {
@@ -30,6 +30,6 @@ public interface AdvertiserService {
     /**
      * 获取广告主列表
      */
-    PageDTO<AdvertiserDto> getAdvertiserList(PageQueryDTO pageQueryDTO);
+    PageDTO<AdvertiserDto> getAdvertiserList(AdvertiserQueryDto pageQueryDTO);
 
 }

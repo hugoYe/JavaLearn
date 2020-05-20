@@ -3,10 +3,10 @@ package com.system.business.adv.advertiser.service.impl;
 import com.system.business.adv.advertiser.dao.AdvertiserDao;
 import com.system.business.adv.advertiser.domain.AdvertiserDomain;
 import com.system.business.adv.advertiser.dto.AdvertiserDto;
+import com.system.business.adv.advertiser.dto.AdvertiserQueryDto;
 import com.system.business.adv.advertiser.service.AdvertiserService;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.dto.PageDTO;
-import com.system.common.dto.PageQueryDTO;
 import com.system.common.support.XBeanUtil;
 import com.system.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,12 +105,23 @@ public class AdvertiserServiceImpl implements AdvertiserService {
     }
 
     @Override
-    public PageDTO<AdvertiserDto> getAdvertiserList(PageQueryDTO pageQueryDTO) {
+    public PageDTO<AdvertiserDto> getAdvertiserList(AdvertiserQueryDto pageQueryDTO) {
 
         Specification<AdvertiserDomain> spec = (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
             //默认查询未删除
             predicates.add(builder.equal(root.get("isDeleted"), YesNoEnum.NO.getValue()));
+            if (pageQueryDTO.getAdvId() != null) {
+                predicates.add(builder.equal(root.get("advId"), pageQueryDTO.getAdvId()));
+            }
+
+            if (pageQueryDTO.getAdvName() != null) {
+                predicates.add(builder.equal(root.get("advName"), pageQueryDTO.getAdvName()));
+            }
+
+            if (pageQueryDTO.getAdvType() != null) {
+                predicates.add(builder.equal(root.get("advType"), pageQueryDTO.getAdvType()));
+            }
 
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
