@@ -41,7 +41,7 @@ public class AdvertiserDto {
     private String advPhone;
 
     /**
-     * 广告主联系邮箱-支持多个填写邮箱，中间可以设定由;或者,隔开
+     * 广告主联系邮箱-支持多个填写邮箱，中间由;隔开
      */
     private String advEmail;
 
