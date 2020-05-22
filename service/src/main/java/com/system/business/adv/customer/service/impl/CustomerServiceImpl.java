@@ -4,6 +4,7 @@ package com.system.business.adv.customer.service.impl;
 import com.system.business.adv.customer.dao.CustomerDao;
 import com.system.business.adv.customer.domain.CustomerDomain;
 import com.system.business.adv.customer.dto.CustomerDto;
+import com.system.business.adv.customer.dto.CustomerQueryDto;
 import com.system.business.adv.customer.service.CustomerService;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.dto.PageDTO;
@@ -107,11 +108,23 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public PageDTO<CustomerDto> getCustomerList(PageQueryDTO pageQueryDTO) {
+    public PageDTO<CustomerDto> getCustomerList(CustomerQueryDto pageQueryDTO) {
+
         Specification<CustomerDomain> spec = (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
             //默认查询未删除
             predicates.add(builder.equal(root.get("isDeleted"), YesNoEnum.NO.getValue()));
+            if (pageQueryDTO.getCustId() != null) {
+                predicates.add(builder.equal(root.get("custId"), pageQueryDTO.getCustId()));
+            }
+
+            if (pageQueryDTO.getCustName() != null) {
+                predicates.add(builder.equal(root.get("custName"), pageQueryDTO.getCustName()));
+            }
+
+            if (pageQueryDTO.getCustType() != null) {
+                predicates.add(builder.equal(root.get("custType"), pageQueryDTO.getCustType()));
+            }
 
             return builder.and(predicates.toArray(new Predicate[predicates.size()]));
         };

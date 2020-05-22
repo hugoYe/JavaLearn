@@ -3,7 +3,9 @@ package com.system.business.adv.customer.controller;
 
 import com.system.business.adv.advertiser.vo.AdvertiserVO;
 import com.system.business.adv.customer.dto.CustomerDto;
+import com.system.business.adv.customer.dto.CustomerQueryDto;
 import com.system.business.adv.customer.form.CustomerForm;
+import com.system.business.adv.customer.form.CustomerQueryForm;
 import com.system.business.adv.customer.service.CustomerService;
 import com.system.business.adv.customer.vo.CustomerVO;
 import com.system.common.constants.WebConstants;
@@ -72,8 +74,9 @@ public class CustomerController {
     }
 
     @ApiOperation("获取客户列表")
-    public ResponseVO<PageDTO<CustomerVO>> getCustomerList(PageForm form) {
-        PageQueryDTO pageQueryDTO = new PageQueryDTO();
+    @GetMapping(value = "/getCustomerList")
+    public ResponseVO<PageDTO<CustomerVO>> getCustomerList(CustomerQueryForm form) {
+        CustomerQueryDto pageQueryDTO = new CustomerQueryDto();
         try {
             XBeanUtil.copyProperties(pageQueryDTO, form, false);
         } catch (Exception e) {

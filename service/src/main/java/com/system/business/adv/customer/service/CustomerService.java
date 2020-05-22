@@ -1,8 +1,8 @@
 package com.system.business.adv.customer.service;
 
 import com.system.business.adv.customer.dto.CustomerDto;
+import com.system.business.adv.customer.dto.CustomerQueryDto;
 import com.system.common.dto.PageDTO;
-import com.system.common.dto.PageQueryDTO;
 
 
 public interface CustomerService {
@@ -30,6 +30,6 @@ public interface CustomerService {
     /**
      * 获取客户列表
      */
-    PageDTO<CustomerDto> getCustomerList(PageQueryDTO pageQueryDTO);
+    PageDTO<CustomerDto> getCustomerList(CustomerQueryDto pageQueryDTO);
 
 }
