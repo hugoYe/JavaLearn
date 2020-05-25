@@ -2,6 +2,7 @@ package com.system.business.adv.customer.service;
 
 import com.system.business.adv.customer.dto.CustomerDto;
 import com.system.business.adv.customer.dto.CustomerQueryDto;
+import com.system.business.user.dto.UserEditDTO;
 import com.system.common.dto.PageDTO;
 
 
@@ -40,5 +41,13 @@ public interface CustomerService {
      * 获取客户列表
      */
     PageDTO<CustomerDto> getCustomerList(CustomerQueryDto pageQueryDTO);
+
+    /**
+     * 编辑用户信息
+     *
+     * @param dto 修改信息
+     * @return Integer
+     */
+    Boolean editUser(UserEditDTO dto);
 
 }

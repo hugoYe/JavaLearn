@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class UserEditForm {
 
     @ApiModelProperty("用户id")
-    private Integer id;
+    private String userId;
 
     @ApiModelProperty("用户真实姓名")
     private String realName;
@@ -24,12 +24,12 @@ public class UserEditForm {
     @ApiModelProperty(value = "确认密码")
     private String confirmPassword;
 
-    public Integer getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getRealName() {

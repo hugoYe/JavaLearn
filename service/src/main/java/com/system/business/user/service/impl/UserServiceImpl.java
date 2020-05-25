@@ -359,7 +359,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean editUser(UserEditDTO dto) {
-        UserDomain user = userDao.findByIdAndIsDeleted(dto.getId(), YesNoEnum.NO.getValue());
+        UserDomain user = userDao.findByUserIdAndIsDeleted(dto.getUserId(), YesNoEnum.NO.getValue());
         if (null == user) {
             throw new BizException("user.not.exist");
         }

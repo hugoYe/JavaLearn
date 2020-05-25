@@ -6,6 +6,7 @@ import com.system.business.adv.customer.domain.CustomerDomain;
 import com.system.business.adv.customer.dto.CustomerDto;
 import com.system.business.adv.customer.dto.CustomerQueryDto;
 import com.system.business.adv.customer.service.CustomerService;
+import com.system.business.user.dto.UserEditDTO;
 import com.system.common.constants.WebConstants;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.dto.PageDTO;
@@ -13,6 +14,7 @@ import com.system.common.dto.PageQueryDTO;
 import com.system.common.support.XBeanUtil;
 import com.system.common.utils.SHA256Utils;
 import com.system.exception.BizException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -195,5 +197,37 @@ public class CustomerServiceImpl implements CustomerService {
         });
 
         return result;
+    }
+
+    @Override
+    public Boolean editUser(UserEditDTO dto) {
+        CustomerDomain customer = customerDao.findByCustIdAndIsDeleted(dto.getUserId(), YesNoEnum.NO.getValue());
+        if (null == customer) {
+            throw new BizException("customer.not.exist");
+        }
+
+        Boolean needToLogout = false;
+
+        if (StringUtils.isNotBlank(dto.getCurrentPassword())
+                && StringUtils.isNotBlank(dto.getNewPassword())
+                && StringUtils.isNotBlank(dto.getConfirmPassword())) {
+
+            String curPassword = SHA256Utils.encryptPassword(dto.getCurrentPassword(), salt);
+            if (!customer.getPassword().equals(curPassword)) {
+                throw new BizException("user.original.password.error");
+            }
+
+            if (!dto.getNewPassword().equals(dto.getConfirmPassword())) {
+                throw new BizException("user.entered.passwords.differ");
+            }
+
+            needToLogout = true;
+
+            customer.setPassword(SHA256Utils.encryptPassword(dto.getNewPassword(), salt));
+
+            customerDao.save(customer);
+        }
+
+        return needToLogout;
     }
 }

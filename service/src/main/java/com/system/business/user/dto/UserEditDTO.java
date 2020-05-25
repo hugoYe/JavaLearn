@@ -3,9 +3,9 @@ package com.system.business.user.dto;
 public class UserEditDTO {
 
     /**
-     * 主键
+     * 用户id
      */
-    private Integer id;
+    private String userId;
 
     /**
      * 用户真实姓名
@@ -37,12 +37,12 @@ public class UserEditDTO {
      */
     private String confirmPassword;
 
-    public Integer getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getRealName() {

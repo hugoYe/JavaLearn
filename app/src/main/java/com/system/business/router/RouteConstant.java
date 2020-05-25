@@ -133,7 +133,6 @@ public class RouteConstant {
 
         routeVO = new RouteVO();
         routeVO.setId(ROUTE_ID_USERCENTER);
-        routeVO.setBreadcrumbParentId(ROUTE_ID_MENU_BASE);
         routeVO.setName("User Center");
         routeVO.setIcon("user");
         routeVO.setZhName("个人中心");

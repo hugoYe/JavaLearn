@@ -220,10 +220,14 @@ public class UserController {
     @ApiOperation("编辑用户信息")
     @ResponseBody
     public ResponseVO<Boolean> editUser(@RequestBody UserEditForm form) {
-
+        Boolean needToLogout = false;
         UserEditDTO dto = new UserEditDTO();
         BeanUtils.copyProperties(form, dto);
-        Boolean needToLogout = userService.editUser(dto);
+        if (form.getUserId().startsWith("wy")) {
+            needToLogout = userService.editUser(dto);
+        } else {
+            needToLogout = customerService.editUser(dto);
+        }
 
         return ResponseVO.successResponse(needToLogout);
     }
