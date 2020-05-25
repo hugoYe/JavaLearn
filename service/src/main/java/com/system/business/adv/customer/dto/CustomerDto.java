@@ -51,6 +51,11 @@ public class CustomerDto {
     private Integer proportion;
 
     /**
+     * 用户角色
+     */
+    private String userRole;
+
+    /**
      * 创建时间
      */
     private Date createTime;
@@ -130,6 +135,14 @@ public class CustomerDto {
 
     public void setProportion(Integer proportion) {
         this.proportion = proportion;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     public Date getCreateTime() {

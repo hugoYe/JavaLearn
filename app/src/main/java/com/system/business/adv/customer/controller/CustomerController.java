@@ -1,7 +1,6 @@
 package com.system.business.adv.customer.controller;
 
 
-import com.system.business.adv.advertiser.vo.AdvertiserVO;
 import com.system.business.adv.customer.dto.CustomerDto;
 import com.system.business.adv.customer.dto.CustomerQueryDto;
 import com.system.business.adv.customer.form.CustomerForm;
@@ -10,8 +9,6 @@ import com.system.business.adv.customer.service.CustomerService;
 import com.system.business.adv.customer.vo.CustomerVO;
 import com.system.common.constants.WebConstants;
 import com.system.common.dto.PageDTO;
-import com.system.common.dto.PageQueryDTO;
-import com.system.common.form.PageForm;
 import com.system.common.support.XBeanUtil;
 import com.system.common.utils.DateUtils;
 import com.system.common.vo.ResponseVO;

@@ -8,6 +8,15 @@ import com.system.common.dto.PageDTO;
 public interface CustomerService {
 
     /**
+     * 用户登录
+     *
+     * @param account  账号
+     * @param password 密码
+     * @return UserDTO
+     */
+    CustomerDto login(String account, String password);
+
+    /**
      * 添加客户
      */
     Boolean addCustomer(CustomerDto customerDto);

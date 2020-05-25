@@ -6,12 +6,15 @@ import com.system.business.adv.customer.domain.CustomerDomain;
 import com.system.business.adv.customer.dto.CustomerDto;
 import com.system.business.adv.customer.dto.CustomerQueryDto;
 import com.system.business.adv.customer.service.CustomerService;
+import com.system.common.constants.WebConstants;
 import com.system.common.constants.YesNoEnum;
 import com.system.common.dto.PageDTO;
 import com.system.common.dto.PageQueryDTO;
 import com.system.common.support.XBeanUtil;
+import com.system.common.utils.SHA256Utils;
 import com.system.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,6 +33,32 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CustomerDao customerDao;
 
+    @Value("${application.login.salt:phoenixAd}")
+    private String salt;
+
+
+    @Override
+    public CustomerDto login(String account, String password) {
+        CustomerDomain exist = customerDao.findByCustIdAndIsDeleted(account, YesNoEnum.NO.getValue());
+        if (null == exist) {
+            throw new BizException("customer.not.exist");
+        }
+
+        String prePassword = SHA256Utils.encryptPassword(password, salt);
+        if (!prePassword.equals(exist.getPassword())) {
+            throw new BizException("user.original.password.error", "20001");
+        }
+
+        CustomerDto customerDto = new CustomerDto();
+        try {
+            XBeanUtil.copyProperties(customerDto, exist, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException();
+        }
+
+        return customerDto;
+    }
 
     @Override
     public Boolean addCustomer(CustomerDto customerDto) {
@@ -51,6 +80,11 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         domain.setCustId("C" + advId);
+
+        String secretPassword = SHA256Utils.encryptPassword(WebConstants.DREFAULT_CUSTOMER_PASSWORD, salt);
+        domain.setPassword(secretPassword);
+        domain.setIsDeleted(YesNoEnum.NO.getValue());
+        domain.setUserRole("ad_visitor");
 
         customerDao.save(domain);
 
@@ -104,7 +138,19 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto getCustomer(String custId) {
-        return null;
+        CustomerDomain exist = customerDao.findByCustIdAndIsDeleted(custId, YesNoEnum.NO.getValue());
+        if (null == exist) {
+            throw new BizException("customer.not.exist");
+        }
+
+        CustomerDto customer = new CustomerDto();
+        try {
+            XBeanUtil.copyProperties(customer, exist, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException();
+        }
+        return customer;
     }
 
     @Override

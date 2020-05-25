@@ -1,5 +1,7 @@
 package com.system.common.interceptor;
 
+import com.system.business.adv.customer.dao.CustomerDao;
+import com.system.business.adv.customer.domain.CustomerDomain;
 import com.system.business.user.dao.UserDao;
 import com.system.business.user.domain.UserDomain;
 import com.system.common.annotation.NoLogin;
@@ -22,6 +24,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     @Autowired
     UserDao userDao;
 
+    @Autowired
+    CustomerDao customerDao;
+
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
@@ -32,10 +37,18 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
 
         String userId = Jwtutils.verifyToken(httpServletRequest, httpServletResponse);
-        UserDomain user = userDao.findByUserIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
-        if (null == user) {
-            throw new BizException("user.not.exist");
+        if (userId.startsWith("wy")) {
+            UserDomain user = userDao.findByUserIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
+            if (null == user) {
+                throw new BizException("user.not.exist");
+            }
+        } else {
+            CustomerDomain customer = customerDao.findByCustIdAndIsDeleted(userId, YesNoEnum.NO.getValue());
+            if (null == customer) {
+                throw new BizException("customer.not.exist");
+            }
         }
+
 
         return true;
     }

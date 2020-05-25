@@ -96,7 +96,6 @@ public class RouteConstant {
 
         routeVO = new RouteVO();
         routeVO.setId(ROUTE_ID_MENU_OFFER);
-        routeVO.setBreadcrumbParentId(ROUTE_ID_MENU_BASE);
         routeVO.setName("广告业务");
         routeVO.setIcon("dollar");
         routeVO.setZhName("广告业务");

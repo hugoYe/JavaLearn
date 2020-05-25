@@ -1,5 +1,7 @@
 package com.system.business.user.controller;
 
+import com.system.business.adv.customer.dto.CustomerDto;
+import com.system.business.adv.customer.service.CustomerService;
 import com.system.business.permission.Permission;
 import com.system.business.permission.Role;
 import com.system.business.router.RouteConstant;
@@ -43,16 +45,29 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CustomerService customerService;
+
     @NoLogin
     @NoAuth
     @ApiOperation("用户登录")
     @PostMapping(value = "/login")
     @ResponseBody
     public ResponseVO<LoginVO> login(@RequestBody LoginForm form, HttpServletRequest request) {
-        UserDTO userDTO = userService.login(form.getAccount(), form.getPassword());
+        String account = form.getAccount();
+        String userId = "";
+        if (account.startsWith("wy")) {
+            UserDTO userDTO = userService.login(account, form.getPassword());
+            userId = userDTO.getUserId();
+        } else {
+            CustomerDto customerDto = customerService.login(account, form.getPassword());
+            userId = customerDto.getCustId();
+        }
+
         LoginVO loginVO = new LoginVO();
-        String token = Jwtutils.createJWT(Jwtutils.TOW_DAY, userDTO.getUserId());
+        String token = Jwtutils.createJWT(Jwtutils.TOW_DAY, userId);
         loginVO.setToken(token);
+        loginVO.setAccount(userId);
         return ResponseVO.successResponse(loginVO);
     }
 
@@ -69,18 +84,27 @@ public class UserController {
     @ResponseBody
     public ResponseVO<UserVO> getLogonUserInfo(HttpServletRequest request, HttpServletResponse response) {
 
-        String userId = Jwtutils.verifyToken(request, response);
-        UserDTO user = userService.getUserByUserId(userId);
-
         UserVO userVO = new UserVO();
-        try {
-            XBeanUtil.copyProperties(userVO, user, false);
-        } catch (Exception e) {
+        String userId = Jwtutils.verifyToken(request, response);
+        if (userId.startsWith("wy")) {
+            UserDTO user = userService.getUserByUserId(userId);
+            try {
+                XBeanUtil.copyProperties(userVO, user, false);
+            } catch (Exception e) {
+            }
+            userVO.setUserName(user.getName());
+            userVO.setCreateTime(DateUtils.formatDate(user.getCreateTime()));
+            Permission permission = generatePermission(user.getUserRole());
+            userVO.setPermissions(permission);
+        } else {
+            CustomerDto customer = customerService.getCustomer(userId);
+            userVO.setUserId(customer.getCustId());
+            userVO.setUserName(customer.getCustName());
+            userVO.setIncomeRate(customer.getProportion());
+            Permission permission = generatePermission(customer.getUserRole());
+            userVO.setPermissions(permission);
         }
-        userVO.setUserName(user.getName());
-        userVO.setCreateTime(DateUtils.formatDate(user.getCreateTime()));
-        Permission permission = generatePermission(user.getUserRole());
-        userVO.setPermissions(permission);
+
 
         return ResponseVO.successResponse(userVO);
     }
@@ -92,6 +116,8 @@ public class UserController {
             permission.setVisit(RouteConstant.MANAGER_ROUTE_IDS);
         } else if (userRole.equals(Role.ROLE_VISITOR)) {
             permission.setVisit(RouteConstant.VISITOR_ROUTE_IDS);
+        } else if (userRole.equals(Role.ROLE_AD_VISITOR)) {
+            permission.setVisit(RouteConstant.ADV_CUSTOMER_ROUTE_IDS);
         }
 
         return permission;
