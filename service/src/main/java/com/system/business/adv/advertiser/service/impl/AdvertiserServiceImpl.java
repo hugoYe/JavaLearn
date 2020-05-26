@@ -20,6 +20,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -146,5 +147,20 @@ public class AdvertiserServiceImpl implements AdvertiserService {
         });
 
         return result;
+    }
+
+    @Override
+    public List<AdvertiserDto> getAdvertiserDict() {
+        List<AdvertiserDomain> find = advertiserDao.findAllAdvertiser();
+        List<AdvertiserDto> res = find.stream().map(domain -> {
+            AdvertiserDto dto = new AdvertiserDto();
+            try {
+                XBeanUtil.copyProperties(dto, domain, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return dto;
+        }).collect(Collectors.toList());
+        return res;
     }
 }

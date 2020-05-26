@@ -5,6 +5,8 @@ import com.system.business.adv.customer.dto.CustomerQueryDto;
 import com.system.business.user.dto.UserEditDTO;
 import com.system.common.dto.PageDTO;
 
+import java.util.List;
+
 
 public interface CustomerService {
 
@@ -49,5 +51,7 @@ public interface CustomerService {
      * @return Integer
      */
     Boolean editUser(UserEditDTO dto);
+
+    List<CustomerDto> getCustomerDict();
 
 }

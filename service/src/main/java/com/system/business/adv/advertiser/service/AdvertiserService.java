@@ -4,6 +4,8 @@ import com.system.business.adv.advertiser.dto.AdvertiserDto;
 import com.system.business.adv.advertiser.dto.AdvertiserQueryDto;
 import com.system.common.dto.PageDTO;
 
+import java.util.List;
+
 
 public interface AdvertiserService {
 
@@ -31,5 +33,7 @@ public interface AdvertiserService {
      * 获取广告主列表
      */
     PageDTO<AdvertiserDto> getAdvertiserList(AdvertiserQueryDto pageQueryDTO);
+
+    List<AdvertiserDto> getAdvertiserDict();
 
 }

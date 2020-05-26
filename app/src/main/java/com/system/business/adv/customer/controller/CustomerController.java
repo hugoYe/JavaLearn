@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Api(tags = "Customer", description = "客户相关接口")
@@ -95,4 +96,19 @@ public class CustomerController {
         return ResponseVO.successResponse(new PageDTO<CustomerVO>(query.getTotal(), resList));
     }
 
+    @ApiOperation("获取广告主字典")
+    @GetMapping(value = "/getCustomerDict")
+    public ResponseVO<List<CustomerVO>> getCustomerDict() {
+        List<CustomerDto> find = customService.getCustomerDict();
+        List<CustomerVO> list = find.stream().map(dto -> {
+            CustomerVO vo = new CustomerVO();
+            BeanUtils.copyProperties(dto, vo);
+            vo.setCreateTime(DateUtils.getFormatDate(dto.getCreateTime()));
+            vo.setUpdateTime(DateUtils.getFormatDate(dto.getUpdateTime()));
+
+            return vo;
+        }).collect(Collectors.toList());
+
+        return ResponseVO.successResponse(list);
+    }
 }

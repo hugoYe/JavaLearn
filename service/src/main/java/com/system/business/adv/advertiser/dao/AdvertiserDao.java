@@ -20,5 +20,4 @@ public interface AdvertiserDao extends JpaRepository<AdvertiserDomain, Integer>,
     @Query("from AdvertiserDomain t where t.advId in:advIds and t.isDeleted=0")
     List<AdvertiserDomain> queryAdvertiserByIds(@Param("advIds") List<String> advIds);
 
-
 }

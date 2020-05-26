@@ -27,6 +27,7 @@ import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -229,5 +230,20 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return needToLogout;
+    }
+
+    @Override
+    public List<CustomerDto> getCustomerDict() {
+        List<CustomerDomain> find = customerDao.findAllCustomer();
+        List<CustomerDto> res = find.stream().map(domain -> {
+            CustomerDto dto = new CustomerDto();
+            try {
+                XBeanUtil.copyProperties(dto, domain, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return dto;
+        }).collect(Collectors.toList());
+        return res;
     }
 }
