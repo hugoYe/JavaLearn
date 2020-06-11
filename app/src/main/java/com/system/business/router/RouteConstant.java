@@ -128,7 +128,7 @@ public class RouteConstant {
         routeVO.setName("Offer");
         routeVO.setIcon("database");
         routeVO.setZhName("offer管理");
-        routeVO.setRoute("/offer");
+        routeVO.setRoute("/offermanager");
         ROUTE_LIST.put(ROUTE_ID_OFFER, routeVO);
 
         routeVO = new RouteVO();
