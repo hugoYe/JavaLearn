@@ -106,11 +106,11 @@ public class OfferManagerServiceImpl implements OfferManagerService {
             }
 
             if (pageQueryDTO.getCountry() != null) {
-                predicates.add(builder.equal(root.get("country"), pageQueryDTO.getCountry()));
+                predicates.add(builder.like(root.get("country"), "%" + pageQueryDTO.getCountry() + "%"));
             }
 
             if (pageQueryDTO.getCarrier() != null) {
-                predicates.add(builder.equal(root.get("carrier"), pageQueryDTO.getCarrier()));
+                predicates.add(builder.like(root.get("carrier"), "%" + pageQueryDTO.getCarrier() + "%"));
             }
 
             if (pageQueryDTO.getAdvertiser() != null) {
