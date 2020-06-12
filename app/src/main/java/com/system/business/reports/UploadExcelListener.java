@@ -3,7 +3,7 @@ package com.system.business.reports;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.system.business.reports.dto.UploadExcelDto;
-import com.system.business.reports.service.EverydayIncomeService;
+import com.system.business.reports.service.ReportsService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import java.util.List;
 public class UploadExcelListener extends AnalysisEventListener<UploadExcelDto> {
 
     private static final int BATCH_COUNT = 100;
-    EverydayIncomeService everydayIncomeService;
+    ReportsService reportsService;
     List<UploadExcelDto> list = new ArrayList<>();
 
-    public UploadExcelListener(EverydayIncomeService everydayIncomeService) {
-        this.everydayIncomeService = everydayIncomeService;
+    public UploadExcelListener(ReportsService reportsService) {
+        this.reportsService = reportsService;
     }
 
 
@@ -45,6 +45,6 @@ public class UploadExcelListener extends AnalysisEventListener<UploadExcelDto> {
     }
 
     private void saveData() {
-        everydayIncomeService.uploadExcel(list);
+        reportsService.uploadExcel(list);
     }
 }

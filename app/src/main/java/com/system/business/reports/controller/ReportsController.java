@@ -1,12 +1,15 @@
 package com.system.business.reports.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.system.business.adv.offermanager.dto.OfferManagerQueryDto;
+import com.system.business.adv.offermanager.form.OfferManagerQueryForm;
 import com.system.business.operation.dto.OperationQueryDto;
 import com.system.business.operation.form.OperationQueryForm;
 import com.system.business.reports.dto.UploadExcelDto;
 import com.system.business.reports.UploadExcelListener;
 import com.system.business.reports.entity.EverydayIncomeEntity;
-import com.system.business.reports.service.EverydayIncomeService;
+import com.system.business.reports.entity.OfferEntity;
+import com.system.business.reports.service.ReportsService;
 import com.system.common.annotation.NoLogin;
 import com.system.common.constants.WebConstants;
 import com.system.common.support.XBeanUtil;
@@ -30,10 +33,10 @@ import java.util.List;
 @RestController
 @Api(tags = "reports", description = "报表相关接口")
 @RequestMapping(value = WebConstants.API_PREFIX + "/reports")
-public class EverydayIncomeController {
+public class ReportsController {
 
     @Autowired
-    EverydayIncomeService everydayIncomeService;
+    ReportsService reportsService;
 
     @NoLogin
     @ApiOperation("将每日收入导出生成excel报表")
@@ -47,7 +50,7 @@ public class EverydayIncomeController {
             e.printStackTrace();
         }
 
-        List<EverydayIncomeEntity> list = everydayIncomeService.getEverydayIncome(queryDto);
+        List<EverydayIncomeEntity> list = reportsService.getEverydayIncome(queryDto);
 
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         response.setContentType("application/vnd.ms-excel");
@@ -73,9 +76,37 @@ public class EverydayIncomeController {
     @PostMapping(value = "/upload")
     public void uploadExcel(MultipartFile file) {
         try {
-            EasyExcel.read(file.getInputStream(), UploadExcelDto.class, new UploadExcelListener(everydayIncomeService)).sheet().doRead();
+            EasyExcel.read(file.getInputStream(), UploadExcelDto.class, new UploadExcelListener(reportsService)).sheet().doRead();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @NoLogin
+    @ApiOperation("将offer管理页数据导出生成excel报表")
+    @GetMapping(value = "/exportOfferManager")
+    public void exportOfferManager(OfferManagerQueryForm form, HttpServletResponse response) throws IOException {
+        OfferManagerQueryDto queryDto = new OfferManagerQueryDto();
+        try {
+            XBeanUtil.copyProperties(queryDto, form, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        List<OfferEntity> list = reportsService.getOffers(queryDto);
+
+        // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+        String fileName = DateUtils.getFormatDate(new Date());
+        try {
+            fileName = URLEncoder.encode(fileName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+
+        EasyExcel.write(response.getOutputStream(), OfferEntity.class).sheet("offers").doWrite(list);
     }
 }

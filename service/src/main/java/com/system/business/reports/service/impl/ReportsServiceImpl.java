@@ -1,6 +1,8 @@
 package com.system.business.reports.service.impl;
 
-import com.google.common.collect.Lists;
+import com.system.business.adv.offermanager.dao.OfferManagerDao;
+import com.system.business.adv.offermanager.domain.OfferManagerDomain;
+import com.system.business.adv.offermanager.dto.OfferManagerQueryDto;
 import com.system.business.channel.dao.ChannelDao;
 import com.system.business.channel.domain.ChannelDomain;
 import com.system.business.operation.dao.OperationDao;
@@ -9,7 +11,8 @@ import com.system.business.operation.dto.OperationDto;
 import com.system.business.operation.dto.OperationQueryDto;
 import com.system.business.reports.dto.UploadExcelDto;
 import com.system.business.reports.entity.EverydayIncomeEntity;
-import com.system.business.reports.service.EverydayIncomeService;
+import com.system.business.reports.entity.OfferEntity;
+import com.system.business.reports.service.ReportsService;
 import com.system.business.user.dao.UserDao;
 import com.system.business.user.domain.UserDomain;
 import com.system.business.userchannel.dao.UserAndChannelDao;
@@ -32,7 +35,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class EverydayIncomeServiceImpl implements EverydayIncomeService {
+public class ReportsServiceImpl implements ReportsService {
 
     @Autowired
     private OperationDao operationDao;
@@ -45,6 +48,9 @@ public class EverydayIncomeServiceImpl implements EverydayIncomeService {
 
     @Autowired
     private UserAndChannelDao userAndChannelDao;
+
+    @Autowired
+    private OfferManagerDao offerManagerDao;
 
     @Override
     public List<EverydayIncomeEntity> getEverydayIncome(OperationQueryDto queryDto) {
@@ -195,5 +201,64 @@ public class EverydayIncomeServiceImpl implements EverydayIncomeService {
         }).collect(Collectors.toList());
 
         operationDao.save(saveList);
+    }
+
+    @Override
+    public List<OfferEntity> getOffers(OfferManagerQueryDto queryDto) {
+
+        Specification<OfferManagerDomain> spec = (root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            //默认查询未删除
+            predicates.add(builder.equal(root.get("isDeleted"), YesNoEnum.NO.getValue()));
+            if (queryDto.getOfferId() != null) {
+                predicates.add(builder.equal(root.get("offerId"), queryDto.getOfferId()));
+            }
+
+            if (queryDto.getAdvOfferId() != null) {
+                predicates.add(builder.equal(root.get("advOfferId"), queryDto.getAdvOfferId()));
+            }
+
+            if (queryDto.getOfferName() != null) {
+                predicates.add(builder.equal(root.get("offerName"), queryDto.getOfferName()));
+            }
+
+            if (queryDto.getOfferType() != null) {
+                predicates.add(builder.equal(root.get("offerType"), queryDto.getOfferType()));
+            }
+
+            if (queryDto.getCountry() != null) {
+                predicates.add(builder.like(root.get("country"), "%" + queryDto.getCountry() + "%"));
+            }
+
+            if (queryDto.getCarrier() != null) {
+                predicates.add(builder.like(root.get("carrier"), "%" + queryDto.getCarrier() + "%"));
+            }
+
+            if (queryDto.getAdvertiser() != null) {
+                predicates.add(builder.equal(root.get("advertiser"), queryDto.getAdvertiser()));
+            }
+
+            if (queryDto.getStatus() != null) {
+                predicates.add(builder.equal(root.get("status"), queryDto.getStatus()));
+            }
+
+            return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+
+        List<OfferManagerDomain> all = offerManagerDao.findAll(spec);
+
+        List<OfferEntity> result = all.stream().map(domain -> {
+
+            OfferEntity entity = new OfferEntity();
+            try {
+                XBeanUtil.copyProperties(entity, domain, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return entity;
+        }).collect(Collectors.toList());
+
+        return result;
     }
 }
