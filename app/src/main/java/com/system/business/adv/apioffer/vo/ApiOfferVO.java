@@ -1,15 +1,10 @@
-package com.system.business.adv.offermanager.form;
+package com.system.business.adv.apioffer.vo;
 
 
 import io.swagger.annotations.ApiModelProperty;
 
-public class OfferManagerForm {
+public class ApiOfferVO {
 
-    /**
-     * 自有系统自定义的offerID
-     */
-    @ApiModelProperty("自有系统自定义的offerID")
-    private String offerId;
 
     /**
      * 广告主提供的offerId
@@ -125,14 +120,17 @@ public class OfferManagerForm {
     @ApiModelProperty("状态on/off: 1.on，0.off")
     private Integer status;
 
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty("创建时间")
+    private String createTime;
 
-    public String getOfferId() {
-        return offerId;
-    }
-
-    public void setOfferId(String offerId) {
-        this.offerId = offerId;
-    }
+    /**
+     * 修改时间
+     */
+    @ApiModelProperty("修改时间")
+    private String updateTime;
 
     public String getAdvOfferId() {
         return advOfferId;
@@ -286,4 +284,19 @@ public class OfferManagerForm {
         this.status = status;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
 }

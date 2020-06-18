@@ -18,19 +18,21 @@ public class RouteConstant {
     public static final String ROUTE_ID_ADVERTISER = "21";    // 广告主管理
     public static final String ROUTE_ID_ADV_CUSTOMER = "22";    // 广告业务客户管理
     public static final String ROUTE_ID_OFFER = "23";       // 广告业务offer管理
+    public static final String ROUTE_ID_API_OFFER = "24";       // 广告业务api offer
+    public static final String ROUTE_ID_OFFER_REPORT = "25";       // 广告业务report
     public static final String ROUTE_ID_USERCENTER = "3";   //  个人中心
 
     // 管理员访问权限菜单
     public static final String[] MANAGER_ROUTE_IDS = {ROUTE_ID_MENU_BASE, ROUTE_ID_DASHBOARD, ROUTE_ID_INCOME,
             ROUTE_ID_CHANNELS, ROUTE_ID_USERS, ROUTE_ID_USER_DETAIL, ROUTE_ID_MENU_OFFER, ROUTE_ID_ADVERTISER, ROUTE_ID_ADV_CUSTOMER,
-            ROUTE_ID_OFFER, ROUTE_ID_USERCENTER};
+            ROUTE_ID_OFFER, ROUTE_ID_API_OFFER, ROUTE_ID_OFFER_REPORT, ROUTE_ID_USERCENTER};
 
     // 基础业务客户访问权限菜单
     public static final String[] VISITOR_ROUTE_IDS = {ROUTE_ID_MENU_BASE, ROUTE_ID_DASHBOARD, ROUTE_ID_INCOME, ROUTE_ID_USERCENTER};
 
     // 广告业务客户访问权限菜单
     public static final String[] ADV_CUSTOMER_ROUTE_IDS = {ROUTE_ID_MENU_OFFER, ROUTE_ID_ADVERTISER, ROUTE_ID_ADV_CUSTOMER, ROUTE_ID_OFFER,
-            ROUTE_ID_USERCENTER};
+            ROUTE_ID_API_OFFER, ROUTE_ID_OFFER_REPORT, ROUTE_ID_USERCENTER};
 
     public static final HashMap<String, RouteVO> ROUTE_LIST = new HashMap<>();
     public static List<RouteVO> manager_route_list = new ArrayList<>();
@@ -130,6 +132,26 @@ public class RouteConstant {
         routeVO.setZhName("offer管理");
         routeVO.setRoute("/offermanager");
         ROUTE_LIST.put(ROUTE_ID_OFFER, routeVO);
+
+        routeVO = new RouteVO();
+        routeVO.setId(ROUTE_ID_API_OFFER);
+        routeVO.setBreadcrumbParentId(ROUTE_ID_MENU_OFFER);
+        routeVO.setMenuParentId(ROUTE_ID_MENU_OFFER);
+        routeVO.setName("API Offer");
+        routeVO.setIcon("cloud-server");
+        routeVO.setZhName("API Offer");
+        routeVO.setRoute("/apioffer");
+        ROUTE_LIST.put(ROUTE_ID_API_OFFER, routeVO);
+
+        routeVO = new RouteVO();
+        routeVO.setId(ROUTE_ID_OFFER_REPORT);
+        routeVO.setBreadcrumbParentId(ROUTE_ID_MENU_OFFER);
+        routeVO.setMenuParentId(ROUTE_ID_MENU_OFFER);
+        routeVO.setName("Offer Report");
+        routeVO.setIcon("sliders");
+        routeVO.setZhName("Offer Report");
+        routeVO.setRoute("/offerreport");
+        ROUTE_LIST.put(ROUTE_ID_OFFER_REPORT, routeVO);
 
         routeVO = new RouteVO();
         routeVO.setId(ROUTE_ID_USERCENTER);
