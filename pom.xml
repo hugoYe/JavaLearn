@@ -34,7 +34,7 @@
         <target.version>1.8</target.version>
 
         <!-- lib versions -->
-        <springboot.version>1.5.9.RELEASE</springboot.version>
+        <springboot.version>2.5.12</springboot.version>
         <swagger.version>2.7.0</swagger.version>
     </properties>
 
